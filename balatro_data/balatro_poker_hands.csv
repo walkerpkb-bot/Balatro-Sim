@@ -1,0 +1,14 @@
+hand,base_chips,base_mult,example
+Flush Five,160,16,"5 cards, same rank, same suit"
+Flush House,140,14,3 of a Kind and a Pair with all cards sharing the same suit
+Five of a Kind,120,12,5 cards with the same rank
+Royal Flush,100,8,5 cards in sequence (10 to Ace) with the same suit
+Straight Flush,100,8,5 cards in sequence with the same suit
+Four of a Kind,60,7,4 cards with the same rank
+Full House,40,4,3 of a Kind and a Pair
+Flush,35,4,5 cards with the same suit
+Straight,30,4,5 cards in sequence
+Three of a Kind,30,3,3 cards with the same rank
+Two Pair,20,2,2 sets of cards with the same rank
+Pair,10,2,2 cards with the same rank
+High Card,5,1,Any hand that doesn't match above

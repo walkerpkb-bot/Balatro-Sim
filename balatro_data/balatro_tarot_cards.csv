@@ -1,0 +1,23 @@
+name,effect,availability
+The Fool,Creates the last consumable card used during this run (Must have room),Available from start
+The Magician,Enhances 1 selected card to a Lucky Card,Available from start
+The High Priestess,Creates up to 2 random Planet cards (Must have room),Available from start
+The Empress,Enhances 1 selected card to a Mult Card,Available from start
+The Emperor,Creates up to 2 random Tarot cards (Must have room),Available from start
+The Hierophant,Enhances 1 selected card to a Bonus Card,Available from start
+The Lovers,Enhances 1 selected card to a Wild Card,Available from start
+The Chariot,Enhances 1 selected card to a Steel Card,Available from start
+Justice,Enhances 1 selected card to a Glass Card,Available from start
+The Hermit,Doubles money (Max of $20),Available from start
+The Wheel of Fortune,"1 in 4 chance to add Foil, Holographic, or Polychrome edition to 1 random Joker",Available from start
+Strength,Increases rank of up to 2 selected cards by 1,Available from start
+The Hanged Man,Destroys up to 2 selected cards,Available from start
+Death,"Select 2 cards, convert the left card into the right card (Destroys the right card)",Available from start
+Temperance,Gives the total sell value of all Jokers to money (Max of $50),Available from start
+The Devil,Enhances 1 selected card to a Gold Card,Available from start
+The Tower,Enhances 1 selected card to a Stone Card,Available from start
+The Star,Converts up to 3 selected cards to Diamonds,Available from start
+The Moon,Converts up to 3 selected cards to Clubs,Available from start
+The Sun,Converts up to 3 selected cards to Hearts,Available from start
+Judgement,Creates a random Joker card (Must have room),Available from start
+The World,Converts up to 3 selected cards to Spades,Available from start

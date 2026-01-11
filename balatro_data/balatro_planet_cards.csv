@@ -1,0 +1,13 @@
+name,poker_hand,effect
+Mercury,Pair,Level up Pair
+Venus,Three of a Kind,Level up Three of a Kind
+Earth,Full House,Level up Full House
+Mars,Two Pair,Level up Two Pair
+Jupiter,Flush Five,Level up Flush Five
+Saturn,Straight Flush,Level up Straight Flush
+Uranus,Royal Flush,Level up Royal Flush
+Neptune,Straight,Level up Straight
+Pluto,High Card,Level up High Card
+Planet X,Four of a Kind,Level up Four of a Kind
+Ceres,Flush House,Level up Flush House
+Eris,Flush,Level up Flush

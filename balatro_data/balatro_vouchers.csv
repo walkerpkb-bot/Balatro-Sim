@@ -1,0 +1,33 @@
+name,tier,effect,requires
+Overstock,Base,+1 card slot available in shop,
+Overstock Plus,Tier 2,+1 card slot available in shop,Overstock
+Clearance Sale,Base,All cards and packs in shop are 25% off,
+Liquidation,Tier 2,All cards and packs in shop are 50% off,Clearance Sale
+Hone,Base,"Foil, Holographic, and Polychrome cards appear 2X more often",
+Glow Up,Tier 2,"Foil, Holographic, and Polychrome cards appear 4X more often",Hone
+Reroll Surplus,Base,Rerolls cost $2 less,
+Reroll Glut,Tier 2,Rerolls cost $2 less,Reroll Surplus
+Crystal Ball,Base,+1 Consumable slot,
+Omen Globe,Tier 2,+1 Consumable slot,Crystal Ball
+Telescope,Base,Celestial Packs always contain the Planet card for your most played poker hand,
+Observatory,Tier 2,Planet cards in your Consumable area give X1.5 Mult for their specific poker hand,Telescope
+Grabber,Base,Permanently gain +1 hand per round,
+Nacho Tong,Tier 2,Permanently gain +1 hand per round,Grabber
+Wasteful,Base,Permanently gain +1 discard each round,
+Recyclomancy,Tier 2,Permanently gain +1 discard each round,Wasteful
+Tarot Merchant,Base,Tarots appear 2X more frequently in the shop,
+Tarot Tycoon,Tier 2,Tarots appear 4X more frequently in the shop,Tarot Merchant
+Planet Merchant,Base,Planets appear 2X more frequently in the shop,
+Planet Tycoon,Tier 2,Planets appear 4X more frequently in the shop,Planet Merchant
+Seed Money,Base,Raise the cap on interest earned per round to $10,
+Money Tree,Tier 2,Raise the cap on interest earned per round to $20,Seed Money
+Blank,Base,Does nothing?,
+Antimatter,Tier 2,+1 Joker Slot,Blank
+Magic Trick,Base,Playing cards can be purchased from the shop,
+Illusion,Tier 2,"Playing cards in shop may have an Enhancement, Edition, and/or Seal",Magic Trick
+Hieroglyph,Base,"-1 Ante, -1 hand per round",
+Petroglyph,Tier 2,"-1 Ante, -1 hand per round",Hieroglyph
+Director's Cut,Base,Reroll Boss Blind 1 time per Ante,
+Retcon,Tier 2,Reroll Boss Blind unlimited times,Director's Cut
+Paint Brush,Base,+1 hand size,
+Palette,Tier 2,+1 hand size,Paint Brush

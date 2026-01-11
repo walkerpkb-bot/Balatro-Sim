@@ -1,0 +1,29 @@
+name,ante,effect
+The Hook,1,Discards 2 random cards per hand played
+The Ox,1,"Playing a hand with 0 #[Spade, Heart, Club, Diamond] sets money to $0"
+The House,1,First hand is drawn face down
+The Wall,2,Extra large blind
+The Wheel,2,1 in 7 cards get drawn face down
+The Arm,2,Decrease level of played poker hand
+The Club,3,All Clubs are debuffed
+The Fish,3,Cards drawn face down after each hand played
+The Psychic,3,Must play 5 cards
+The Goad,4,All Spades are debuffed
+The Water,4,Start with 0 discards
+The Window,4,All Diamonds are debuffed
+The Manacle,5,-1 hand size
+The Eye,5,No repeat hand types this round
+The Mouth,5,Play only 1 hand type this round
+The Plant,6,All face cards are debuffed
+The Serpent,6,"After Play or Discard, always draw 3 cards"
+The Pillar,6,Cards played previously this Ante are debuffed
+The Needle,7,Play only 1 hand
+The Head,7,All Hearts are debuffed
+The Tooth,7,Lose $1 per card played
+The Flint,8,Base Chips and Mult are halved
+The Mark,8,All face cards are drawn face down
+Amber Acorn,8+,Flips and shuffles all Joker cards
+Verdant Leaf,8+,All cards are debuffed until 1 Joker sold
+Violet Vessel,8+,Very large blind
+Crimson Heart,8+,One random Joker is debuffed every hand
+Cerulean Bell,8+,Forces 1 card to always be selected

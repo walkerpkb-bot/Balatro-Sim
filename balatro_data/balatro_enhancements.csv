@@ -1,0 +1,9 @@
+name,effect,symbol
+Bonus,"+30 Chips, no rank bonus",🔵
+Mult,"+4 Mult, no rank bonus",🔴
+Wild,Can be used as any suit,🃏
+Glass,"X2 Mult, 1 in 4 chance to destroy when scored",💎
+Steel,X1.5 Mult while this card stays in hand,⚙️
+Stone,"+50 Chips, no rank or suit",🗿
+Gold,$3 if this card is held in hand at end of round,💰
+Lucky,"1 in 5 chance for +20 Mult, 1 in 15 chance to win $20",🍀

@@ -1,0 +1,3980 @@
+[
+  {
+    "id": 1,
+    "name": "Joker",
+    "cost": 2,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Scoring",
+    "effect": {
+      "raw": "+4 Mult",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 4
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 2,
+    "name": "Greedy Joker",
+    "cost": 5,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Suit-based",
+    "effect": {
+      "raw": "Played cards with Diamond suit give +3 Mult when scored",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 3
+        }
+      ],
+      "conditions": [
+        {
+          "type": "suit",
+          "suit": "Diamond"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 3,
+    "name": "Lusty Joker",
+    "cost": 5,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Suit-based",
+    "effect": {
+      "raw": "Played cards with Heart suit give +3 Mult when scored",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 3
+        }
+      ],
+      "conditions": [
+        {
+          "type": "suit",
+          "suit": "Heart"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 4,
+    "name": "Wrathful Joker",
+    "cost": 5,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Suit-based",
+    "effect": {
+      "raw": "Played cards with Spade suit give +3 Mult when scored",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 3
+        }
+      ],
+      "conditions": [
+        {
+          "type": "suit",
+          "suit": "Spade"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 5,
+    "name": "Gluttonous Joker",
+    "cost": 5,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Suit-based",
+    "effect": {
+      "raw": "Played cards with Club suit give +3 Mult when scored",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 3
+        }
+      ],
+      "conditions": [
+        {
+          "type": "suit",
+          "suit": "Club"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 6,
+    "name": "Jolly Joker",
+    "cost": 3,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Hand-based",
+    "effect": {
+      "raw": "+8 Mult if played hand contains a Pair",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 8
+        }
+      ],
+      "conditions": [
+        {
+          "type": "hand_contains",
+          "hand": "Pair"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 7,
+    "name": "Zany Joker",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Hand-based",
+    "effect": {
+      "raw": "+12 Mult if played hand contains a Three of a Kind",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 12
+        }
+      ],
+      "conditions": [
+        {
+          "type": "hand_contains",
+          "hand": "Three of a Kind"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 8,
+    "name": "Mad Joker",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Hand-based",
+    "effect": {
+      "raw": "+10 Mult if played hand contains a Two Pair",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 10
+        }
+      ],
+      "conditions": [
+        {
+          "type": "hand_contains",
+          "hand": "Two Pair"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 9,
+    "name": "Crazy Joker",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Hand-based",
+    "effect": {
+      "raw": "+12 Mult if played hand contains a Straight",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 12
+        }
+      ],
+      "conditions": [
+        {
+          "type": "hand_contains",
+          "hand": "Straight"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 10,
+    "name": "Droll Joker",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Hand-based",
+    "effect": {
+      "raw": "+10 Mult if played hand contains a Flush",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 10
+        }
+      ],
+      "conditions": [
+        {
+          "type": "hand_contains",
+          "hand": "Flush"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 11,
+    "name": "Sly Joker",
+    "cost": 3,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Chips",
+    "category": "Hand-based",
+    "effect": {
+      "raw": "+50 Chips if played hand contains a Pair",
+      "modifiers": [
+        {
+          "type": "add_chips",
+          "value": 50
+        }
+      ],
+      "conditions": [
+        {
+          "type": "hand_contains",
+          "hand": "Pair"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 12,
+    "name": "Wily Joker",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Chips",
+    "category": "Hand-based",
+    "effect": {
+      "raw": "+100 Chips if played hand contains a Three of a Kind",
+      "modifiers": [
+        {
+          "type": "add_chips",
+          "value": 100
+        }
+      ],
+      "conditions": [
+        {
+          "type": "hand_contains",
+          "hand": "Three of a Kind"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 13,
+    "name": "Clever Joker",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Chips",
+    "category": "Hand-based",
+    "effect": {
+      "raw": "+80 Chips if played hand contains a Two Pair",
+      "modifiers": [
+        {
+          "type": "add_chips",
+          "value": 80
+        }
+      ],
+      "conditions": [
+        {
+          "type": "hand_contains",
+          "hand": "Two Pair"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 14,
+    "name": "Devious Joker",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Chips",
+    "category": "Hand-based",
+    "effect": {
+      "raw": "+100 Chips if played hand contains a Straight",
+      "modifiers": [
+        {
+          "type": "add_chips",
+          "value": 100
+        }
+      ],
+      "conditions": [
+        {
+          "type": "hand_contains",
+          "hand": "Straight"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 15,
+    "name": "Crafty Joker",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Chips",
+    "category": "Hand-based",
+    "effect": {
+      "raw": "+80 Chips if played hand contains a Flush",
+      "modifiers": [
+        {
+          "type": "add_chips",
+          "value": 80
+        }
+      ],
+      "conditions": [
+        {
+          "type": "hand_contains",
+          "hand": "Flush"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 16,
+    "name": "Half Joker",
+    "cost": 5,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Hand Size",
+    "effect": {
+      "raw": "+20 Mult if played hand contains 3 or fewer cards",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 20
+        }
+      ],
+      "conditions": [
+        {
+          "type": "max_cards",
+          "value": 3
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 17,
+    "name": "Joker Stencil",
+    "cost": 8,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Multiplicative Mult",
+    "category": "Scaling",
+    "effect": {
+      "raw": "X1 Mult for each empty Joker slot",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 1.0
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 18,
+    "name": "Four Fingers",
+    "cost": 7,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Effect",
+    "category": "Hand Modifier",
+    "effect": {
+      "raw": "All Flushes and Straights can be made with 4 cards",
+      "modifiers": [
+        {
+          "type": "hand_requirement_change",
+          "cards_needed": 4
+        }
+      ],
+      "conditions": [
+        {
+          "type": "hand_contains",
+          "hand": "Flush"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "rule_modifier"
+      ]
+    }
+  },
+  {
+    "id": 19,
+    "name": "Mime",
+    "cost": 5,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Retrigger",
+    "category": "Retrigger",
+    "effect": {
+      "raw": "Retrigger all card held in hand abilities",
+      "modifiers": [],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "retrigger"
+      ]
+    }
+  },
+  {
+    "id": 20,
+    "name": "Credit Card",
+    "cost": 1,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Economy",
+    "category": "Economy",
+    "effect": {
+      "raw": "Go up to -$20 in debt",
+      "modifiers": [
+        {
+          "type": "debt_limit",
+          "amount": 20
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "economy"
+      ]
+    }
+  },
+  {
+    "id": 21,
+    "name": "Ceremonial Dagger",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Scaling",
+    "effect": {
+      "raw": "When Blind is selected, destroy Joker to the right and permanently add double its sell value to Mult",
+      "modifiers": [
+        {
+          "type": "dynamic_mult",
+          "source": "double its sell value"
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_blind_select"
+      ],
+      "flags": [
+        "sell_value_modifier",
+        "destroy",
+        "dynamic"
+      ]
+    }
+  },
+  {
+    "id": 22,
+    "name": "Banner",
+    "cost": 5,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Chips",
+    "category": "Resource-based",
+    "effect": {
+      "raw": "+30 Chips for each remaining discard",
+      "modifiers": [
+        {
+          "type": "add_chips",
+          "value": 30
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 23,
+    "name": "Mystic Summit",
+    "cost": 5,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Resource-based",
+    "effect": {
+      "raw": "+15 Mult when 0 discards remaining",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 15
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 24,
+    "name": "Marble Joker",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Effect",
+    "category": "Card Generation",
+    "effect": {
+      "raw": "Adds one Stone card to deck when Blind is selected",
+      "modifiers": [
+        {
+          "type": "add_to_deck",
+          "card": "Stone"
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_blind_select"
+      ],
+      "flags": [
+        "deck_modification"
+      ]
+    }
+  },
+  {
+    "id": 25,
+    "name": "Loyalty Card",
+    "cost": 5,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Multiplicative Mult",
+    "category": "Counter",
+    "effect": {
+      "raw": "X4 Mult every 6 hands played",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 4.0
+        }
+      ],
+      "conditions": [
+        {
+          "type": "rank",
+          "rank": "6"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 26,
+    "name": "8 Ball",
+    "cost": 5,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Effect",
+    "category": "Card Generation",
+    "effect": {
+      "raw": "1 in 4 chance for each played 8 to create a Tarot card when scored",
+      "modifiers": [
+        {
+          "type": "create_card",
+          "card_type": "Tarot"
+        }
+      ],
+      "conditions": [
+        {
+          "type": "probability",
+          "numerator": 1,
+          "denominator": 4
+        },
+        {
+          "type": "rank",
+          "rank": "8"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "card_generation"
+      ]
+    }
+  },
+  {
+    "id": 27,
+    "name": "Misprint",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Random",
+    "effect": {
+      "raw": "+0-23 Mult (random)",
+      "modifiers": [
+        {
+          "type": "random_mult",
+          "min": 0,
+          "max": 23
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "random"
+      ]
+    }
+  },
+  {
+    "id": 28,
+    "name": "Dusk",
+    "cost": 5,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Retrigger",
+    "category": "Retrigger",
+    "effect": {
+      "raw": "Retrigger all played cards in final hand of round",
+      "modifiers": [],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "retrigger"
+      ]
+    }
+  },
+  {
+    "id": 29,
+    "name": "Raised Fist",
+    "cost": 5,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Hand-based",
+    "effect": {
+      "raw": "Adds double the rank of lowest ranked card held in hand to Mult",
+      "modifiers": [
+        {
+          "type": "dynamic_mult",
+          "source": "double the rank of lowest ranked card held in hand"
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "dynamic"
+      ]
+    }
+  },
+  {
+    "id": 30,
+    "name": "Chaos the Clown",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Effect",
+    "category": "Shop",
+    "effect": {
+      "raw": "1 free Reroll per shop",
+      "modifiers": [
+        {
+          "type": "free_reroll",
+          "count": 1
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "shop_modifier"
+      ]
+    }
+  },
+  {
+    "id": 31,
+    "name": "Fibonacci",
+    "cost": 8,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Rank-based",
+    "effect": {
+      "raw": "Each played Ace, 2, 3, 5, or 8 gives +8 Mult when scored",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 8
+        }
+      ],
+      "conditions": [
+        {
+          "type": "rank",
+          "rank": "Ace"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 32,
+    "name": "Steel Joker",
+    "cost": 7,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Multiplicative Mult",
+    "category": "Enhancement-based",
+    "effect": {
+      "raw": "X0.2 Mult for each Steel Card in full deck",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 0.2
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 33,
+    "name": "Scary Face",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Chips",
+    "category": "Rank-based",
+    "effect": {
+      "raw": "Played face cards give +30 Chips when scored",
+      "modifiers": [
+        {
+          "type": "add_chips",
+          "value": 30
+        }
+      ],
+      "conditions": [
+        {
+          "type": "rank",
+          "rank": "face_card"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 34,
+    "name": "Abstract Joker",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Scaling",
+    "effect": {
+      "raw": "+3 Mult for each Joker card",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 3
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 35,
+    "name": "Delayed Gratification",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Economy",
+    "category": "Economy",
+    "effect": {
+      "raw": "Earn $2 per discard if no discards used by end of round",
+      "modifiers": [
+        {
+          "type": "earn_money",
+          "value": 2
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "end_of_round"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 36,
+    "name": "Hack",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Retrigger",
+    "category": "Retrigger",
+    "effect": {
+      "raw": "Retrigger each played 2, 3, 4, or 5",
+      "modifiers": [],
+      "conditions": [
+        {
+          "type": "rank",
+          "rank": "2"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "retrigger"
+      ]
+    }
+  },
+  {
+    "id": 37,
+    "name": "Pareidolia",
+    "cost": 5,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Effect",
+    "category": "Card Modifier",
+    "effect": {
+      "raw": "All cards are considered face cards",
+      "modifiers": [
+        {
+          "type": "considered_as",
+          "as": "face cards"
+        }
+      ],
+      "conditions": [
+        {
+          "type": "rank",
+          "rank": "face_card"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "rule_modifier"
+      ]
+    }
+  },
+  {
+    "id": 38,
+    "name": "Gros Michel",
+    "cost": 5,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Risky",
+    "effect": {
+      "raw": "+15 Mult, 1 in 6 chance destroyed at end of round",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 15
+        }
+      ],
+      "conditions": [
+        {
+          "type": "probability",
+          "numerator": 1,
+          "denominator": 6
+        }
+      ],
+      "triggers": [
+        "end_of_round"
+      ],
+      "flags": [
+        "destroy"
+      ]
+    }
+  },
+  {
+    "id": 39,
+    "name": "Even Steven",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Rank-based",
+    "effect": {
+      "raw": "Played cards with even rank give +4 Mult when scored",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 4
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 40,
+    "name": "Odd Todd",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Chips",
+    "category": "Rank-based",
+    "effect": {
+      "raw": "Played cards with odd rank give +31 Chips when scored",
+      "modifiers": [
+        {
+          "type": "add_chips",
+          "value": 31
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 41,
+    "name": "Scholar",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Chips & Mult",
+    "category": "Rank-based",
+    "effect": {
+      "raw": "Played Aces give +20 Chips and +4 Mult when scored",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 4
+        },
+        {
+          "type": "add_chips",
+          "value": 20
+        }
+      ],
+      "conditions": [
+        {
+          "type": "rank",
+          "rank": "Ace"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 42,
+    "name": "Business Card",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Economy",
+    "category": "Economy",
+    "effect": {
+      "raw": "Played face cards have 1 in 2 chance to give $2 when scored",
+      "modifiers": [
+        {
+          "type": "give_money",
+          "value": 2
+        }
+      ],
+      "conditions": [
+        {
+          "type": "probability",
+          "numerator": 1,
+          "denominator": 2
+        },
+        {
+          "type": "rank",
+          "rank": "face_card"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 43,
+    "name": "Supernova",
+    "cost": 5,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Scaling",
+    "effect": {
+      "raw": "Adds number of times poker hand played this run to Mult",
+      "modifiers": [
+        {
+          "type": "dynamic_mult",
+          "source": "number of times poker hand played this run"
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "dynamic"
+      ]
+    }
+  },
+  {
+    "id": 44,
+    "name": "Ride the Bus",
+    "cost": 6,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Scaling",
+    "effect": {
+      "raw": "Gains +1 Mult per consecutive hand without scoring face card",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 1
+        },
+        {
+          "type": "gains_mult",
+          "value": 1.0
+        }
+      ],
+      "conditions": [
+        {
+          "type": "rank",
+          "rank": "face_card"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "scaling"
+      ]
+    }
+  },
+  {
+    "id": 45,
+    "name": "Space Joker",
+    "cost": 5,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Effect",
+    "category": "Hand Level",
+    "effect": {
+      "raw": "1 in 4 chance to upgrade level of played poker hand",
+      "modifiers": [
+        {
+          "type": "upgrade_hand_level"
+        }
+      ],
+      "conditions": [
+        {
+          "type": "probability",
+          "numerator": 1,
+          "denominator": 4
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "hand_level"
+      ]
+    }
+  },
+  {
+    "id": 46,
+    "name": "Egg",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Economy",
+    "category": "Economy",
+    "effect": {
+      "raw": "Gains $3 of sell value at end of round",
+      "modifiers": [],
+      "conditions": [],
+      "triggers": [
+        "end_of_round"
+      ],
+      "flags": [
+        "sell_value_modifier"
+      ]
+    }
+  },
+  {
+    "id": 47,
+    "name": "Burglar",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Effect",
+    "category": "Resource Modifier",
+    "effect": {
+      "raw": "When Blind is selected, gain +3 Hands and lose all discards",
+      "modifiers": [
+        {
+          "type": "hands",
+          "value": 3
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_blind_select"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 48,
+    "name": "Blackboard",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Multiplicative Mult",
+    "category": "Suit-based",
+    "effect": {
+      "raw": "X3 Mult if all cards in hand are Spades or Clubs",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 3.0
+        }
+      ],
+      "conditions": [
+        {
+          "type": "suit",
+          "suit": "Spade"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 49,
+    "name": "Runner",
+    "cost": 5,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Chips",
+    "category": "Scaling",
+    "effect": {
+      "raw": "Gains +15 Chips if played hand contains a Straight",
+      "modifiers": [
+        {
+          "type": "add_chips",
+          "value": 15
+        },
+        {
+          "type": "gains_chips",
+          "value": 15.0
+        }
+      ],
+      "conditions": [
+        {
+          "type": "hand_contains",
+          "hand": "Straight"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "scaling"
+      ]
+    }
+  },
+  {
+    "id": 50,
+    "name": "Ice Cream",
+    "cost": 5,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Chips",
+    "category": "Degrading",
+    "effect": {
+      "raw": "+100 Chips, -5 Chips for every hand played",
+      "modifiers": [
+        {
+          "type": "add_chips",
+          "value": 100
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 51,
+    "name": "DNA",
+    "cost": 8,
+    "rarity": "Rare",
+    "unlock": "Available from start",
+    "type": "Effect",
+    "category": "Deck Building",
+    "effect": {
+      "raw": "If first hand has only 1 card, add permanent copy to deck",
+      "modifiers": [
+        {
+          "type": "add_to_deck",
+          "card": "permanent copy"
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "deck_modification"
+      ]
+    }
+  },
+  {
+    "id": 52,
+    "name": "Splash",
+    "cost": 3,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Effect",
+    "category": "Scoring Modifier",
+    "effect": {
+      "raw": "Every played card counts in scoring",
+      "modifiers": [
+        {
+          "type": "all_cards_score"
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "scoring_modifier"
+      ]
+    }
+  },
+  {
+    "id": 53,
+    "name": "Blue Joker",
+    "cost": 5,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Chips",
+    "category": "Deck-based",
+    "effect": {
+      "raw": "+2 Chips for each remaining card in deck",
+      "modifiers": [
+        {
+          "type": "add_chips",
+          "value": 2
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 54,
+    "name": "Sixth Sense",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Effect",
+    "category": "Card Generation",
+    "effect": {
+      "raw": "If first hand is single 6, destroy it and create Spectral card",
+      "modifiers": [
+        {
+          "type": "create_card",
+          "card_type": "Spectral"
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "card_generation",
+        "destroy"
+      ]
+    }
+  },
+  {
+    "id": 55,
+    "name": "Constellation",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Multiplicative Mult",
+    "category": "Scaling",
+    "effect": {
+      "raw": "Gains X0.1 Mult every time Planet card used",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 0.1
+        },
+        {
+          "type": "gains_x_mult",
+          "value": 0.1
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "scaling"
+      ]
+    }
+  },
+  {
+    "id": 56,
+    "name": "Hiker",
+    "cost": 5,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Chips",
+    "category": "Permanent Upgrade",
+    "effect": {
+      "raw": "Every played card permanently gains +5 Chips when scored",
+      "modifiers": [
+        {
+          "type": "add_chips",
+          "value": 5
+        },
+        {
+          "type": "gains_chips",
+          "value": 5.0
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "scaling"
+      ]
+    }
+  },
+  {
+    "id": 57,
+    "name": "Faceless Joker",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Economy",
+    "category": "Economy",
+    "effect": {
+      "raw": "Earn $5 if 3+ face cards discarded at same time",
+      "modifiers": [
+        {
+          "type": "earn_money",
+          "value": 5
+        }
+      ],
+      "conditions": [
+        {
+          "type": "rank",
+          "rank": "face_card"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 58,
+    "name": "Green Joker",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Scaling",
+    "effect": {
+      "raw": "+1 Mult per hand played, -1 Mult per discard",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 1
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 59,
+    "name": "Superposition",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Effect",
+    "category": "Card Generation",
+    "effect": {
+      "raw": "Create Tarot if hand contains Ace and Straight",
+      "modifiers": [
+        {
+          "type": "create_card",
+          "card_type": "Tarot"
+        }
+      ],
+      "conditions": [
+        {
+          "type": "hand_contains",
+          "hand": "Straight"
+        },
+        {
+          "type": "rank",
+          "rank": "Ace"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "card_generation"
+      ]
+    }
+  },
+  {
+    "id": 60,
+    "name": "To Do List",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Economy",
+    "category": "Economy",
+    "effect": {
+      "raw": "Earn $4 if poker hand matches target hand",
+      "modifiers": [
+        {
+          "type": "earn_money",
+          "value": 4
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 61,
+    "name": "Cavendish",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Unlocked when Gros Michel destroys itself",
+    "type": "Multiplicative Mult",
+    "category": "Risky",
+    "effect": {
+      "raw": "X3 Mult, 1 in 1000 chance destroyed at end of round",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 3.0
+        }
+      ],
+      "conditions": [
+        {
+          "type": "probability",
+          "numerator": 1,
+          "denominator": 1000
+        }
+      ],
+      "triggers": [
+        "end_of_round"
+      ],
+      "flags": [
+        "destroy"
+      ]
+    }
+  },
+  {
+    "id": 62,
+    "name": "Card Sharp",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Multiplicative Mult",
+    "category": "Hand Repeat",
+    "effect": {
+      "raw": "X3 Mult if poker hand already played this round",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 3.0
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 63,
+    "name": "Red Card",
+    "cost": 5,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Scaling",
+    "effect": {
+      "raw": "Gains +3 Mult when any Booster Pack skipped",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 3
+        },
+        {
+          "type": "gains_mult",
+          "value": 3.0
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "booster_skipped"
+      ],
+      "flags": [
+        "scaling"
+      ]
+    }
+  },
+  {
+    "id": 64,
+    "name": "Madness",
+    "cost": 7,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Multiplicative Mult",
+    "category": "Risky",
+    "effect": {
+      "raw": "When Small/Big Blind selected, gain X0.5 Mult and destroy random Joker",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 0.5
+        },
+        {
+          "type": "gains_x_mult",
+          "value": 0.5
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_blind_select"
+      ],
+      "flags": [
+        "scaling",
+        "destroy"
+      ]
+    }
+  },
+  {
+    "id": 65,
+    "name": "Square Joker",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Chips",
+    "category": "Scaling",
+    "effect": {
+      "raw": "Gains +4 Chips if played hand has exactly 4 cards",
+      "modifiers": [
+        {
+          "type": "add_chips",
+          "value": 4
+        },
+        {
+          "type": "gains_chips",
+          "value": 4.0
+        }
+      ],
+      "conditions": [
+        {
+          "type": "exact_cards",
+          "value": 4
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "scaling"
+      ]
+    }
+  },
+  {
+    "id": 66,
+    "name": "S\u00e9ance",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Effect",
+    "category": "Card Generation",
+    "effect": {
+      "raw": "If poker hand is Straight Flush, create random Spectral card",
+      "modifiers": [
+        {
+          "type": "create_card",
+          "card_type": "Spectral"
+        }
+      ],
+      "conditions": [
+        {
+          "type": "hand_contains",
+          "hand": "Straight Flush"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "card_generation"
+      ]
+    }
+  },
+  {
+    "id": 67,
+    "name": "Riff-Raff",
+    "cost": 6,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Effect",
+    "category": "Joker Generation",
+    "effect": {
+      "raw": "When Blind selected, create 2 Common Jokers",
+      "modifiers": [
+        {
+          "type": "create_cards",
+          "count": 2,
+          "rarity": "Common",
+          "card_type": "Jokers"
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_blind_select"
+      ],
+      "flags": [
+        "card_generation"
+      ]
+    }
+  },
+  {
+    "id": 68,
+    "name": "Vampire",
+    "cost": 7,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Multiplicative Mult",
+    "category": "Enhancement-based",
+    "effect": {
+      "raw": "Gains X0.1 Mult per Enhanced card scored, removes Enhancement",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 0.1
+        },
+        {
+          "type": "gains_x_mult",
+          "value": 0.1
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "scaling"
+      ]
+    }
+  },
+  {
+    "id": 69,
+    "name": "Shortcut",
+    "cost": 7,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Effect",
+    "category": "Hand Modifier",
+    "effect": {
+      "raw": "Straights can be made with gaps of 1 rank",
+      "modifiers": [
+        {
+          "type": "straight_gaps",
+          "gap_size": 1
+        }
+      ],
+      "conditions": [
+        {
+          "type": "hand_contains",
+          "hand": "Straight"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "rule_modifier"
+      ]
+    }
+  },
+  {
+    "id": 70,
+    "name": "Hologram",
+    "cost": 7,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Multiplicative Mult",
+    "category": "Scaling",
+    "effect": {
+      "raw": "Gains X0.25 Mult when playing card added to deck",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 0.25
+        },
+        {
+          "type": "gains_x_mult",
+          "value": 0.25
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "scaling"
+      ]
+    }
+  },
+  {
+    "id": 71,
+    "name": "Vagabond",
+    "cost": 8,
+    "rarity": "Rare",
+    "unlock": "Available from start",
+    "type": "Effect",
+    "category": "Card Generation",
+    "effect": {
+      "raw": "Create Tarot if hand played with $4 or less",
+      "modifiers": [
+        {
+          "type": "create_card",
+          "card_type": "Tarot"
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "card_generation"
+      ]
+    }
+  },
+  {
+    "id": 72,
+    "name": "Baron",
+    "cost": 8,
+    "rarity": "Rare",
+    "unlock": "Available from start",
+    "type": "Multiplicative Mult",
+    "category": "Rank-based",
+    "effect": {
+      "raw": "Each King held in hand gives X1.5 Mult",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 1.5
+        }
+      ],
+      "conditions": [
+        {
+          "type": "rank",
+          "rank": "King"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 73,
+    "name": "Cloud 9",
+    "cost": 7,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Economy",
+    "category": "Economy",
+    "effect": {
+      "raw": "Earn $1 for each 9 in full deck at end of round",
+      "modifiers": [
+        {
+          "type": "earn_money",
+          "value": 1
+        }
+      ],
+      "conditions": [
+        {
+          "type": "rank",
+          "rank": "9"
+        }
+      ],
+      "triggers": [
+        "end_of_round"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 74,
+    "name": "Rocket",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Economy",
+    "category": "Economy",
+    "effect": {
+      "raw": "Earn $1 at end of round, payout increases by $2 when Boss defeated",
+      "modifiers": [
+        {
+          "type": "earn_money",
+          "value": 1
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "end_of_round"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 75,
+    "name": "Obelisk",
+    "cost": 8,
+    "rarity": "Rare",
+    "unlock": "Available from start",
+    "type": "Multiplicative Mult",
+    "category": "Scaling",
+    "effect": {
+      "raw": "Gains X0.2 Mult per consecutive hand without most played poker hand",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 0.2
+        },
+        {
+          "type": "gains_x_mult",
+          "value": 0.2
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "scaling"
+      ]
+    }
+  },
+  {
+    "id": 76,
+    "name": "Midas Mask",
+    "cost": 7,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Effect",
+    "category": "Enhancement",
+    "effect": {
+      "raw": "All played face cards become Gold when scored",
+      "modifiers": [
+        {
+          "type": "transform_card",
+          "to": "Gold"
+        }
+      ],
+      "conditions": [
+        {
+          "type": "rank",
+          "rank": "face_card"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "card_transform"
+      ]
+    }
+  },
+  {
+    "id": 77,
+    "name": "Luchador",
+    "cost": 5,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Effect",
+    "category": "Utility",
+    "effect": {
+      "raw": "Sell this card to disable current Boss Blind",
+      "modifiers": [
+        {
+          "type": "disable_effect"
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_sell"
+      ],
+      "flags": [
+        "sell_to_activate",
+        "negation"
+      ]
+    }
+  },
+  {
+    "id": 78,
+    "name": "Photograph",
+    "cost": 5,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Multiplicative Mult",
+    "category": "First Card",
+    "effect": {
+      "raw": "First played face card gives X2 Mult when scored",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 2.0
+        }
+      ],
+      "conditions": [
+        {
+          "type": "rank",
+          "rank": "face_card"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 79,
+    "name": "Gift Card",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Economy",
+    "category": "Economy",
+    "effect": {
+      "raw": "Add $1 sell value to all Jokers and Consumables at end of round",
+      "modifiers": [],
+      "conditions": [],
+      "triggers": [
+        "end_of_round"
+      ],
+      "flags": [
+        "sell_value_modifier"
+      ]
+    }
+  },
+  {
+    "id": 80,
+    "name": "Turtle Bean",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Effect",
+    "category": "Hand Size",
+    "effect": {
+      "raw": "+5 hand size, reduces by 1 each round",
+      "modifiers": [
+        {
+          "type": "hand_size",
+          "value": 5
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 81,
+    "name": "Erosion",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Deck-based",
+    "effect": {
+      "raw": "+4 Mult for each card below deck starting size",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 4
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 82,
+    "name": "Reserved Parking",
+    "cost": 6,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Economy",
+    "category": "Economy",
+    "effect": {
+      "raw": "Each face card in hand has 1 in 2 chance to give $1",
+      "modifiers": [
+        {
+          "type": "give_money",
+          "value": 1
+        }
+      ],
+      "conditions": [
+        {
+          "type": "probability",
+          "numerator": 1,
+          "denominator": 2
+        },
+        {
+          "type": "rank",
+          "rank": "face_card"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 83,
+    "name": "Mail-In Rebate",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Economy",
+    "category": "Economy",
+    "effect": {
+      "raw": "Earn $5 for each discarded [rank], rank changes every round",
+      "modifiers": [
+        {
+          "type": "earn_money",
+          "value": 5
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 84,
+    "name": "To the Moon",
+    "cost": 5,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Economy",
+    "category": "Economy",
+    "effect": {
+      "raw": "Earn extra $1 interest for every $5 at end of round",
+      "modifiers": [],
+      "conditions": [],
+      "triggers": [
+        "end_of_round"
+      ],
+      "flags": [
+        "interest_modifier"
+      ]
+    }
+  },
+  {
+    "id": 85,
+    "name": "Hallucination",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Effect",
+    "category": "Card Generation",
+    "effect": {
+      "raw": "1 in 2 chance to create Tarot when Booster Pack opened",
+      "modifiers": [
+        {
+          "type": "create_card",
+          "card_type": "Tarot"
+        }
+      ],
+      "conditions": [
+        {
+          "type": "probability",
+          "numerator": 1,
+          "denominator": 2
+        }
+      ],
+      "triggers": [
+        "booster_opened"
+      ],
+      "flags": [
+        "card_generation"
+      ]
+    }
+  },
+  {
+    "id": 86,
+    "name": "Fortune Teller",
+    "cost": 6,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Scaling",
+    "effect": {
+      "raw": "+1 Mult per Tarot card used this run",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 1
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 87,
+    "name": "Juggler",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Effect",
+    "category": "Hand Size",
+    "effect": {
+      "raw": "+1 hand size",
+      "modifiers": [
+        {
+          "type": "hand_size",
+          "value": 1
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 88,
+    "name": "Drunkard",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Effect",
+    "category": "Resource",
+    "effect": {
+      "raw": "+1 discard each round",
+      "modifiers": [
+        {
+          "type": "discards",
+          "value": 1
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 89,
+    "name": "Stone Joker",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Chips",
+    "category": "Enhancement-based",
+    "effect": {
+      "raw": "+25 Chips for each Stone Card in full deck",
+      "modifiers": [
+        {
+          "type": "add_chips",
+          "value": 25
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 90,
+    "name": "Golden Joker",
+    "cost": 6,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Economy",
+    "category": "Economy",
+    "effect": {
+      "raw": "Earn $4 at end of round",
+      "modifiers": [
+        {
+          "type": "earn_money",
+          "value": 4
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "end_of_round"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 91,
+    "name": "Lucky Cat",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Multiplicative Mult",
+    "category": "Enhancement-based",
+    "effect": {
+      "raw": "Gains X0.25 Mult when Lucky card successfully triggers",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 0.25
+        },
+        {
+          "type": "gains_x_mult",
+          "value": 0.25
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "scaling"
+      ]
+    }
+  },
+  {
+    "id": 92,
+    "name": "Baseball Card",
+    "cost": 8,
+    "rarity": "Rare",
+    "unlock": "Available from start",
+    "type": "Multiplicative Mult",
+    "category": "Joker-based",
+    "effect": {
+      "raw": "Uncommon Jokers each give X1.5 Mult",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 1.5
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 93,
+    "name": "Bull",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Chips",
+    "category": "Money-based",
+    "effect": {
+      "raw": "+2 Chips for each $1 you have",
+      "modifiers": [
+        {
+          "type": "add_chips",
+          "value": 2
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 94,
+    "name": "Diet Cola",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Effect",
+    "category": "Utility",
+    "effect": {
+      "raw": "Sell this to create free Double Tag",
+      "modifiers": [],
+      "conditions": [],
+      "triggers": [
+        "on_sell"
+      ],
+      "flags": [
+        "sell_to_activate"
+      ]
+    }
+  },
+  {
+    "id": 95,
+    "name": "Trading Card",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Economy",
+    "category": "Economy",
+    "effect": {
+      "raw": "If first discard has only 1 card, destroy it and earn $3",
+      "modifiers": [
+        {
+          "type": "earn_money",
+          "value": 3
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "destroy"
+      ]
+    }
+  },
+  {
+    "id": 96,
+    "name": "Flash Card",
+    "cost": 5,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Scaling",
+    "effect": {
+      "raw": "Gains +2 Mult per reroll in shop",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 2
+        },
+        {
+          "type": "gains_mult",
+          "value": 2.0
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "scaling"
+      ]
+    }
+  },
+  {
+    "id": 97,
+    "name": "Popcorn",
+    "cost": 5,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Degrading",
+    "effect": {
+      "raw": "+20 Mult, -4 Mult per round played",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 20
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 98,
+    "name": "Spare Trousers",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Scaling",
+    "effect": {
+      "raw": "Gains +2 Mult if played hand contains Two Pair",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 2
+        },
+        {
+          "type": "gains_mult",
+          "value": 2.0
+        }
+      ],
+      "conditions": [
+        {
+          "type": "hand_contains",
+          "hand": "Two Pair"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "scaling"
+      ]
+    }
+  },
+  {
+    "id": 99,
+    "name": "Ancient Joker",
+    "cost": 8,
+    "rarity": "Rare",
+    "unlock": "Available from start",
+    "type": "Multiplicative Mult",
+    "category": "Suit-based",
+    "effect": {
+      "raw": "Each played card with [suit] gives X1.5 Mult, suit changes each round",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 1.5
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 100,
+    "name": "Ramen",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Multiplicative Mult",
+    "category": "Degrading",
+    "effect": {
+      "raw": "X2 Mult, loses X0.01 Mult per card discarded",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 2.0
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 101,
+    "name": "Walkie Talkie",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Chips & Mult",
+    "category": "Rank-based",
+    "effect": {
+      "raw": "Each played 10 or 4 gives +10 Chips and +4 Mult when scored",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 4
+        },
+        {
+          "type": "add_chips",
+          "value": 10
+        }
+      ],
+      "conditions": [
+        {
+          "type": "rank",
+          "rank": "10"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 102,
+    "name": "Seltzer",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Retrigger",
+    "category": "Limited Duration",
+    "effect": {
+      "raw": "Retrigger all cards played for next 10 hands",
+      "modifiers": [],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "retrigger"
+      ]
+    }
+  },
+  {
+    "id": 103,
+    "name": "Castle",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Available from start",
+    "type": "Chips",
+    "category": "Scaling",
+    "effect": {
+      "raw": "Gains +3 Chips per discarded [suit] card, suit changes every round",
+      "modifiers": [
+        {
+          "type": "add_chips",
+          "value": 3
+        },
+        {
+          "type": "gains_chips",
+          "value": 3.0
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "scaling"
+      ]
+    }
+  },
+  {
+    "id": 104,
+    "name": "Smiley Face",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Available from start",
+    "type": "Additive Mult",
+    "category": "Rank-based",
+    "effect": {
+      "raw": "Played face cards give +5 Mult when scored",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 5
+        }
+      ],
+      "conditions": [
+        {
+          "type": "rank",
+          "rank": "face_card"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 105,
+    "name": "Campfire",
+    "cost": 9,
+    "rarity": "Rare",
+    "unlock": "Available from start",
+    "type": "Multiplicative Mult",
+    "category": "Scaling",
+    "effect": {
+      "raw": "Gains X0.25 Mult for each card sold, resets when Boss defeated",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 0.25
+        },
+        {
+          "type": "gains_x_mult",
+          "value": 0.25
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "scaling"
+      ]
+    }
+  },
+  {
+    "id": 106,
+    "name": "Golden Ticket",
+    "cost": 5,
+    "rarity": "Common",
+    "unlock": "Play 5-card hand with only Gold cards",
+    "type": "Economy",
+    "category": "Enhancement-based",
+    "effect": {
+      "raw": "Played Gold cards earn $4 when scored",
+      "modifiers": [
+        {
+          "type": "earn_money",
+          "value": 4
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 107,
+    "name": "Mr. Bones",
+    "cost": 5,
+    "rarity": "Uncommon",
+    "unlock": "Lose 5 runs",
+    "type": "Effect",
+    "category": "Defensive",
+    "effect": {
+      "raw": "Prevents death if chips at least 25% of required, self destructs",
+      "modifiers": [
+        {
+          "type": "prevent_death"
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "defensive"
+      ]
+    }
+  },
+  {
+    "id": 108,
+    "name": "Acrobat",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Play 200 hands",
+    "type": "Multiplicative Mult",
+    "category": "Positional",
+    "effect": {
+      "raw": "X3 Mult on final hand of round",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 3.0
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 109,
+    "name": "Sock and Buskin",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Play 300 face cards",
+    "type": "Retrigger",
+    "category": "Rank-based",
+    "effect": {
+      "raw": "Retrigger all played face cards",
+      "modifiers": [],
+      "conditions": [
+        {
+          "type": "rank",
+          "rank": "face_card"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "retrigger"
+      ]
+    }
+  },
+  {
+    "id": 110,
+    "name": "Swashbuckler",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Sell 20 Jokers",
+    "type": "Additive Mult",
+    "category": "Joker-based",
+    "effect": {
+      "raw": "Adds sell value of all Jokers to Mult",
+      "modifiers": [
+        {
+          "type": "dynamic_mult",
+          "source": "sell value of all Jokers"
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "sell_value_modifier",
+        "dynamic"
+      ]
+    }
+  },
+  {
+    "id": 111,
+    "name": "Troubadour",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Win 5 consecutive rounds with 1 hand each",
+    "type": "Effect",
+    "category": "Hand Size",
+    "effect": {
+      "raw": "+2 hand size, -1 hand per round",
+      "modifiers": [
+        {
+          "type": "hand_size",
+          "value": 2
+        },
+        {
+          "type": "hands",
+          "value": -1
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 112,
+    "name": "Certificate",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Have Gold card with Gold Seal",
+    "type": "Effect",
+    "category": "Card Generation",
+    "effect": {
+      "raw": "When round begins, add random card with random seal to hand",
+      "modifiers": [
+        {
+          "type": "add_to_deck",
+          "card": "random card with random seal"
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "round_start"
+      ],
+      "flags": [
+        "deck_modification"
+      ]
+    }
+  },
+  {
+    "id": 113,
+    "name": "Smeared Joker",
+    "cost": 7,
+    "rarity": "Uncommon",
+    "unlock": "Have 3+ Wild Cards in deck",
+    "type": "Effect",
+    "category": "Suit Modifier",
+    "effect": {
+      "raw": "Hearts and Diamonds same suit, Spades and Clubs same suit",
+      "modifiers": [
+        {
+          "type": "suit_equivalence"
+        }
+      ],
+      "conditions": [
+        {
+          "type": "suit",
+          "suit": "Diamond"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "rule_modifier"
+      ]
+    }
+  },
+  {
+    "id": 114,
+    "name": "Throwback",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Continue run from Main Menu",
+    "type": "Multiplicative Mult",
+    "category": "Scaling",
+    "effect": {
+      "raw": "X0.25 Mult for each Blind skipped this run",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 0.25
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 115,
+    "name": "Hanging Chad",
+    "cost": 4,
+    "rarity": "Common",
+    "unlock": "Beat Boss Blind with High Card",
+    "type": "Retrigger",
+    "category": "Positional",
+    "effect": {
+      "raw": "Retrigger first played card used in scoring 2 additional times",
+      "modifiers": [],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "retrigger"
+      ]
+    }
+  },
+  {
+    "id": 116,
+    "name": "Rough Gem",
+    "cost": 7,
+    "rarity": "Uncommon",
+    "unlock": "Have 30+ Diamonds in deck",
+    "type": "Economy",
+    "category": "Suit-based",
+    "effect": {
+      "raw": "Played Diamond cards earn $1 when scored",
+      "modifiers": [
+        {
+          "type": "earn_money",
+          "value": 1
+        }
+      ],
+      "conditions": [
+        {
+          "type": "suit",
+          "suit": "Diamond"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 117,
+    "name": "Bloodstone",
+    "cost": 7,
+    "rarity": "Uncommon",
+    "unlock": "Have 30+ Hearts in deck",
+    "type": "Multiplicative Mult",
+    "category": "Suit-based",
+    "effect": {
+      "raw": "1 in 2 chance for played Hearts to give X1.5 Mult when scored",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 1.5
+        }
+      ],
+      "conditions": [
+        {
+          "type": "probability",
+          "numerator": 1,
+          "denominator": 2
+        },
+        {
+          "type": "suit",
+          "suit": "Heart"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 118,
+    "name": "Arrowhead",
+    "cost": 7,
+    "rarity": "Uncommon",
+    "unlock": "Have 30+ Spades in deck",
+    "type": "Chips",
+    "category": "Suit-based",
+    "effect": {
+      "raw": "Played Spade cards give +50 Chips when scored",
+      "modifiers": [
+        {
+          "type": "add_chips",
+          "value": 50
+        }
+      ],
+      "conditions": [
+        {
+          "type": "suit",
+          "suit": "Spade"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 119,
+    "name": "Onyx Agate",
+    "cost": 7,
+    "rarity": "Uncommon",
+    "unlock": "Have 30+ Clubs in deck",
+    "type": "Additive Mult",
+    "category": "Suit-based",
+    "effect": {
+      "raw": "Played Club cards give +7 Mult when scored",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 7
+        }
+      ],
+      "conditions": [
+        {
+          "type": "suit",
+          "suit": "Club"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 120,
+    "name": "Glass Joker",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Have 5+ Glass cards in deck",
+    "type": "Multiplicative Mult",
+    "category": "Enhancement-based",
+    "effect": {
+      "raw": "Gains X0.75 Mult for every Glass Card destroyed",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 0.75
+        },
+        {
+          "type": "gains_x_mult",
+          "value": 0.75
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "scaling",
+        "destroy"
+      ]
+    }
+  },
+  {
+    "id": 121,
+    "name": "Showman",
+    "cost": 5,
+    "rarity": "Uncommon",
+    "unlock": "Reach Ante 4",
+    "type": "Effect",
+    "category": "Shop",
+    "effect": {
+      "raw": "Joker, Tarot, Planet, Spectral cards may appear multiple times",
+      "modifiers": [
+        {
+          "type": "allow_duplicates"
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "shop_modifier"
+      ]
+    }
+  },
+  {
+    "id": 122,
+    "name": "Flower Pot",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Reach Ante 8",
+    "type": "Multiplicative Mult",
+    "category": "Suit-based",
+    "effect": {
+      "raw": "X3 Mult if hand contains Diamond, Club, Heart, and Spade card",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 3.0
+        }
+      ],
+      "conditions": [
+        {
+          "type": "suit",
+          "suit": "Diamond"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 123,
+    "name": "Blueprint",
+    "cost": 10,
+    "rarity": "Rare",
+    "unlock": "Win 1 run",
+    "type": "Effect",
+    "category": "Copy",
+    "effect": {
+      "raw": "Copies ability of Joker to the right",
+      "modifiers": [],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "copy_effect"
+      ]
+    }
+  },
+  {
+    "id": 124,
+    "name": "Wee Joker",
+    "cost": 8,
+    "rarity": "Rare",
+    "unlock": "Win run in 18 or fewer rounds",
+    "type": "Chips",
+    "category": "Scaling",
+    "effect": {
+      "raw": "Gains +8 Chips when each played 2 is scored",
+      "modifiers": [
+        {
+          "type": "add_chips",
+          "value": 8
+        },
+        {
+          "type": "gains_chips",
+          "value": 8.0
+        }
+      ],
+      "conditions": [
+        {
+          "type": "rank",
+          "rank": "2"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "scaling"
+      ]
+    }
+  },
+  {
+    "id": 125,
+    "name": "Merry Andy",
+    "cost": 7,
+    "rarity": "Uncommon",
+    "unlock": "Win run in 12 or fewer rounds",
+    "type": "Effect",
+    "category": "Resource",
+    "effect": {
+      "raw": "+3 discards each round, -1 hand size",
+      "modifiers": [
+        {
+          "type": "hand_size",
+          "value": -1
+        },
+        {
+          "type": "discards",
+          "value": 3
+        },
+        {
+          "type": "hands",
+          "value": -1
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 126,
+    "name": "Oops! All 6s",
+    "cost": 4,
+    "rarity": "Uncommon",
+    "unlock": "Earn 10,000+ Chips in single hand",
+    "type": "Effect",
+    "category": "Probability",
+    "effect": {
+      "raw": "Doubles all listed probabilities",
+      "modifiers": [
+        {
+          "type": "double_probability"
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "probability_modifier"
+      ]
+    }
+  },
+  {
+    "id": 127,
+    "name": "The Idol",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Earn 1,000,000+ Chips in single hand",
+    "type": "Multiplicative Mult",
+    "category": "Rank & Suit",
+    "effect": {
+      "raw": "Each [rank] of [suit] gives X2 Mult, changes each round",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 2.0
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 128,
+    "name": "Seeing Double",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Play hand with four 7 of Clubs",
+    "type": "Multiplicative Mult",
+    "category": "Suit-based",
+    "effect": {
+      "raw": "X2 Mult if hand has scoring Club and scoring card of other suit",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 2.0
+        }
+      ],
+      "conditions": [
+        {
+          "type": "suit",
+          "suit": "Club"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 129,
+    "name": "Matador",
+    "cost": 7,
+    "rarity": "Uncommon",
+    "unlock": "Defeat Boss Blind in one hand without discards",
+    "type": "Economy",
+    "category": "Boss-related",
+    "effect": {
+      "raw": "Earn $8 if played hand triggers Boss Blind ability",
+      "modifiers": [
+        {
+          "type": "earn_money",
+          "value": 8
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 130,
+    "name": "Hit the Road",
+    "cost": 8,
+    "rarity": "Rare",
+    "unlock": "Discard 5 Jacks at same time",
+    "type": "Multiplicative Mult",
+    "category": "Scaling",
+    "effect": {
+      "raw": "Gains X0.5 Mult for every Jack discarded this round",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 0.5
+        },
+        {
+          "type": "gains_x_mult",
+          "value": 0.5
+        }
+      ],
+      "conditions": [
+        {
+          "type": "rank",
+          "rank": "Jack"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "scaling"
+      ]
+    }
+  },
+  {
+    "id": 131,
+    "name": "The Duo",
+    "cost": 8,
+    "rarity": "Rare",
+    "unlock": "Win run without playing Pair",
+    "type": "Multiplicative Mult",
+    "category": "Hand-based",
+    "effect": {
+      "raw": "X2 Mult if played hand contains a Pair",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 2.0
+        }
+      ],
+      "conditions": [
+        {
+          "type": "hand_contains",
+          "hand": "Pair"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 132,
+    "name": "The Trio",
+    "cost": 8,
+    "rarity": "Rare",
+    "unlock": "Win run without playing Three of a Kind",
+    "type": "Multiplicative Mult",
+    "category": "Hand-based",
+    "effect": {
+      "raw": "X3 Mult if played hand contains Three of a Kind",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 3.0
+        }
+      ],
+      "conditions": [
+        {
+          "type": "hand_contains",
+          "hand": "Three of a Kind"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 133,
+    "name": "The Family",
+    "cost": 8,
+    "rarity": "Rare",
+    "unlock": "Win run without playing Four of a Kind",
+    "type": "Multiplicative Mult",
+    "category": "Hand-based",
+    "effect": {
+      "raw": "X4 Mult if played hand contains Four of a Kind",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 4.0
+        }
+      ],
+      "conditions": [
+        {
+          "type": "hand_contains",
+          "hand": "Four of a Kind"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 134,
+    "name": "The Order",
+    "cost": 8,
+    "rarity": "Rare",
+    "unlock": "Win run without playing Straight",
+    "type": "Multiplicative Mult",
+    "category": "Hand-based",
+    "effect": {
+      "raw": "X3 Mult if played hand contains a Straight",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 3.0
+        }
+      ],
+      "conditions": [
+        {
+          "type": "hand_contains",
+          "hand": "Straight"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 135,
+    "name": "The Tribe",
+    "cost": 8,
+    "rarity": "Rare",
+    "unlock": "Win run without playing Flush",
+    "type": "Multiplicative Mult",
+    "category": "Hand-based",
+    "effect": {
+      "raw": "X2 Mult if played hand contains a Flush",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 2.0
+        }
+      ],
+      "conditions": [
+        {
+          "type": "hand_contains",
+          "hand": "Flush"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 136,
+    "name": "Stuntman",
+    "cost": 7,
+    "rarity": "Rare",
+    "unlock": "Earn 100,000,000+ Chips in single hand",
+    "type": "Chips",
+    "category": "High Risk",
+    "effect": {
+      "raw": "+250 Chips, -2 hand size",
+      "modifiers": [
+        {
+          "type": "add_chips",
+          "value": 250
+        },
+        {
+          "type": "hand_size",
+          "value": -2
+        },
+        {
+          "type": "hands",
+          "value": -2
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 137,
+    "name": "Invisible Joker",
+    "cost": 8,
+    "rarity": "Rare",
+    "unlock": "Win game with max 4 jokers",
+    "type": "Effect",
+    "category": "Copy",
+    "effect": {
+      "raw": "After 2 rounds, sell to duplicate random Joker",
+      "modifiers": [
+        {
+          "type": "duplicate"
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "copy_effect"
+      ]
+    }
+  },
+  {
+    "id": 138,
+    "name": "Brainstorm",
+    "cost": 10,
+    "rarity": "Rare",
+    "unlock": "Discard Royal Flush",
+    "type": "Effect",
+    "category": "Copy",
+    "effect": {
+      "raw": "Copies ability of leftmost Joker",
+      "modifiers": [],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "copy_effect"
+      ]
+    }
+  },
+  {
+    "id": 139,
+    "name": "Satellite",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Have $400+",
+    "type": "Economy",
+    "category": "Consumable-based",
+    "effect": {
+      "raw": "Earn $1 at end of round per unique Planet card used this run",
+      "modifiers": [
+        {
+          "type": "earn_money",
+          "value": 1
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "end_of_round"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 140,
+    "name": "Shoot the Moon",
+    "cost": 5,
+    "rarity": "Common",
+    "unlock": "Play every Heart in deck in one round",
+    "type": "Additive Mult",
+    "category": "Rank-based",
+    "effect": {
+      "raw": "Each Queen held in hand gives +13 Mult",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 13
+        }
+      ],
+      "conditions": [
+        {
+          "type": "rank",
+          "rank": "Queen"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 141,
+    "name": "Driver's License",
+    "cost": 7,
+    "rarity": "Rare",
+    "unlock": "Remove 52 cards from deck",
+    "type": "Multiplicative Mult",
+    "category": "Enhancement-based",
+    "effect": {
+      "raw": "X3 Mult if deck has 16+ Enhanced cards",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 3.0
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  },
+  {
+    "id": 142,
+    "name": "Cartomancer",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Discover every Tarot card",
+    "type": "Effect",
+    "category": "Card Generation",
+    "effect": {
+      "raw": "Create Tarot when Blind selected (must have room)",
+      "modifiers": [
+        {
+          "type": "create_card",
+          "card_type": "Tarot"
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_blind_select"
+      ],
+      "flags": [
+        "card_generation"
+      ]
+    }
+  },
+  {
+    "id": 143,
+    "name": "Astronomer",
+    "cost": 8,
+    "rarity": "Uncommon",
+    "unlock": "Discover every Planet card",
+    "type": "Effect",
+    "category": "Shop",
+    "effect": {
+      "raw": "All Planet and Celestial Booster Packs in shop are free",
+      "modifiers": [
+        {
+          "type": "free_items"
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "shop_modifier"
+      ]
+    }
+  },
+  {
+    "id": 144,
+    "name": "Burnt Joker",
+    "cost": 6,
+    "rarity": "Uncommon",
+    "unlock": "Sell 50 cards",
+    "type": "Effect",
+    "category": "Hand Level",
+    "effect": {
+      "raw": "Upgrade level of first discarded poker hand each round",
+      "modifiers": [
+        {
+          "type": "upgrade_hand_level"
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "hand_level"
+      ]
+    }
+  },
+  {
+    "id": 145,
+    "name": "Bootstraps",
+    "cost": 7,
+    "rarity": "Uncommon",
+    "unlock": "Have 400+ Enhanced cards in deck",
+    "type": "Additive Mult",
+    "category": "Money-based",
+    "effect": {
+      "raw": "Gains +2 Mult for every $5 you have",
+      "modifiers": [
+        {
+          "type": "add_mult",
+          "value": 2
+        },
+        {
+          "type": "gains_mult",
+          "value": 2.0
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "scaling"
+      ]
+    }
+  },
+  {
+    "id": 146,
+    "name": "Chicot",
+    "cost": 20,
+    "rarity": "Legendary",
+    "unlock": "Use The Soul Spectral card",
+    "type": "Effect",
+    "category": "Boss Negation",
+    "effect": {
+      "raw": "Disables effect of every Boss Blind",
+      "modifiers": [
+        {
+          "type": "disable_effect"
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "negation"
+      ]
+    }
+  },
+  {
+    "id": 147,
+    "name": "Perkeo",
+    "cost": 20,
+    "rarity": "Legendary",
+    "unlock": "Use The Soul Spectral card",
+    "type": "Effect",
+    "category": "Consumable",
+    "effect": {
+      "raw": "Creates Negative copy of 1 random Consumable in your possession at end of shop",
+      "modifiers": [
+        {
+          "type": "create_copy"
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "copy_effect"
+      ]
+    }
+  },
+  {
+    "id": 148,
+    "name": "Yorick",
+    "cost": 20,
+    "rarity": "Legendary",
+    "unlock": "Use The Soul Spectral card",
+    "type": "Multiplicative Mult",
+    "category": "Counter",
+    "effect": {
+      "raw": "Gains X1 Mult every 23rd hand played (Currently X1 Mult), resets when discarding {2} or more cards",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 1.0
+        },
+        {
+          "type": "gains_x_mult",
+          "value": 1.0
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "scaling"
+      ]
+    }
+  },
+  {
+    "id": 149,
+    "name": "Canio",
+    "cost": 20,
+    "rarity": "Legendary",
+    "unlock": "Use The Soul Spectral card",
+    "type": "Multiplicative Mult",
+    "category": "Joker Destruction",
+    "effect": {
+      "raw": "Gains X1 Mult when Joker destroyed (Currently X1 Mult)",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 1.0
+        },
+        {
+          "type": "gains_x_mult",
+          "value": 1.0
+        }
+      ],
+      "conditions": [],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": [
+        "scaling",
+        "destroy"
+      ]
+    }
+  },
+  {
+    "id": 150,
+    "name": "Triboulet",
+    "cost": 20,
+    "rarity": "Legendary",
+    "unlock": "Use The Soul Spectral card",
+    "type": "Multiplicative Mult",
+    "category": "Rank-based",
+    "effect": {
+      "raw": "Played Kings and Queens each give X2 Mult when scored",
+      "modifiers": [
+        {
+          "type": "x_mult",
+          "value": 2.0
+        }
+      ],
+      "conditions": [
+        {
+          "type": "rank",
+          "rank": "King"
+        },
+        {
+          "type": "rank",
+          "rank": "Queen"
+        }
+      ],
+      "triggers": [
+        "on_score"
+      ],
+      "flags": []
+    }
+  }
+]

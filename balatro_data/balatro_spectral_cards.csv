@@ -1,0 +1,19 @@
+name,effect,availability
+Familiar,"Destroy 1 random card in your hand, add 3 random Enhanced face cards to your hand",Available from start
+Grim,"Destroy 1 random card in your hand, add 2 random Enhanced Aces to your hand",Available from start
+Incantation,"Destroy 1 random card in your hand, add 4 random Enhanced numbered cards to your hand",Available from start
+Talisman,Add a Gold Seal to 1 selected card in your hand,Available from start
+Aura,"Add Foil, Holographic, or Polychrome effect to 1 selected card in hand",Available from start
+Wraith,"Creates a random Rare Joker, set money to $0",Available from start
+Sigil,Converts all cards in hand to a single random suit,Available from start
+Ouija,Converts all cards in hand to a single random rank. -1 hand size,Available from start
+Ectoplasm,"Add Negative to a random Joker, -1 hand size",Available from start
+Immolate,"Destroys 5 random cards in hand, gain $20",Available from start
+Ankh,"Create a copy of a random Joker, destroy all other Jokers",Available from start
+Deja Vu,Add a Red Seal to 1 selected card in your hand,Available from start
+Hex,"Add Polychrome to a random Joker, destroy all other Jokers",Available from start
+Trance,Add a Blue Seal to 1 selected card in your hand,Available from start
+Medium,Add a Purple Seal to 1 selected card in your hand,Available from start
+Cryptid,Create 2 copies of 1 selected card in your hand,Available from start
+The Soul,Creates a Legendary Joker (Must have room),Available from start
+Black Hole,Upgrade every poker hand by 1 level,Available from start

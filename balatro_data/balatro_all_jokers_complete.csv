@@ -1,0 +1,151 @@
+number,name,effect,cost,rarity,unlock,type,category
+1,Joker,+4 Mult,$2,Common,Available from start,Additive Mult,Scoring
+2,Greedy Joker,Played cards with Diamond suit give +3 Mult when scored,$5,Common,Available from start,Additive Mult,Suit-based
+3,Lusty Joker,Played cards with Heart suit give +3 Mult when scored,$5,Common,Available from start,Additive Mult,Suit-based
+4,Wrathful Joker,Played cards with Spade suit give +3 Mult when scored,$5,Common,Available from start,Additive Mult,Suit-based
+5,Gluttonous Joker,Played cards with Club suit give +3 Mult when scored,$5,Common,Available from start,Additive Mult,Suit-based
+6,Jolly Joker,+8 Mult if played hand contains a Pair,$3,Common,Available from start,Additive Mult,Hand-based
+7,Zany Joker,+12 Mult if played hand contains a Three of a Kind,$4,Common,Available from start,Additive Mult,Hand-based
+8,Mad Joker,+10 Mult if played hand contains a Two Pair,$4,Common,Available from start,Additive Mult,Hand-based
+9,Crazy Joker,+12 Mult if played hand contains a Straight,$4,Common,Available from start,Additive Mult,Hand-based
+10,Droll Joker,+10 Mult if played hand contains a Flush,$4,Common,Available from start,Additive Mult,Hand-based
+11,Sly Joker,+50 Chips if played hand contains a Pair,$3,Common,Available from start,Chips,Hand-based
+12,Wily Joker,+100 Chips if played hand contains a Three of a Kind,$4,Common,Available from start,Chips,Hand-based
+13,Clever Joker,+80 Chips if played hand contains a Two Pair,$4,Common,Available from start,Chips,Hand-based
+14,Devious Joker,+100 Chips if played hand contains a Straight,$4,Common,Available from start,Chips,Hand-based
+15,Crafty Joker,+80 Chips if played hand contains a Flush,$4,Common,Available from start,Chips,Hand-based
+16,Half Joker,+20 Mult if played hand contains 3 or fewer cards,$5,Common,Available from start,Additive Mult,Hand Size
+17,Joker Stencil,X1 Mult for each empty Joker slot,$8,Uncommon,Available from start,Multiplicative Mult,Scaling
+18,Four Fingers,All Flushes and Straights can be made with 4 cards,$7,Uncommon,Available from start,Effect,Hand Modifier
+19,Mime,Retrigger all card held in hand abilities,$5,Uncommon,Available from start,Retrigger,Retrigger
+20,Credit Card,Go up to -$20 in debt,$1,Common,Available from start,Economy,Economy
+21,Ceremonial Dagger,"When Blind is selected, destroy Joker to the right and permanently add double its sell value to Mult",$6,Uncommon,Available from start,Additive Mult,Scaling
+22,Banner,+30 Chips for each remaining discard,$5,Common,Available from start,Chips,Resource-based
+23,Mystic Summit,+15 Mult when 0 discards remaining,$5,Common,Available from start,Additive Mult,Resource-based
+24,Marble Joker,Adds one Stone card to deck when Blind is selected,$6,Uncommon,Available from start,Effect,Card Generation
+25,Loyalty Card,X4 Mult every 6 hands played,$5,Uncommon,Available from start,Multiplicative Mult,Counter
+26,8 Ball,1 in 4 chance for each played 8 to create a Tarot card when scored,$5,Common,Available from start,Effect,Card Generation
+27,Misprint,+0-23 Mult (random),$4,Common,Available from start,Additive Mult,Random
+28,Dusk,Retrigger all played cards in final hand of round,$5,Uncommon,Available from start,Retrigger,Retrigger
+29,Raised Fist,Adds double the rank of lowest ranked card held in hand to Mult,$5,Common,Available from start,Additive Mult,Hand-based
+30,Chaos the Clown,1 free Reroll per shop,$4,Common,Available from start,Effect,Shop
+31,Fibonacci,"Each played Ace, 2, 3, 5, or 8 gives +8 Mult when scored",$8,Uncommon,Available from start,Additive Mult,Rank-based
+32,Steel Joker,X0.2 Mult for each Steel Card in full deck,$7,Uncommon,Available from start,Multiplicative Mult,Enhancement-based
+33,Scary Face,Played face cards give +30 Chips when scored,$4,Common,Available from start,Chips,Rank-based
+34,Abstract Joker,+3 Mult for each Joker card,$4,Common,Available from start,Additive Mult,Scaling
+35,Delayed Gratification,Earn $2 per discard if no discards used by end of round,$4,Common,Available from start,Economy,Economy
+36,Hack,"Retrigger each played 2, 3, 4, or 5",$6,Uncommon,Available from start,Retrigger,Retrigger
+37,Pareidolia,All cards are considered face cards,$5,Uncommon,Available from start,Effect,Card Modifier
+38,Gros Michel,"+15 Mult, 1 in 6 chance destroyed at end of round",$5,Common,Available from start,Additive Mult,Risky
+39,Even Steven,Played cards with even rank give +4 Mult when scored,$4,Common,Available from start,Additive Mult,Rank-based
+40,Odd Todd,Played cards with odd rank give +31 Chips when scored,$4,Common,Available from start,Chips,Rank-based
+41,Scholar,Played Aces give +20 Chips and +4 Mult when scored,$4,Common,Available from start,Chips & Mult,Rank-based
+42,Business Card,Played face cards have 1 in 2 chance to give $2 when scored,$4,Common,Available from start,Economy,Economy
+43,Supernova,Adds number of times poker hand played this run to Mult,$5,Common,Available from start,Additive Mult,Scaling
+44,Ride the Bus,Gains +1 Mult per consecutive hand without scoring face card,$6,Common,Available from start,Additive Mult,Scaling
+45,Space Joker,1 in 4 chance to upgrade level of played poker hand,$5,Uncommon,Available from start,Effect,Hand Level
+46,Egg,Gains $3 of sell value at end of round,$4,Common,Available from start,Economy,Economy
+47,Burglar,"When Blind is selected, gain +3 Hands and lose all discards",$6,Uncommon,Available from start,Effect,Resource Modifier
+48,Blackboard,X3 Mult if all cards in hand are Spades or Clubs,$6,Uncommon,Available from start,Multiplicative Mult,Suit-based
+49,Runner,Gains +15 Chips if played hand contains a Straight,$5,Common,Available from start,Chips,Scaling
+50,Ice Cream,"+100 Chips, -5 Chips for every hand played",$5,Common,Available from start,Chips,Degrading
+51,DNA,"If first hand has only 1 card, add permanent copy to deck",$8,Rare,Available from start,Effect,Deck Building
+52,Splash,Every played card counts in scoring,$3,Common,Available from start,Effect,Scoring Modifier
+53,Blue Joker,+2 Chips for each remaining card in deck,$5,Common,Available from start,Chips,Deck-based
+54,Sixth Sense,"If first hand is single 6, destroy it and create Spectral card",$6,Uncommon,Available from start,Effect,Card Generation
+55,Constellation,Gains X0.1 Mult every time Planet card used,$6,Uncommon,Available from start,Multiplicative Mult,Scaling
+56,Hiker,Every played card permanently gains +5 Chips when scored,$5,Uncommon,Available from start,Chips,Permanent Upgrade
+57,Faceless Joker,Earn $5 if 3+ face cards discarded at same time,$4,Common,Available from start,Economy,Economy
+58,Green Joker,"+1 Mult per hand played, -1 Mult per discard",$4,Common,Available from start,Additive Mult,Scaling
+59,Superposition,Create Tarot if hand contains Ace and Straight,$4,Common,Available from start,Effect,Card Generation
+60,To Do List,Earn $4 if poker hand matches target hand,$4,Common,Available from start,Economy,Economy
+61,Cavendish,"X3 Mult, 1 in 1000 chance destroyed at end of round",$4,Common,Unlocked when Gros Michel destroys itself,Multiplicative Mult,Risky
+62,Card Sharp,X3 Mult if poker hand already played this round,$6,Uncommon,Available from start,Multiplicative Mult,Hand Repeat
+63,Red Card,Gains +3 Mult when any Booster Pack skipped,$5,Common,Available from start,Additive Mult,Scaling
+64,Madness,"When Small/Big Blind selected, gain X0.5 Mult and destroy random Joker",$7,Uncommon,Available from start,Multiplicative Mult,Risky
+65,Square Joker,Gains +4 Chips if played hand has exactly 4 cards,$4,Common,Available from start,Chips,Scaling
+66,Séance,"If poker hand is Straight Flush, create random Spectral card",$6,Uncommon,Available from start,Effect,Card Generation
+67,Riff-Raff,"When Blind selected, create 2 Common Jokers",$6,Common,Available from start,Effect,Joker Generation
+68,Vampire,"Gains X0.1 Mult per Enhanced card scored, removes Enhancement",$7,Uncommon,Available from start,Multiplicative Mult,Enhancement-based
+69,Shortcut,Straights can be made with gaps of 1 rank,$7,Uncommon,Available from start,Effect,Hand Modifier
+70,Hologram,Gains X0.25 Mult when playing card added to deck,$7,Uncommon,Available from start,Multiplicative Mult,Scaling
+71,Vagabond,Create Tarot if hand played with $4 or less,$8,Rare,Available from start,Effect,Card Generation
+72,Baron,Each King held in hand gives X1.5 Mult,$8,Rare,Available from start,Multiplicative Mult,Rank-based
+73,Cloud 9,Earn $1 for each 9 in full deck at end of round,$7,Uncommon,Available from start,Economy,Economy
+74,Rocket,"Earn $1 at end of round, payout increases by $2 when Boss defeated",$6,Uncommon,Available from start,Economy,Economy
+75,Obelisk,Gains X0.2 Mult per consecutive hand without most played poker hand,$8,Rare,Available from start,Multiplicative Mult,Scaling
+76,Midas Mask,All played face cards become Gold when scored,$7,Uncommon,Available from start,Effect,Enhancement
+77,Luchador,Sell this card to disable current Boss Blind,$5,Uncommon,Available from start,Effect,Utility
+78,Photograph,First played face card gives X2 Mult when scored,$5,Common,Available from start,Multiplicative Mult,First Card
+79,Gift Card,Add $1 sell value to all Jokers and Consumables at end of round,$6,Uncommon,Available from start,Economy,Economy
+80,Turtle Bean,"+5 hand size, reduces by 1 each round",$6,Uncommon,Available from start,Effect,Hand Size
+81,Erosion,+4 Mult for each card below deck starting size,$6,Uncommon,Available from start,Additive Mult,Deck-based
+82,Reserved Parking,Each face card in hand has 1 in 2 chance to give $1,$6,Common,Available from start,Economy,Economy
+83,Mail-In Rebate,"Earn $5 for each discarded [rank], rank changes every round",$4,Common,Available from start,Economy,Economy
+84,To the Moon,Earn extra $1 interest for every $5 at end of round,$5,Uncommon,Available from start,Economy,Economy
+85,Hallucination,1 in 2 chance to create Tarot when Booster Pack opened,$4,Common,Available from start,Effect,Card Generation
+86,Fortune Teller,+1 Mult per Tarot card used this run,$6,Common,Available from start,Additive Mult,Scaling
+87,Juggler,+1 hand size,$4,Common,Available from start,Effect,Hand Size
+88,Drunkard,+1 discard each round,$4,Common,Available from start,Effect,Resource
+89,Stone Joker,+25 Chips for each Stone Card in full deck,$6,Uncommon,Available from start,Chips,Enhancement-based
+90,Golden Joker,Earn $4 at end of round,$6,Common,Available from start,Economy,Economy
+91,Lucky Cat,Gains X0.25 Mult when Lucky card successfully triggers,$6,Uncommon,Available from start,Multiplicative Mult,Enhancement-based
+92,Baseball Card,Uncommon Jokers each give X1.5 Mult,$8,Rare,Available from start,Multiplicative Mult,Joker-based
+93,Bull,+2 Chips for each $1 you have,$6,Uncommon,Available from start,Chips,Money-based
+94,Diet Cola,Sell this to create free Double Tag,$6,Uncommon,Available from start,Effect,Utility
+95,Trading Card,"If first discard has only 1 card, destroy it and earn $3",$6,Uncommon,Available from start,Economy,Economy
+96,Flash Card,Gains +2 Mult per reroll in shop,$5,Uncommon,Available from start,Additive Mult,Scaling
+97,Popcorn,"+20 Mult, -4 Mult per round played",$5,Common,Available from start,Additive Mult,Degrading
+98,Spare Trousers,Gains +2 Mult if played hand contains Two Pair,$6,Uncommon,Available from start,Additive Mult,Scaling
+99,Ancient Joker,"Each played card with [suit] gives X1.5 Mult, suit changes each round",$8,Rare,Available from start,Multiplicative Mult,Suit-based
+100,Ramen,"X2 Mult, loses X0.01 Mult per card discarded",$6,Uncommon,Available from start,Multiplicative Mult,Degrading
+101,Walkie Talkie,Each played 10 or 4 gives +10 Chips and +4 Mult when scored,$4,Common,Available from start,Chips & Mult,Rank-based
+102,Seltzer,Retrigger all cards played for next 10 hands,$6,Uncommon,Available from start,Retrigger,Limited Duration
+103,Castle,"Gains +3 Chips per discarded [suit] card, suit changes every round",$6,Uncommon,Available from start,Chips,Scaling
+104,Smiley Face,Played face cards give +5 Mult when scored,$4,Common,Available from start,Additive Mult,Rank-based
+105,Campfire,"Gains X0.25 Mult for each card sold, resets when Boss defeated",$9,Rare,Available from start,Multiplicative Mult,Scaling
+106,Golden Ticket,Played Gold cards earn $4 when scored,$5,Common,Play 5-card hand with only Gold cards,Economy,Enhancement-based
+107,Mr. Bones,"Prevents death if chips at least 25% of required, self destructs",$5,Uncommon,Lose 5 runs,Effect,Defensive
+108,Acrobat,X3 Mult on final hand of round,$6,Uncommon,Play 200 hands,Multiplicative Mult,Positional
+109,Sock and Buskin,Retrigger all played face cards,$6,Uncommon,Play 300 face cards,Retrigger,Rank-based
+110,Swashbuckler,Adds sell value of all Jokers to Mult,$4,Common,Sell 20 Jokers,Additive Mult,Joker-based
+111,Troubadour,"+2 hand size, -1 hand per round",$6,Uncommon,Win 5 consecutive rounds with 1 hand each,Effect,Hand Size
+112,Certificate,"When round begins, add random card with random seal to hand",$6,Uncommon,Have Gold card with Gold Seal,Effect,Card Generation
+113,Smeared Joker,"Hearts and Diamonds same suit, Spades and Clubs same suit",$7,Uncommon,Have 3+ Wild Cards in deck,Effect,Suit Modifier
+114,Throwback,X0.25 Mult for each Blind skipped this run,$6,Uncommon,Continue run from Main Menu,Multiplicative Mult,Scaling
+115,Hanging Chad,Retrigger first played card used in scoring 2 additional times,$4,Common,Beat Boss Blind with High Card,Retrigger,Positional
+116,Rough Gem,Played Diamond cards earn $1 when scored,$7,Uncommon,Have 30+ Diamonds in deck,Economy,Suit-based
+117,Bloodstone,1 in 2 chance for played Hearts to give X1.5 Mult when scored,$7,Uncommon,Have 30+ Hearts in deck,Multiplicative Mult,Suit-based
+118,Arrowhead,Played Spade cards give +50 Chips when scored,$7,Uncommon,Have 30+ Spades in deck,Chips,Suit-based
+119,Onyx Agate,Played Club cards give +7 Mult when scored,$7,Uncommon,Have 30+ Clubs in deck,Additive Mult,Suit-based
+120,Glass Joker,Gains X0.75 Mult for every Glass Card destroyed,$6,Uncommon,Have 5+ Glass cards in deck,Multiplicative Mult,Enhancement-based
+121,Showman,"Joker, Tarot, Planet, Spectral cards may appear multiple times",$5,Uncommon,Reach Ante 4,Effect,Shop
+122,Flower Pot,"X3 Mult if hand contains Diamond, Club, Heart, and Spade card",$6,Uncommon,Reach Ante 8,Multiplicative Mult,Suit-based
+123,Blueprint,Copies ability of Joker to the right,$10,Rare,Win 1 run,Effect,Copy
+124,Wee Joker,Gains +8 Chips when each played 2 is scored,$8,Rare,Win run in 18 or fewer rounds,Chips,Scaling
+125,Merry Andy,"+3 discards each round, -1 hand size",$7,Uncommon,Win run in 12 or fewer rounds,Effect,Resource
+126,Oops! All 6s,Doubles all listed probabilities,$4,Uncommon,"Earn 10,000+ Chips in single hand",Effect,Probability
+127,The Idol,"Each [rank] of [suit] gives X2 Mult, changes each round",$6,Uncommon,"Earn 1,000,000+ Chips in single hand",Multiplicative Mult,Rank & Suit
+128,Seeing Double,X2 Mult if hand has scoring Club and scoring card of other suit,$6,Uncommon,Play hand with four 7 of Clubs,Multiplicative Mult,Suit-based
+129,Matador,Earn $8 if played hand triggers Boss Blind ability,$7,Uncommon,Defeat Boss Blind in one hand without discards,Economy,Boss-related
+130,Hit the Road,Gains X0.5 Mult for every Jack discarded this round,$8,Rare,Discard 5 Jacks at same time,Multiplicative Mult,Scaling
+131,The Duo,X2 Mult if played hand contains a Pair,$8,Rare,Win run without playing Pair,Multiplicative Mult,Hand-based
+132,The Trio,X3 Mult if played hand contains Three of a Kind,$8,Rare,Win run without playing Three of a Kind,Multiplicative Mult,Hand-based
+133,The Family,X4 Mult if played hand contains Four of a Kind,$8,Rare,Win run without playing Four of a Kind,Multiplicative Mult,Hand-based
+134,The Order,X3 Mult if played hand contains a Straight,$8,Rare,Win run without playing Straight,Multiplicative Mult,Hand-based
+135,The Tribe,X2 Mult if played hand contains a Flush,$8,Rare,Win run without playing Flush,Multiplicative Mult,Hand-based
+136,Stuntman,"+250 Chips, -2 hand size",$7,Rare,"Earn 100,000,000+ Chips in single hand",Chips,High Risk
+137,Invisible Joker,"After 2 rounds, sell to duplicate random Joker",$8,Rare,Win game with max 4 jokers,Effect,Copy
+138,Brainstorm,Copies ability of leftmost Joker,$10,Rare,Discard Royal Flush,Effect,Copy
+139,Satellite,Earn $1 at end of round per unique Planet card used this run,$6,Uncommon,Have $400+,Economy,Consumable-based
+140,Shoot the Moon,Each Queen held in hand gives +13 Mult,$5,Common,Play every Heart in deck in one round,Additive Mult,Rank-based
+141,Driver's License,X3 Mult if deck has 16+ Enhanced cards,$7,Rare,Remove 52 cards from deck,Multiplicative Mult,Enhancement-based
+142,Cartomancer,Create Tarot when Blind selected (must have room),$6,Uncommon,Discover every Tarot card,Effect,Card Generation
+143,Astronomer,All Planet and Celestial Booster Packs in shop are free,$8,Uncommon,Discover every Planet card,Effect,Shop
+144,Burnt Joker,Upgrade level of first discarded poker hand each round,$6,Uncommon,Sell 50 cards,Effect,Hand Level
+145,Bootstraps,Gains +2 Mult for every $5 you have,$7,Uncommon,Have 400+ Enhanced cards in deck,Additive Mult,Money-based
+146,Chicot,Disables effect of every Boss Blind,$20,Legendary,Use The Soul Spectral card,Effect,Boss Negation
+147,Perkeo,Creates Negative copy of 1 random Consumable in your possession at end of shop,$20,Legendary,Use The Soul Spectral card,Effect,Consumable
+148,Yorick,"Gains X1 Mult every 23rd hand played (Currently X1 Mult), resets when discarding {2} or more cards",$20,Legendary,Use The Soul Spectral card,Multiplicative Mult,Counter
+149,Canio,Gains X1 Mult when Joker destroyed (Currently X1 Mult),$20,Legendary,Use The Soul Spectral card,Multiplicative Mult,Joker Destruction
+150,Triboulet,Played Kings and Queens each give X2 Mult when scored,$20,Legendary,Use The Soul Spectral card,Multiplicative Mult,Rank-based

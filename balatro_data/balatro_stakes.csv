@@ -1,0 +1,9 @@
+name,color,difficulty,effect
+White Stake,White,1,Base difficulty
+Red Stake,Red,2,Small Blind gives no reward money
+Green Stake,Green,3,Required score scales faster for each Ante
+Black Stake,Black,4,"Shop can have Eternal Jokers, Jokers debuffed if only Joker"
+Blue Stake,Blue,5,-1 Discard
+Purple Stake,Purple,6,Required score scales faster for each Ante
+Orange Stake,Orange,7,Shop can have Perishable Jokers
+Gold Stake,Gold,8,Shop can have Rental Jokers

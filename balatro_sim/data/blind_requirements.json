@@ -1,0 +1,48 @@
+{
+  "_note": "Score requirements per ante. These are estimates - exact values may vary by stake.",
+  "ante_1": {
+    "small": 300,
+    "big": 450,
+    "boss": 600
+  },
+  "ante_2": {
+    "small": 800,
+    "big": 1200,
+    "boss": 1600
+  },
+  "ante_3": {
+    "small": 2000,
+    "big": 3000,
+    "boss": 4000
+  },
+  "ante_4": {
+    "small": 5000,
+    "big": 7500,
+    "boss": 10000
+  },
+  "ante_5": {
+    "small": 11000,
+    "big": 16500,
+    "boss": 22000
+  },
+  "ante_6": {
+    "small": 20000,
+    "big": 30000,
+    "boss": 40000
+  },
+  "ante_7": {
+    "small": 35000,
+    "big": 52500,
+    "boss": 70000
+  },
+  "ante_8": {
+    "small": 50000,
+    "big": 75000,
+    "boss": 100000
+  },
+  "endless": {
+    "_note": "After ante 8, scaling continues. This is approximate.",
+    "base_multiplier": 1.6,
+    "per_ante_after_8": true
+  }
+}
