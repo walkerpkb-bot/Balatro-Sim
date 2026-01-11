@@ -12,6 +12,7 @@ from typing import Optional, Callable
 from .deck import Deck, Hand, Card
 from .hand_detector import HandDetector, HandDetectorConfig, HandType, DetectedHand
 from .scoring import ScoringEngine, ScoreBreakdown
+from .history import RunHistory
 
 
 class BlindType(Enum):
@@ -61,9 +62,13 @@ class GameState:
     Tracks the full state of a Balatro run.
     """
 
-    def __init__(self, config: GameConfig = None, jokers_data: list = None):
+    def __init__(self, config: GameConfig = None, jokers_data: list = None,
+                 preset_name: str = "standard", deck_type: str = "standard"):
         self.config = config or GameConfig()
         self.jokers_data = jokers_data or []
+
+        # Run history for narrative tracking
+        self.history = RunHistory(preset_name=preset_name, deck_type=deck_type)
 
         # Run state
         self.money = self.config.starting_money
@@ -236,11 +241,12 @@ class GameState:
 
         return True
 
-    def add_joker(self, joker: dict) -> bool:
+    def add_joker(self, joker: dict, source: str = "starting") -> bool:
         """Add a joker if there's room."""
         if len(self.jokers) >= self.config.joker_slots:
             return False
         self.jokers.append(joker)
+        self.history.add_joker_acquired(self.ante, joker.get("name", "Unknown"), source)
         return True
 
     def level_up_hand(self, hand_type: HandType) -> None:
@@ -365,6 +371,19 @@ def simulate_blind(game: GameState, strategy = None) -> BlindResult:
     discards_used = game.config.starting_discards - game.discards_remaining
     money_earned = game.end_blind(success)
 
+    # Log blind result to history
+    best_hand = max(hands_played, key=lambda x: x[1])[0] if hands_played else None
+    game.history.add_blind_result(
+        ante=game.ante,
+        blind_type=game.current_blind.name,
+        score=total_score,
+        required=score_required,
+        success=success,
+        hands_used=hands_used,
+        discards_used=discards_used,
+        best_hand=best_hand
+    )
+
     return BlindResult(
         success=success,
         score_required=score_required,
@@ -408,6 +427,8 @@ def simulate_shop(game: GameState, all_jokers: list, shop_ai=None) -> dict:
                 game.jokers_purchased.append(joker.get("name", "Unknown"))
                 results["jokers_bought"].append(joker.get("name"))
                 results["money_spent"] += cost
+                # Log joker acquisition
+                game.history.add_joker_acquired(game.ante, joker.get("name", "Unknown"), "shop")
 
     # Buy and use consumables
     for idx in decisions["consumables_to_buy"]:
@@ -420,13 +441,34 @@ def simulate_shop(game: GameState, all_jokers: list, shop_ai=None) -> dict:
 
                 # Use planets immediately
                 if consumable.type == ConsumableType.PLANET:
+                    # Get hand type before applying
+                    hand_type = consumable.effect.get("levels_up")
+                    old_level = game.hand_levels.get(hand_type, 1) if hand_type else 1
                     msg = apply_planet(consumable, game)
                     results["planets_used"].append(msg)
                     game.planets_used += 1
+                    # Log planet usage
+                    if hand_type:
+                        game.history.add_planet_used(
+                            game.ante,
+                            consumable.name,
+                            hand_type.name,
+                            old_level + 1
+                        )
                 else:
                     # Store other consumables if room
                     if len(game.consumables) < game.config.consumable_slots:
                         game.consumables.append(consumable)
+
+    # Log shop visit
+    money_before = game.money + results["money_spent"]
+    game.history.add_shop_visit(
+        ante=game.ante,
+        jokers_bought=results["jokers_bought"],
+        planets_used=[p.split(":")[0].strip() for p in results["planets_used"]],  # Extract planet names
+        money_spent=results["money_spent"],
+        money_remaining=game.money
+    )
 
     return results
 

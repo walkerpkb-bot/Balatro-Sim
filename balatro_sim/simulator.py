@@ -5,6 +5,7 @@ Provides clean interface for running simulations.
 
 import json
 from dataclasses import dataclass, field
+from datetime import datetime
 from pathlib import Path
 from typing import Optional, Union
 
@@ -208,8 +209,12 @@ class Simulator:
         # Get starting jokers
         starting_jokers = self._get_jokers(p.starting_jokers)
 
-        # Create game state
-        game = GameState(config=config)
+        # Create game state with history tracking
+        game = GameState(
+            config=config,
+            preset_name=preset_name,
+            deck_type=p.deck_type.value
+        )
 
         # Apply preset hand levels
         for hand_name, level in p.hand_levels.items():
@@ -222,7 +227,14 @@ class Simulator:
 
         # Add starting jokers
         for joker in starting_jokers:
-            game.add_joker(joker)
+            game.add_joker(joker, source="starting")
+
+        # Log run start
+        game.history.add_run_start(
+            money=game.money,
+            jokers=[j.get("name", "?") for j in game.jokers],
+            hand_levels={ht.name: lv for ht, lv in game.hand_levels.items() if lv > 1}
+        )
 
         # Run simulation
         blinds_beaten = 0
@@ -254,6 +266,24 @@ class Simulator:
                 victory = True
                 blinds_beaten = 24  # Full run
                 break
+
+        # Log run end
+        game.history.add_run_end(
+            success=victory,
+            final_ante=game.ante,
+            final_blind=game.current_blind.name,
+            blinds_beaten=blinds_beaten,
+            final_money=game.money,
+            jokers=[j.get("name", "?") for j in game.jokers],
+            hand_levels={ht.name: lv for ht, lv in game.hand_levels.items() if lv > 1}
+        )
+
+        # Save run history
+        log_dir = Path(__file__).parent.parent / "run_logs"
+        log_dir.mkdir(exist_ok=True)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+        log_path = log_dir / f"run_{timestamp}_{preset_name}.json"
+        game.history.save(str(log_path))
 
         # Build summary
         return RunSummary(
