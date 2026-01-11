@@ -51,7 +51,9 @@ class GameConfig:
     starting_discards: int = 3
     hand_size: int = 8
     joker_slots: int = 5
+    consumable_slots: int = 2
     ante_count: int = 8
+    enable_shop: bool = True
 
 
 class GameState:
@@ -79,7 +81,11 @@ class GameState:
 
         # Jokers and consumables
         self.jokers: list[dict] = []
-        self.consumables: list = []
+        self.consumables: list = []  # List of Consumable objects
+
+        # Shop tracking
+        self.jokers_purchased: list[str] = []
+        self.planets_used: int = 0
 
         # Hand levels
         self.hand_levels: dict[HandType, int] = {ht: 1 for ht in HandType}
@@ -370,7 +376,63 @@ def simulate_blind(game: GameState, strategy = None) -> BlindResult:
     )
 
 
-def simulate_run(jokers: list = None, config: GameConfig = None, strategy = None) -> RunResult:
+def simulate_shop(game: GameState, all_jokers: list, shop_ai=None) -> dict:
+    """
+    Simulate a shop visit.
+    Returns dict with purchases made.
+    """
+    from .shop import Shop, ShopAI, apply_planet, ConsumableType
+
+    if shop_ai is None:
+        shop_ai = ShopAI()
+
+    shop = Shop(all_jokers)
+    shop.generate(owned_jokers=game.jokers)
+
+    decisions = shop_ai.decide_purchases(shop, game)
+    results = {
+        "jokers_bought": [],
+        "consumables_bought": [],
+        "planets_used": [],
+        "money_spent": 0
+    }
+
+    # Buy jokers
+    for idx in decisions["jokers_to_buy"]:
+        if idx < len(shop.jokers):
+            joker = shop.jokers[idx]
+            cost = shop.get_joker_cost(joker)
+            if cost <= game.money and len(game.jokers) < game.config.joker_slots:
+                game.money -= cost
+                game.jokers.append(joker)
+                game.jokers_purchased.append(joker.get("name", "Unknown"))
+                results["jokers_bought"].append(joker.get("name"))
+                results["money_spent"] += cost
+
+    # Buy and use consumables
+    for idx in decisions["consumables_to_buy"]:
+        if idx < len(shop.consumables):
+            consumable = shop.consumables[idx]
+            if consumable.cost <= game.money:
+                game.money -= consumable.cost
+                results["consumables_bought"].append(consumable.name)
+                results["money_spent"] += consumable.cost
+
+                # Use planets immediately
+                if consumable.type == ConsumableType.PLANET:
+                    msg = apply_planet(consumable, game)
+                    results["planets_used"].append(msg)
+                    game.planets_used += 1
+                else:
+                    # Store other consumables if room
+                    if len(game.consumables) < game.config.consumable_slots:
+                        game.consumables.append(consumable)
+
+    return results
+
+
+def simulate_run(jokers: list = None, config: GameConfig = None, strategy=None,
+                 all_jokers: list = None, verbose: bool = False) -> RunResult:
     """Simulate a complete Balatro run."""
     game = GameState(config=config)
     if strategy is None:
@@ -381,10 +443,18 @@ def simulate_run(jokers: list = None, config: GameConfig = None, strategy = None
         for joker in jokers[:game.config.joker_slots]:
             game.add_joker(joker)
 
+    # For shop simulation, we need the full joker list
+    enable_shop = game.config.enable_shop and all_jokers is not None
+
     blinds_beaten = 0
 
     while True:
         result = simulate_blind(game, strategy)
+
+        if verbose:
+            status = "WIN" if result.success else "LOSS"
+            print(f"Ante {game.ante} {game.current_blind.name}: "
+                  f"{result.score_achieved:,}/{result.score_required:,} - {status}")
 
         if not result.success:
             return RunResult(
@@ -397,6 +467,15 @@ def simulate_run(jokers: list = None, config: GameConfig = None, strategy = None
             )
 
         blinds_beaten += 1
+
+        # Visit shop after beating a blind (before advancing)
+        if enable_shop:
+            shop_result = simulate_shop(game, all_jokers)
+            if verbose and (shop_result["jokers_bought"] or shop_result["planets_used"]):
+                if shop_result["jokers_bought"]:
+                    print(f"  Shop: Bought {shop_result['jokers_bought']}")
+                if shop_result["planets_used"]:
+                    print(f"  Shop: {shop_result['planets_used']}")
 
         if not game.advance_blind():
             # Beat the game!
