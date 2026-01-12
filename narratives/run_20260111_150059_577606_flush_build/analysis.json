@@ -1,0 +1,271 @@
+{
+  "beats": [
+    {
+      "type": "opening",
+      "ante": 1,
+      "description": "The run began with The Tribe, Greedy Joker, Lusty Joker. The path was set.",
+      "data": {
+        "starting_jokers": [
+          "The Tribe",
+          "Greedy Joker",
+          "Lusty Joker"
+        ]
+      },
+      "emotional_weight": 0.5
+    },
+    {
+      "type": "pivot",
+      "ante": 1,
+      "description": "The Tribe appeared. Everything changed.",
+      "data": {
+        "joker": "The Tribe",
+        "ante": 1
+      },
+      "emotional_weight": 0.7
+    },
+    {
+      "type": "triumph",
+      "ante": 1,
+      "description": "SMALL blind crushed. 900 points. The build was working.",
+      "data": {
+        "score": 900,
+        "required": 300,
+        "success": true,
+        "margin": 600,
+        "margin_pct": 200.0,
+        "hands_used": 1,
+        "discards_used": 1,
+        "best_hand": "FULL_HOUSE",
+        "close_call": false
+      },
+      "emotional_weight": 0.6
+    },
+    {
+      "type": "triumph",
+      "ante": 1,
+      "description": "BIG blind crushed. 2,452 points. The build was working.",
+      "data": {
+        "score": 2452,
+        "required": 450,
+        "success": true,
+        "margin": 2002,
+        "margin_pct": 444.9,
+        "hands_used": 2,
+        "discards_used": 1,
+        "best_hand": "FLUSH",
+        "close_call": false
+      },
+      "emotional_weight": 0.6
+    },
+    {
+      "type": "triumph",
+      "ante": 1,
+      "description": "BOSS blind crushed. 1,890 points. The build was working.",
+      "data": {
+        "score": 1890,
+        "required": 600,
+        "success": true,
+        "margin": 1290,
+        "margin_pct": 215.0,
+        "hands_used": 3,
+        "discards_used": 3,
+        "best_hand": "FLUSH",
+        "close_call": false
+      },
+      "emotional_weight": 0.6
+    },
+    {
+      "type": "power_spike",
+      "ante": 1,
+      "description": "Pluto leveled HIGH CARD to 2.",
+      "data": {
+        "planet": "Pluto",
+        "hand_type": "HIGH_CARD",
+        "new_level": 2
+      },
+      "emotional_weight": 0.5
+    },
+    {
+      "type": "close_call",
+      "ante": 2,
+      "description": "BIG blind. Score: 1,260. Required: 1,200. Margin: 5.0%. Barely.",
+      "data": {
+        "score": 1260,
+        "required": 1200,
+        "success": true,
+        "margin": 60,
+        "margin_pct": 5.0,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "FULL_HOUSE",
+        "close_call": true
+      },
+      "emotional_weight": 0.9
+    },
+    {
+      "type": "power_spike",
+      "ante": 2,
+      "description": "Eris leveled FLUSH FIVE to 3.",
+      "data": {
+        "planet": "Eris",
+        "hand_type": "FLUSH_FIVE",
+        "new_level": 3
+      },
+      "emotional_weight": 0.5
+    },
+    {
+      "type": "close_call",
+      "ante": 2,
+      "description": "BOSS blind. Score: 1,784. Required: 1,600. Margin: 11.5%. Barely.",
+      "data": {
+        "score": 1784,
+        "required": 1600,
+        "success": true,
+        "margin": 184,
+        "margin_pct": 11.5,
+        "hands_used": 3,
+        "discards_used": 2,
+        "best_hand": "STRAIGHT",
+        "close_call": true
+      },
+      "emotional_weight": 0.9
+    },
+    {
+      "type": "power_spike",
+      "ante": 2,
+      "description": "Venus leveled THREE OF A KIND to 2.",
+      "data": {
+        "planet": "Venus",
+        "hand_type": "THREE_OF_A_KIND",
+        "new_level": 2
+      },
+      "emotional_weight": 0.5
+    },
+    {
+      "type": "close_call",
+      "ante": 3,
+      "description": "SMALL blind. Score: 2,048. Required: 2,000. Margin: 2.4%. Barely.",
+      "data": {
+        "score": 2048,
+        "required": 2000,
+        "success": true,
+        "margin": 48,
+        "margin_pct": 2.4,
+        "hands_used": 2,
+        "discards_used": 2,
+        "best_hand": "FLUSH",
+        "close_call": true
+      },
+      "emotional_weight": 0.9
+    },
+    {
+      "type": "close_call",
+      "ante": 3,
+      "description": "BIG blind. Score: 3,382. Required: 3,000. Margin: 12.7%. Barely.",
+      "data": {
+        "score": 3382,
+        "required": 3000,
+        "success": true,
+        "margin": 382,
+        "margin_pct": 12.7,
+        "hands_used": 3,
+        "discards_used": 1,
+        "best_hand": "FLUSH",
+        "close_call": true
+      },
+      "emotional_weight": 0.9
+    },
+    {
+      "type": "crisis",
+      "ante": 3,
+      "description": "BOSS blind. Scored 1,708. Needed 4,000. Not enough.",
+      "data": {
+        "score": 1708,
+        "required": 4000,
+        "success": false,
+        "margin": -2292,
+        "margin_pct": -57.3,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "FULL_HOUSE",
+        "close_call": false
+      },
+      "emotional_weight": 1.0
+    },
+    {
+      "type": "defeat",
+      "ante": 3,
+      "description": "Defeat at Ante 3. 8 blinds beaten. The run ended, but the lesson remained.",
+      "data": {
+        "victory": false,
+        "blinds_beaten": 8,
+        "final_money": 22,
+        "final_jokers": [
+          "The Tribe",
+          "Greedy Joker",
+          "Lusty Joker",
+          "Marble Joker",
+          "Golden Ticket"
+        ],
+        "final_hand_levels": {
+          "HIGH_CARD": 2,
+          "THREE_OF_A_KIND": 2,
+          "FLUSH": 3,
+          "FLUSH_FIVE": 3
+        }
+      },
+      "emotional_weight": 0.8
+    }
+  ],
+  "theme": "survival_against_odds",
+  "character_arc": [
+    {
+      "ante": 1,
+      "joker": "The Tribe",
+      "role": "utility"
+    },
+    {
+      "ante": 1,
+      "joker": "Greedy Joker",
+      "role": "scoring"
+    },
+    {
+      "ante": 1,
+      "joker": "Lusty Joker",
+      "role": "scoring"
+    },
+    {
+      "ante": 1,
+      "joker": "Marble Joker",
+      "role": "scoring"
+    },
+    {
+      "ante": 1,
+      "joker": "Golden Ticket",
+      "role": "utility"
+    }
+  ],
+  "emotional_arc": [
+    0.5,
+    0.7,
+    0.6,
+    0.6,
+    0.6,
+    0.5,
+    0.9,
+    0.5,
+    0.9,
+    0.5,
+    0.9,
+    0.9,
+    1.0,
+    0.8
+  ],
+  "story_quality": {
+    "overall": 0.7357142857142858,
+    "tension": 1.0,
+    "development": 0.5,
+    "emotional_intensity": 0.7071428571428573,
+    "archetype": "nail_biter"
+  }
+}

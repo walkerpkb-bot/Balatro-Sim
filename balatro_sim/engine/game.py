@@ -97,6 +97,23 @@ class GameState:
 
         # Stats
         self.hands_played_count: dict[HandType, int] = {ht: 0 for ht in HandType}
+        self.total_hands_played: int = 0
+        self.total_discards_used: int = 0
+
+        # Joker state tracking (for scaling jokers)
+        self.joker_state: dict = {
+            'ride_the_bus': 0,           # Current mult (resets on face card)
+            'ice_cream': 100,            # Chips (starts 100, -5 per hand)
+            'green_joker': 0,            # Mult from hands+discards
+            'red_card': 0,               # Mult from skipped boosters
+            'blue_joker_mult': 0,        # +1 per remaining card in deck
+            'supernova': {},             # {hand_type: times_played}
+            'constellation': {},         # {hand_type: x_mult_accumulated}
+            'square_joker': 0,           # Chips (starts 0, +4 per card played if 4 cards)
+            'runner': 0,                 # Chips gained from straights
+            'obelisk': 1.0,              # X-mult (grows if most played hand not played)
+            'loyalty_card': 0,           # Hands since last X4
+        }
 
         # Scoring engine
         self.hand_detector = HandDetector(hand_levels=self.hand_levels)
@@ -161,15 +178,56 @@ class GameState:
         # Remove from hand
         played = self.hand.remove(cards_to_play)
 
+        # Cards still held (for Baron, Steel, etc.)
+        held_cards = self.hand.cards
+
         # Detect hand type
         detected = self.hand_detector.detect(played)
 
-        # Score the hand
-        breakdown = self.scoring_engine.score_hand(detected, self.jokers)
+        # Check if this is the final hand (for Dusk retrigger)
+        is_final_hand = self.hands_remaining == 1
+
+        # Score the hand (pass joker_state for scaling jokers)
+        breakdown = self.scoring_engine.score_hand(
+            detected,
+            self.jokers,
+            held_cards=held_cards,
+            is_final_hand=is_final_hand,
+            joker_state=self.joker_state,
+            deck_size=len(self.deck.cards) + len(self.deck.discard_pile)
+        )
+
+        # Update joker state after scoring
+        has_face_card = any(c.is_face_card for c in played)
+
+        # Ride the Bus: +1 mult per hand without face cards, resets on face
+        if has_face_card:
+            self.joker_state['ride_the_bus'] = 0
+        else:
+            self.joker_state['ride_the_bus'] += 1
+
+        # Ice Cream: -5 chips per hand
+        self.joker_state['ice_cream'] = max(0, self.joker_state['ice_cream'] - 5)
+
+        # Green Joker: +1 mult per hand
+        self.joker_state['green_joker'] += 1
+
+        # Square Joker: +4 chips if exactly 4 cards played
+        if len(played) == 4:
+            self.joker_state['square_joker'] += 4
+
+        # Runner: +15 chips if straight was played
+        if detected.hand_type in (HandType.STRAIGHT, HandType.STRAIGHT_FLUSH):
+            self.joker_state['runner'] += 15
+
+        # Supernova: track hand plays
+        ht_name = detected.hand_type.name
+        self.joker_state['supernova'][ht_name] = self.joker_state['supernova'].get(ht_name, 0) + 1
 
         # Update state
         self.hands_remaining -= 1
         self.hands_played_count[detected.hand_type] += 1
+        self.total_hands_played += 1
 
         # Discard played cards
         self.deck.discard(played)
@@ -188,6 +246,10 @@ class GameState:
         discarded = self.hand.remove(cards_to_discard)
         self.deck.discard(discarded)
         self.discards_remaining -= 1
+        self.total_discards_used += 1
+
+        # Green Joker: +1 mult per discard
+        self.joker_state['green_joker'] += 1
 
         # Draw replacement cards
         self.draw_hand()

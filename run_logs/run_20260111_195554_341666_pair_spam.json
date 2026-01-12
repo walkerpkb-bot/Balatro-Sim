@@ -1,0 +1,859 @@
+{
+  "metadata": {
+    "preset": "pair_spam",
+    "deck": "standard"
+  },
+  "events": [
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "The Duo",
+        "source": "starting"
+      },
+      "timestamp": 0
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Jolly Joker",
+        "source": "starting"
+      },
+      "timestamp": 1
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Sly Joker",
+        "source": "starting"
+      },
+      "timestamp": 2
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "run_start",
+      "data": {
+        "starting_money": 4,
+        "starting_jokers": [
+          "The Duo",
+          "Jolly Joker",
+          "Sly Joker"
+        ],
+        "starting_hand_levels": {
+          "PAIR": 5,
+          "TWO_PAIR": 3
+        }
+      },
+      "timestamp": 3
+    },
+    {
+      "ante": 1,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 3648,
+        "required": 300,
+        "success": true,
+        "margin": 3348,
+        "margin_pct": 1116.0,
+        "hands_used": 1,
+        "discards_used": 1,
+        "best_hand": "TWO_PAIR",
+        "close_call": false
+      },
+      "timestamp": 4
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Mystic Summit",
+        "source": "shop"
+      },
+      "timestamp": 5
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Mystic Summit"
+        ],
+        "planets_used": [],
+        "money_spent": 5,
+        "money_remaining": 2
+      },
+      "timestamp": 6
+    },
+    {
+      "ante": 1,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 7344,
+        "required": 450,
+        "success": true,
+        "margin": 6894,
+        "margin_pct": 1532.0,
+        "hands_used": 1,
+        "discards_used": 0,
+        "best_hand": "TWO_PAIR",
+        "close_call": false
+      },
+      "timestamp": 7
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Wily Joker",
+        "source": "shop"
+      },
+      "timestamp": 8
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Wily Joker"
+        ],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 2
+      },
+      "timestamp": 9
+    },
+    {
+      "ante": 1,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 8208,
+        "required": 600,
+        "success": true,
+        "margin": 7608,
+        "margin_pct": 1268.0,
+        "hands_used": 1,
+        "discards_used": 0,
+        "best_hand": "TWO_PAIR",
+        "close_call": false
+      },
+      "timestamp": 10
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Ceres",
+        "hand_type": "FLUSH_HOUSE",
+        "new_level": 2
+      },
+      "timestamp": 11
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Ceres"
+        ],
+        "money_spent": 3,
+        "money_remaining": 4
+      },
+      "timestamp": 12
+    },
+    {
+      "ante": 2,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 7776,
+        "required": 800,
+        "success": true,
+        "margin": 6976,
+        "margin_pct": 872.0,
+        "hands_used": 1,
+        "discards_used": 0,
+        "best_hand": "TWO_PAIR",
+        "close_call": false
+      },
+      "timestamp": 13
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Pluto",
+        "hand_type": "HIGH_CARD",
+        "new_level": 2
+      },
+      "timestamp": 14
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Mars",
+        "hand_type": "FOUR_OF_A_KIND",
+        "new_level": 2
+      },
+      "timestamp": 15
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Pluto",
+          "Mars"
+        ],
+        "money_spent": 6,
+        "money_remaining": 1
+      },
+      "timestamp": 16
+    },
+    {
+      "ante": 2,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 7540,
+        "required": 1200,
+        "success": true,
+        "margin": 6340,
+        "margin_pct": 528.3,
+        "hands_used": 1,
+        "discards_used": 0,
+        "best_hand": "PAIR",
+        "close_call": false
+      },
+      "timestamp": 17
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Saturn",
+        "hand_type": "STRAIGHT",
+        "new_level": 2
+      },
+      "timestamp": 18
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Saturn"
+        ],
+        "money_spent": 3,
+        "money_remaining": 2
+      },
+      "timestamp": 19
+    },
+    {
+      "ante": 2,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 8208,
+        "required": 1600,
+        "success": true,
+        "margin": 6608,
+        "margin_pct": 413.0,
+        "hands_used": 1,
+        "discards_used": 0,
+        "best_hand": "TWO_PAIR",
+        "close_call": false
+      },
+      "timestamp": 20
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Earth",
+        "hand_type": "FULL_HOUSE",
+        "new_level": 2
+      },
+      "timestamp": 21
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Uranus",
+        "hand_type": "TWO_PAIR",
+        "new_level": 4
+      },
+      "timestamp": 22
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Earth",
+          "Uranus"
+        ],
+        "money_spent": 6,
+        "money_remaining": 1
+      },
+      "timestamp": 23
+    },
+    {
+      "ante": 3,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 7656,
+        "required": 2000,
+        "success": true,
+        "margin": 5656,
+        "margin_pct": 282.8,
+        "hands_used": 1,
+        "discards_used": 0,
+        "best_hand": "PAIR",
+        "close_call": false
+      },
+      "timestamp": 24
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Uranus",
+        "hand_type": "TWO_PAIR",
+        "new_level": 5
+      },
+      "timestamp": 25
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Uranus"
+        ],
+        "money_spent": 3,
+        "money_remaining": 1
+      },
+      "timestamp": 26
+    },
+    {
+      "ante": 3,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 11136,
+        "required": 3000,
+        "success": true,
+        "margin": 8136,
+        "margin_pct": 271.2,
+        "hands_used": 1,
+        "discards_used": 0,
+        "best_hand": "TWO_PAIR",
+        "close_call": false
+      },
+      "timestamp": 27
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Ceres",
+        "hand_type": "FLUSH_HOUSE",
+        "new_level": 3
+      },
+      "timestamp": 28
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Ceres"
+        ],
+        "money_spent": 3,
+        "money_remaining": 2
+      },
+      "timestamp": 29
+    },
+    {
+      "ante": 3,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 10324,
+        "required": 4000,
+        "success": true,
+        "margin": 6324,
+        "margin_pct": 158.1,
+        "hands_used": 1,
+        "discards_used": 0,
+        "best_hand": "TWO_PAIR",
+        "close_call": false
+      },
+      "timestamp": 30
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Earth",
+        "hand_type": "FULL_HOUSE",
+        "new_level": 3
+      },
+      "timestamp": 31
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Earth"
+        ],
+        "money_spent": 3,
+        "money_remaining": 4
+      },
+      "timestamp": 32
+    },
+    {
+      "ante": 4,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 7192,
+        "required": 5000,
+        "success": true,
+        "margin": 2192,
+        "margin_pct": 43.8,
+        "hands_used": 1,
+        "discards_used": 0,
+        "best_hand": "PAIR",
+        "close_call": false
+      },
+      "timestamp": 33
+    },
+    {
+      "ante": 4,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Ceres",
+        "hand_type": "FLUSH_HOUSE",
+        "new_level": 4
+      },
+      "timestamp": 34
+    },
+    {
+      "ante": 4,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Ceres",
+        "hand_type": "FLUSH_HOUSE",
+        "new_level": 5
+      },
+      "timestamp": 35
+    },
+    {
+      "ante": 4,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Ceres",
+          "Ceres"
+        ],
+        "money_spent": 6,
+        "money_remaining": 1
+      },
+      "timestamp": 36
+    },
+    {
+      "ante": 4,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 10788,
+        "required": 7500,
+        "success": true,
+        "margin": 3288,
+        "margin_pct": 43.8,
+        "hands_used": 1,
+        "discards_used": 0,
+        "best_hand": "TWO_PAIR",
+        "close_call": false
+      },
+      "timestamp": 37
+    },
+    {
+      "ante": 4,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [],
+        "money_spent": 0,
+        "money_remaining": 5
+      },
+      "timestamp": 38
+    },
+    {
+      "ante": 4,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 10904,
+        "required": 10000,
+        "success": true,
+        "margin": 904,
+        "margin_pct": 9.0,
+        "hands_used": 1,
+        "discards_used": 0,
+        "best_hand": "TWO_PAIR",
+        "close_call": true
+      },
+      "timestamp": 39
+    },
+    {
+      "ante": 4,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Earth",
+        "hand_type": "FULL_HOUSE",
+        "new_level": 4
+      },
+      "timestamp": 40
+    },
+    {
+      "ante": 4,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Planet X",
+        "hand_type": "FIVE_OF_A_KIND",
+        "new_level": 2
+      },
+      "timestamp": 41
+    },
+    {
+      "ante": 4,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Earth",
+          "Planet X"
+        ],
+        "money_spent": 6,
+        "money_remaining": 5
+      },
+      "timestamp": 42
+    },
+    {
+      "ante": 5,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 11020,
+        "required": 11000,
+        "success": true,
+        "margin": 20,
+        "margin_pct": 0.2,
+        "hands_used": 1,
+        "discards_used": 0,
+        "best_hand": "TWO_PAIR",
+        "close_call": true
+      },
+      "timestamp": 43
+    },
+    {
+      "ante": 5,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Uranus",
+        "hand_type": "TWO_PAIR",
+        "new_level": 6
+      },
+      "timestamp": 44
+    },
+    {
+      "ante": 5,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Uranus"
+        ],
+        "money_spent": 3,
+        "money_remaining": 6
+      },
+      "timestamp": 45
+    },
+    {
+      "ante": 5,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 23640,
+        "required": 16500,
+        "success": true,
+        "margin": 7140,
+        "margin_pct": 43.3,
+        "hands_used": 2,
+        "discards_used": 2,
+        "best_hand": "TWO_PAIR",
+        "close_call": false
+      },
+      "timestamp": 46
+    },
+    {
+      "ante": 5,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Jupiter",
+        "hand_type": "FLUSH",
+        "new_level": 2
+      },
+      "timestamp": 47
+    },
+    {
+      "ante": 5,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Jupiter"
+        ],
+        "money_spent": 3,
+        "money_remaining": 8
+      },
+      "timestamp": 48
+    },
+    {
+      "ante": 5,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 24000,
+        "required": 22000,
+        "success": true,
+        "margin": 2000,
+        "margin_pct": 9.1,
+        "hands_used": 2,
+        "discards_used": 2,
+        "best_hand": "TWO_PAIR",
+        "close_call": true
+      },
+      "timestamp": 49
+    },
+    {
+      "ante": 5,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Venus",
+        "hand_type": "THREE_OF_A_KIND",
+        "new_level": 2
+      },
+      "timestamp": 50
+    },
+    {
+      "ante": 5,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Venus"
+        ],
+        "money_spent": 3,
+        "money_remaining": 11
+      },
+      "timestamp": 51
+    },
+    {
+      "ante": 6,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 24360,
+        "required": 20000,
+        "success": true,
+        "margin": 4360,
+        "margin_pct": 21.8,
+        "hands_used": 3,
+        "discards_used": 3,
+        "best_hand": "PAIR",
+        "close_call": false
+      },
+      "timestamp": 52
+    },
+    {
+      "ante": 6,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Saturn",
+        "hand_type": "STRAIGHT",
+        "new_level": 3
+      },
+      "timestamp": 53
+    },
+    {
+      "ante": 6,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Saturn"
+        ],
+        "money_spent": 3,
+        "money_remaining": 13
+      },
+      "timestamp": 54
+    },
+    {
+      "ante": 6,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 35440,
+        "required": 30000,
+        "success": true,
+        "margin": 5440,
+        "margin_pct": 18.1,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "TWO_PAIR",
+        "close_call": true
+      },
+      "timestamp": 55
+    },
+    {
+      "ante": 6,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Neptune",
+        "hand_type": "STRAIGHT_FLUSH",
+        "new_level": 2
+      },
+      "timestamp": 56
+    },
+    {
+      "ante": 6,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Neptune"
+        ],
+        "money_spent": 3,
+        "money_remaining": 16
+      },
+      "timestamp": 57
+    },
+    {
+      "ante": 6,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 28499,
+        "required": 40000,
+        "success": false,
+        "margin": -11501,
+        "margin_pct": -28.8,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "TWO_PAIR",
+        "close_call": false
+      },
+      "timestamp": 58
+    },
+    {
+      "ante": 6,
+      "blind_type": "BOSS",
+      "event_type": "run_end",
+      "data": {
+        "victory": false,
+        "blinds_beaten": 17,
+        "final_money": 16,
+        "final_jokers": [
+          "The Duo",
+          "Jolly Joker",
+          "Sly Joker",
+          "Mystic Summit",
+          "Wily Joker"
+        ],
+        "final_hand_levels": {
+          "HIGH_CARD": 2,
+          "PAIR": 5,
+          "TWO_PAIR": 6,
+          "THREE_OF_A_KIND": 2,
+          "STRAIGHT": 3,
+          "FLUSH": 2,
+          "FULL_HOUSE": 4,
+          "FOUR_OF_A_KIND": 2,
+          "STRAIGHT_FLUSH": 2,
+          "FIVE_OF_A_KIND": 2,
+          "FLUSH_HOUSE": 5
+        }
+      },
+      "timestamp": 59
+    }
+  ],
+  "summary": {
+    "total_blinds_attempted": 18,
+    "blinds_won": 17,
+    "close_calls": 4,
+    "jokers_acquired": 5,
+    "planets_used": 18,
+    "victory": false
+  }
+}

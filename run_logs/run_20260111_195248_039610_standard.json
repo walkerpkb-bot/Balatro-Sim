@@ -1,0 +1,242 @@
+{
+  "metadata": {
+    "preset": "standard",
+    "deck": "standard"
+  },
+  "events": [
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "run_start",
+      "data": {
+        "starting_money": 4,
+        "starting_jokers": [],
+        "starting_hand_levels": {}
+      },
+      "timestamp": 0
+    },
+    {
+      "ante": 1,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 388,
+        "required": 300,
+        "success": true,
+        "margin": 88,
+        "margin_pct": 29.3,
+        "hands_used": 2,
+        "discards_used": 1,
+        "best_hand": "FLUSH",
+        "close_call": false
+      },
+      "timestamp": 1
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Sly Joker",
+        "source": "shop"
+      },
+      "timestamp": 2
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Eris",
+        "hand_type": "FLUSH_FIVE",
+        "new_level": 2
+      },
+      "timestamp": 3
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Sly Joker"
+        ],
+        "planets_used": [
+          "Eris"
+        ],
+        "money_spent": 6,
+        "money_remaining": 1
+      },
+      "timestamp": 4
+    },
+    {
+      "ante": 1,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 604,
+        "required": 450,
+        "success": true,
+        "margin": 154,
+        "margin_pct": 34.2,
+        "hands_used": 2,
+        "discards_used": 2,
+        "best_hand": "STRAIGHT",
+        "close_call": false
+      },
+      "timestamp": 5
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Dusk",
+        "source": "shop"
+      },
+      "timestamp": 6
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Dusk"
+        ],
+        "planets_used": [],
+        "money_spent": 5,
+        "money_remaining": 0
+      },
+      "timestamp": 7
+    },
+    {
+      "ante": 1,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 932,
+        "required": 600,
+        "success": true,
+        "margin": 332,
+        "margin_pct": 55.3,
+        "hands_used": 3,
+        "discards_used": 1,
+        "best_hand": "FULL_HOUSE",
+        "close_call": false
+      },
+      "timestamp": 8
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Saturn",
+        "hand_type": "STRAIGHT",
+        "new_level": 2
+      },
+      "timestamp": 9
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Saturn"
+        ],
+        "money_spent": 3,
+        "money_remaining": 2
+      },
+      "timestamp": 10
+    },
+    {
+      "ante": 2,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 947,
+        "required": 800,
+        "success": true,
+        "margin": 147,
+        "margin_pct": 18.4,
+        "hands_used": 2,
+        "discards_used": 1,
+        "best_hand": "STRAIGHT",
+        "close_call": true
+      },
+      "timestamp": 11
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Devious Joker",
+        "source": "shop"
+      },
+      "timestamp": 12
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Devious Joker"
+        ],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 1
+      },
+      "timestamp": 13
+    },
+    {
+      "ante": 2,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 804,
+        "required": 1200,
+        "success": false,
+        "margin": -396,
+        "margin_pct": -33.0,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "TWO_PAIR",
+        "close_call": false
+      },
+      "timestamp": 14
+    },
+    {
+      "ante": 2,
+      "blind_type": "BIG",
+      "event_type": "run_end",
+      "data": {
+        "victory": false,
+        "blinds_beaten": 4,
+        "final_money": 1,
+        "final_jokers": [
+          "Sly Joker",
+          "Dusk",
+          "Devious Joker"
+        ],
+        "final_hand_levels": {
+          "STRAIGHT": 2,
+          "FLUSH_FIVE": 2
+        }
+      },
+      "timestamp": 15
+    }
+  ],
+  "summary": {
+    "total_blinds_attempted": 5,
+    "blinds_won": 4,
+    "close_calls": 1,
+    "jokers_acquired": 3,
+    "planets_used": 2,
+    "victory": false
+  }
+}

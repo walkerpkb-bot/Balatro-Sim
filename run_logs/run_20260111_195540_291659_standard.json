@@ -1,0 +1,494 @@
+{
+  "metadata": {
+    "preset": "standard",
+    "deck": "standard"
+  },
+  "events": [
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "run_start",
+      "data": {
+        "starting_money": 4,
+        "starting_jokers": [],
+        "starting_hand_levels": {}
+      },
+      "timestamp": 0
+    },
+    {
+      "ante": 1,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 584,
+        "required": 300,
+        "success": true,
+        "margin": 284,
+        "margin_pct": 94.7,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "STRAIGHT",
+        "close_call": false
+      },
+      "timestamp": 1
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Devious Joker",
+        "source": "shop"
+      },
+      "timestamp": 2
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Jupiter",
+        "hand_type": "FLUSH",
+        "new_level": 2
+      },
+      "timestamp": 3
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Devious Joker"
+        ],
+        "planets_used": [
+          "Jupiter"
+        ],
+        "money_spent": 7,
+        "money_remaining": 0
+      },
+      "timestamp": 4
+    },
+    {
+      "ante": 1,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 928,
+        "required": 450,
+        "success": true,
+        "margin": 478,
+        "margin_pct": 106.2,
+        "hands_used": 3,
+        "discards_used": 2,
+        "best_hand": "STRAIGHT",
+        "close_call": false
+      },
+      "timestamp": 5
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Zany Joker",
+        "source": "shop"
+      },
+      "timestamp": 6
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Zany Joker"
+        ],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 0
+      },
+      "timestamp": 7
+    },
+    {
+      "ante": 1,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 1105,
+        "required": 600,
+        "success": true,
+        "margin": 505,
+        "margin_pct": 84.2,
+        "hands_used": 3,
+        "discards_used": 3,
+        "best_hand": "THREE_OF_A_KIND",
+        "close_call": false
+      },
+      "timestamp": 8
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Faceless Joker",
+        "source": "shop"
+      },
+      "timestamp": 9
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Faceless Joker"
+        ],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 1
+      },
+      "timestamp": 10
+    },
+    {
+      "ante": 2,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 832,
+        "required": 800,
+        "success": true,
+        "margin": 32,
+        "margin_pct": 4.0,
+        "hands_used": 2,
+        "discards_used": 1,
+        "best_hand": "STRAIGHT",
+        "close_call": true
+      },
+      "timestamp": 11
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Earth",
+        "hand_type": "FULL_HOUSE",
+        "new_level": 2
+      },
+      "timestamp": 12
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Earth"
+        ],
+        "money_spent": 3,
+        "money_remaining": 1
+      },
+      "timestamp": 13
+    },
+    {
+      "ante": 2,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 1770,
+        "required": 1200,
+        "success": true,
+        "margin": 570,
+        "margin_pct": 47.5,
+        "hands_used": 4,
+        "discards_used": 2,
+        "best_hand": "THREE_OF_A_KIND",
+        "close_call": false
+      },
+      "timestamp": 14
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Mad Joker",
+        "source": "shop"
+      },
+      "timestamp": 15
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Mad Joker"
+        ],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 1
+      },
+      "timestamp": 16
+    },
+    {
+      "ante": 2,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 1845,
+        "required": 1600,
+        "success": true,
+        "margin": 245,
+        "margin_pct": 15.3,
+        "hands_used": 2,
+        "discards_used": 0,
+        "best_hand": "THREE_OF_A_KIND",
+        "close_call": true
+      },
+      "timestamp": 17
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Card Sharp",
+        "source": "shop"
+      },
+      "timestamp": 18
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Card Sharp"
+        ],
+        "planets_used": [],
+        "money_spent": 6,
+        "money_remaining": 0
+      },
+      "timestamp": 19
+    },
+    {
+      "ante": 3,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 3636,
+        "required": 2000,
+        "success": true,
+        "margin": 1636,
+        "margin_pct": 81.8,
+        "hands_used": 2,
+        "discards_used": 1,
+        "best_hand": "STRAIGHT",
+        "close_call": false
+      },
+      "timestamp": 20
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Neptune",
+        "hand_type": "STRAIGHT_FLUSH",
+        "new_level": 2
+      },
+      "timestamp": 21
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Neptune"
+        ],
+        "money_spent": 3,
+        "money_remaining": 0
+      },
+      "timestamp": 22
+    },
+    {
+      "ante": 3,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 3168,
+        "required": 3000,
+        "success": true,
+        "margin": 168,
+        "margin_pct": 5.6,
+        "hands_used": 2,
+        "discards_used": 2,
+        "best_hand": "FLUSH",
+        "close_call": true
+      },
+      "timestamp": 23
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Neptune",
+        "hand_type": "STRAIGHT_FLUSH",
+        "new_level": 3
+      },
+      "timestamp": 24
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Neptune"
+        ],
+        "money_spent": 3,
+        "money_remaining": 1
+      },
+      "timestamp": 25
+    },
+    {
+      "ante": 3,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 4788,
+        "required": 4000,
+        "success": true,
+        "margin": 788,
+        "margin_pct": 19.7,
+        "hands_used": 2,
+        "discards_used": 1,
+        "best_hand": "THREE_OF_A_KIND",
+        "close_call": true
+      },
+      "timestamp": 26
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Neptune",
+        "hand_type": "STRAIGHT_FLUSH",
+        "new_level": 4
+      },
+      "timestamp": 27
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Jupiter",
+        "hand_type": "FLUSH",
+        "new_level": 3
+      },
+      "timestamp": 28
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Neptune",
+          "Jupiter"
+        ],
+        "money_spent": 6,
+        "money_remaining": 0
+      },
+      "timestamp": 29
+    },
+    {
+      "ante": 4,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 6432,
+        "required": 5000,
+        "success": true,
+        "margin": 1432,
+        "margin_pct": 28.6,
+        "hands_used": 3,
+        "discards_used": 3,
+        "best_hand": "THREE_OF_A_KIND",
+        "close_call": false
+      },
+      "timestamp": 30
+    },
+    {
+      "ante": 4,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [],
+        "money_spent": 0,
+        "money_remaining": 3
+      },
+      "timestamp": 31
+    },
+    {
+      "ante": 4,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 6072,
+        "required": 7500,
+        "success": false,
+        "margin": -1428,
+        "margin_pct": -19.0,
+        "hands_used": 4,
+        "discards_used": 2,
+        "best_hand": "STRAIGHT",
+        "close_call": true
+      },
+      "timestamp": 32
+    },
+    {
+      "ante": 4,
+      "blind_type": "BIG",
+      "event_type": "run_end",
+      "data": {
+        "victory": false,
+        "blinds_beaten": 10,
+        "final_money": 3,
+        "final_jokers": [
+          "Devious Joker",
+          "Zany Joker",
+          "Faceless Joker",
+          "Mad Joker",
+          "Card Sharp"
+        ],
+        "final_hand_levels": {
+          "FLUSH": 3,
+          "FULL_HOUSE": 2,
+          "STRAIGHT_FLUSH": 4
+        }
+      },
+      "timestamp": 33
+    }
+  ],
+  "summary": {
+    "total_blinds_attempted": 11,
+    "blinds_won": 10,
+    "close_calls": 5,
+    "jokers_acquired": 5,
+    "planets_used": 6,
+    "victory": false
+  }
+}

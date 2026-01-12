@@ -1,0 +1,188 @@
+{
+  "beats": [
+    {
+      "type": "opening",
+      "ante": 1,
+      "description": "A humble beginning. No jokers. Just hope and a deck of cards.",
+      "data": {
+        "starting_jokers": []
+      },
+      "emotional_weight": 0.3
+    },
+    {
+      "type": "close_call",
+      "ante": 1,
+      "description": "SMALL blind. Score: 328. Required: 300. Margin: 9.3%. Barely.",
+      "data": {
+        "score": 328,
+        "required": 300,
+        "success": true,
+        "margin": 28,
+        "margin_pct": 9.3,
+        "hands_used": 3,
+        "discards_used": 3,
+        "best_hand": "TWO_PAIR",
+        "close_call": true
+      },
+      "emotional_weight": 0.9
+    },
+    {
+      "type": "close_call",
+      "ante": 1,
+      "description": "BIG blind. Score: 484. Required: 450. Margin: 7.6%. Barely.",
+      "data": {
+        "score": 484,
+        "required": 450,
+        "success": true,
+        "margin": 34,
+        "margin_pct": 7.6,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "FULL_HOUSE",
+        "close_call": true
+      },
+      "emotional_weight": 0.9
+    },
+    {
+      "type": "pivot",
+      "ante": 1,
+      "description": "Flower Pot appeared. Everything changed.",
+      "data": {
+        "joker": "Flower Pot",
+        "ante": 1
+      },
+      "emotional_weight": 0.7
+    },
+    {
+      "type": "power_spike",
+      "ante": 2,
+      "description": "Planet X leveled FIVE OF A KIND to 2.",
+      "data": {
+        "planet": "Planet X",
+        "hand_type": "FIVE_OF_A_KIND",
+        "new_level": 2
+      },
+      "emotional_weight": 0.5
+    },
+    {
+      "type": "close_call",
+      "ante": 2,
+      "description": "BOSS blind. Score: 1,650. Required: 1,600. Margin: 3.1%. Barely.",
+      "data": {
+        "score": 1650,
+        "required": 1600,
+        "success": true,
+        "margin": 50,
+        "margin_pct": 3.1,
+        "hands_used": 2,
+        "discards_used": 1,
+        "best_hand": "TWO_PAIR",
+        "close_call": true
+      },
+      "emotional_weight": 0.9
+    },
+    {
+      "type": "power_spike",
+      "ante": 2,
+      "description": "Mars leveled FOUR OF A KIND to 2.",
+      "data": {
+        "planet": "Mars",
+        "hand_type": "FOUR_OF_A_KIND",
+        "new_level": 2
+      },
+      "emotional_weight": 0.5
+    },
+    {
+      "type": "power_spike",
+      "ante": 2,
+      "description": "Eris leveled FLUSH FIVE to 2.",
+      "data": {
+        "planet": "Eris",
+        "hand_type": "FLUSH_FIVE",
+        "new_level": 2
+      },
+      "emotional_weight": 0.5
+    },
+    {
+      "type": "crisis",
+      "ante": 3,
+      "description": "BIG blind. Scored 2,216. Needed 3,000. Not enough.",
+      "data": {
+        "score": 2216,
+        "required": 3000,
+        "success": false,
+        "margin": -784,
+        "margin_pct": -26.1,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "TWO_PAIR",
+        "close_call": false
+      },
+      "emotional_weight": 1.0
+    },
+    {
+      "type": "defeat",
+      "ante": 3,
+      "description": "Defeat at Ante 3. 7 blinds beaten. The run ended, but the lesson remained.",
+      "data": {
+        "victory": false,
+        "blinds_beaten": 7,
+        "final_money": 3,
+        "final_jokers": [
+          "Flower Pot",
+          "To the Moon",
+          "Abstract Joker",
+          "Wrathful Joker"
+        ],
+        "final_hand_levels": {
+          "FOUR_OF_A_KIND": 2,
+          "FIVE_OF_A_KIND": 2,
+          "FLUSH_FIVE": 2
+        }
+      },
+      "emotional_weight": 0.8
+    }
+  ],
+  "theme": "survival_against_odds",
+  "character_arc": [
+    {
+      "ante": 1,
+      "joker": "Flower Pot",
+      "role": "support"
+    },
+    {
+      "ante": 1,
+      "joker": "To the Moon",
+      "role": "economy"
+    },
+    {
+      "ante": 1,
+      "joker": "Abstract Joker",
+      "role": "scoring"
+    },
+    {
+      "ante": 2,
+      "joker": "Wrathful Joker",
+      "role": "scoring"
+    }
+  ],
+  "emotional_arc": [
+    0.3,
+    0.9,
+    0.9,
+    0.7,
+    0.5,
+    0.9,
+    0.5,
+    0.5,
+    1.0,
+    0.8
+  ],
+  "story_quality": {
+    "overall": 0.7333333333333334,
+    "tension": 1.0,
+    "development": 0.5,
+    "emotional_intensity": 0.7,
+    "archetype": "nail_biter"
+  }
+}

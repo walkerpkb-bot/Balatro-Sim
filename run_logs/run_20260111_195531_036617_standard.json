@@ -1,0 +1,242 @@
+{
+  "metadata": {
+    "preset": "standard",
+    "deck": "standard"
+  },
+  "events": [
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "run_start",
+      "data": {
+        "starting_money": 4,
+        "starting_jokers": [],
+        "starting_hand_levels": {}
+      },
+      "timestamp": 0
+    },
+    {
+      "ante": 1,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 324,
+        "required": 300,
+        "success": true,
+        "margin": 24,
+        "margin_pct": 8.0,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "TWO_PAIR",
+        "close_call": true
+      },
+      "timestamp": 1
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Lusty Joker",
+        "source": "shop"
+      },
+      "timestamp": 2
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Lusty Joker"
+        ],
+        "planets_used": [],
+        "money_spent": 5,
+        "money_remaining": 2
+      },
+      "timestamp": 3
+    },
+    {
+      "ante": 1,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 644,
+        "required": 450,
+        "success": true,
+        "margin": 194,
+        "margin_pct": 43.1,
+        "hands_used": 1,
+        "discards_used": 0,
+        "best_hand": "FULL_HOUSE",
+        "close_call": false
+      },
+      "timestamp": 4
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "To Do List",
+        "source": "shop"
+      },
+      "timestamp": 5
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "To Do List"
+        ],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 2
+      },
+      "timestamp": 6
+    },
+    {
+      "ante": 1,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 849,
+        "required": 600,
+        "success": true,
+        "margin": 249,
+        "margin_pct": 41.5,
+        "hands_used": 3,
+        "discards_used": 2,
+        "best_hand": "STRAIGHT",
+        "close_call": false
+      },
+      "timestamp": 7
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Faceless Joker",
+        "source": "shop"
+      },
+      "timestamp": 8
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Mercury",
+        "hand_type": "PAIR",
+        "new_level": 2
+      },
+      "timestamp": 9
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Faceless Joker"
+        ],
+        "planets_used": [
+          "Mercury"
+        ],
+        "money_spent": 7,
+        "money_remaining": 0
+      },
+      "timestamp": 10
+    },
+    {
+      "ante": 2,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 1319,
+        "required": 800,
+        "success": true,
+        "margin": 519,
+        "margin_pct": 64.9,
+        "hands_used": 3,
+        "discards_used": 2,
+        "best_hand": "FULL_HOUSE",
+        "close_call": false
+      },
+      "timestamp": 11
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Mars",
+        "hand_type": "FOUR_OF_A_KIND",
+        "new_level": 2
+      },
+      "timestamp": 12
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Mars"
+        ],
+        "money_spent": 3,
+        "money_remaining": 0
+      },
+      "timestamp": 13
+    },
+    {
+      "ante": 2,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 1136,
+        "required": 1200,
+        "success": false,
+        "margin": -64,
+        "margin_pct": -5.3,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "FULL_HOUSE",
+        "close_call": true
+      },
+      "timestamp": 14
+    },
+    {
+      "ante": 2,
+      "blind_type": "BIG",
+      "event_type": "run_end",
+      "data": {
+        "victory": false,
+        "blinds_beaten": 4,
+        "final_money": 0,
+        "final_jokers": [
+          "Lusty Joker",
+          "To Do List",
+          "Faceless Joker"
+        ],
+        "final_hand_levels": {
+          "PAIR": 2,
+          "FOUR_OF_A_KIND": 2
+        }
+      },
+      "timestamp": 15
+    }
+  ],
+  "summary": {
+    "total_blinds_attempted": 5,
+    "blinds_won": 4,
+    "close_calls": 2,
+    "jokers_acquired": 3,
+    "planets_used": 2,
+    "victory": false
+  }
+}

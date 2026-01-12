@@ -1,0 +1,13 @@
+run_20260111_150640_070689_standard
+============================================================
+
+Archetype: Nail Biter
+Theme: Survival Against Odds
+Story Quality: 0.73/1.0
+Tension: 1.00/1.0
+Development: 0.50/1.0
+
+Result: Defeat
+Blinds: 7/8
+Close Calls: 3
+Jokers: 4

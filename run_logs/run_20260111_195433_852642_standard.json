@@ -1,0 +1,115 @@
+{
+  "metadata": {
+    "preset": "standard",
+    "deck": "standard"
+  },
+  "events": [
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "run_start",
+      "data": {
+        "starting_money": 4,
+        "starting_jokers": [],
+        "starting_hand_levels": {}
+      },
+      "timestamp": 0
+    },
+    {
+      "ante": 1,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 404,
+        "required": 300,
+        "success": true,
+        "margin": 104,
+        "margin_pct": 34.7,
+        "hands_used": 2,
+        "discards_used": 1,
+        "best_hand": "STRAIGHT",
+        "close_call": false
+      },
+      "timestamp": 1
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Faceless Joker",
+        "source": "shop"
+      },
+      "timestamp": 2
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Pluto",
+        "hand_type": "HIGH_CARD",
+        "new_level": 2
+      },
+      "timestamp": 3
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Faceless Joker"
+        ],
+        "planets_used": [
+          "Pluto"
+        ],
+        "money_spent": 7,
+        "money_remaining": 0
+      },
+      "timestamp": 4
+    },
+    {
+      "ante": 1,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 416,
+        "required": 450,
+        "success": false,
+        "margin": -34,
+        "margin_pct": -7.6,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "FLUSH",
+        "close_call": true
+      },
+      "timestamp": 5
+    },
+    {
+      "ante": 1,
+      "blind_type": "BIG",
+      "event_type": "run_end",
+      "data": {
+        "victory": false,
+        "blinds_beaten": 1,
+        "final_money": 0,
+        "final_jokers": [
+          "Faceless Joker"
+        ],
+        "final_hand_levels": {
+          "HIGH_CARD": 2
+        }
+      },
+      "timestamp": 6
+    }
+  ],
+  "summary": {
+    "total_blinds_attempted": 2,
+    "blinds_won": 1,
+    "close_calls": 1,
+    "jokers_acquired": 1,
+    "planets_used": 1,
+    "victory": false
+  }
+}

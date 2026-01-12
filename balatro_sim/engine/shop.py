@@ -140,7 +140,21 @@ class Shop:
         if not candidates:
             return None
 
-        return random.choices(candidates, weights=weights, k=1)[0]
+        joker = random.choices(candidates, weights=weights, k=1)[0]
+
+        # Copy joker dict so we don't mutate the original
+        joker = dict(joker)
+
+        # Small chance for edition (2% Foil, 1% Holo, 0.5% Poly)
+        edition_roll = random.random()
+        if edition_roll < 0.005:
+            joker['edition'] = 'Polychrome'
+        elif edition_roll < 0.015:
+            joker['edition'] = 'Holographic'
+        elif edition_roll < 0.035:
+            joker['edition'] = 'Foil'
+
+        return joker
 
     def _generate_planet(self) -> Consumable:
         """Generate a random planet card."""

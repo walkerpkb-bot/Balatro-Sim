@@ -6,7 +6,7 @@ Calculates final score from cards, jokers, and modifiers.
 from dataclasses import dataclass, field
 from typing import Callable
 
-from .deck import Card, Enhancement, Edition, Seal
+from .deck import Card, Enhancement, Edition, Seal, RANK_VALUES
 from .hand_detector import DetectedHand, HandType
 
 
@@ -77,7 +77,10 @@ class ScoringEngine:
 
     def score_hand(self, hand: DetectedHand, jokers: list = None,
                    all_cards_score: bool = False,
-                   held_cards: list = None) -> ScoreBreakdown:
+                   held_cards: list = None,
+                   is_final_hand: bool = False,
+                   joker_state: dict = None,
+                   deck_size: int = 52) -> ScoreBreakdown:
         """
         Calculate the score for a played hand.
 
@@ -86,18 +89,50 @@ class ScoringEngine:
             jokers: List of active jokers (with parsed effects)
             all_cards_score: If True, all played cards contribute chips (Splash joker)
             held_cards: Cards still held in hand (for Baron, Steel, etc.)
+            is_final_hand: True if this is the last hand of the round (for Dusk)
+            joker_state: State tracking for scaling jokers
+            deck_size: Total cards in deck (for Blue Joker)
         """
         ctx = ScoringContext(hand=hand)
         held_cards = held_cards or []
+        jokers = jokers or []
+        joker_state = joker_state or {}
+
+        # Check for retrigger jokers
+        has_hack = any(j.get('name') == 'Hack' for j in jokers)
+        has_dusk = any(j.get('name') == 'Dusk' for j in jokers)
+        has_sock_and_buskin = any(j.get('name') == 'Sock and Buskin' for j in jokers)
 
         # 1. Base chips and mult from hand type
         ctx.add_chips(hand.base_chips, f"{hand.hand_type.name} base")
         ctx.add_mult(hand.base_mult, f"{hand.hand_type.name} base")
 
-        # 2. Add chips from scoring cards
+        # 2. Add chips from scoring cards (with retriggers)
         scoring_cards = hand.all_cards if all_cards_score else hand.scoring_cards
         for card in scoring_cards:
-            self._score_card(card, ctx)
+            # Calculate retrigger count for this card
+            retriggers = 1  # Base: score once
+
+            # Red Seal: +1 retrigger
+            if card.seal == Seal.RED:
+                retriggers += 1
+
+            # Hack: retrigger 2s, 3s, 4s, 5s
+            if has_hack and card.rank in ('2', '3', '4', '5'):
+                retriggers += 1
+
+            # Dusk: retrigger all on final hand
+            if has_dusk and is_final_hand:
+                retriggers += 1
+
+            # Sock and Buskin: retrigger face cards
+            if has_sock_and_buskin and card.is_face_card:
+                retriggers += 1
+
+            # Score the card (retrigger count) times
+            for i in range(retriggers):
+                suffix = f" (retrigger {i+1})" if i > 0 else ""
+                self._score_card(card, ctx, suffix=suffix)
 
         # 3. Score held-in-hand effects (Steel cards, etc.)
         for card in held_cards:
@@ -105,9 +140,9 @@ class ScoringEngine:
                 ctx.multiply_mult(1.5, f"{card} Steel (held)")
 
         # 4. Apply joker effects (if any)
-        jokers = jokers or []
         for joker in jokers:
-            self._apply_joker(joker, ctx, held_cards=held_cards)
+            self._apply_joker(joker, ctx, held_cards=held_cards,
+                            joker_state=joker_state, deck_size=deck_size)
 
         # 4. Calculate final score
         final_chips = ctx.chips
@@ -128,10 +163,10 @@ class ScoringEngine:
             details=ctx.details
         )
 
-    def _score_card(self, card: Card, ctx: ScoringContext):
+    def _score_card(self, card: Card, ctx: ScoringContext, suffix: str = ""):
         """Add scoring from a single card."""
         # Base chip value
-        ctx.add_chips(card.chip_value, f"{card}")
+        ctx.add_chips(card.chip_value, f"{card}{suffix}")
 
         # Enhancement bonuses
         if card.enhancement == Enhancement.BONUS:
@@ -160,12 +195,14 @@ class ScoringEngine:
 
         ctx.cards_triggered.append(card)
 
-    def _apply_joker(self, joker: dict, ctx: ScoringContext, held_cards: list = None):
+    def _apply_joker(self, joker: dict, ctx: ScoringContext, held_cards: list = None,
+                     joker_state: dict = None, deck_size: int = 52):
         """Apply a parsed joker's effects to the scoring context."""
         if not joker or 'effect' not in joker:
             return
 
         held_cards = held_cards or []
+        joker_state = joker_state or {}
         effect = joker['effect']
         name = joker.get('name', 'Unknown')
         modifiers = effect.get('modifiers', [])
@@ -190,9 +227,59 @@ class ScoringEngine:
 
         # Raised Fist: Adds double the rank of lowest ranked card held to Mult
         if name == "Raised Fist" and held_cards:
-            from .deck import RANK_VALUES
             min_rank_value = min(RANK_VALUES.get(c.rank, 0) for c in held_cards)
             ctx.add_mult(min_rank_value * 2, f"Raised Fist")
+            return
+
+        # === SCALING JOKERS (use joker_state) ===
+
+        # Ride the Bus: +1 Mult for each consecutive hand without face cards
+        if name == "Ride the Bus":
+            mult_val = joker_state.get('ride_the_bus', 0)
+            if mult_val > 0:
+                ctx.add_mult(mult_val, f"Ride the Bus ({mult_val} hands)")
+            return
+
+        # Ice Cream: +100 Chips, -5 Chips per hand played
+        if name == "Ice Cream":
+            chips_val = joker_state.get('ice_cream', 100)
+            if chips_val > 0:
+                ctx.add_chips(chips_val, f"Ice Cream")
+            return
+
+        # Green Joker: +1 Mult per hand played OR discard used
+        if name == "Green Joker":
+            mult_val = joker_state.get('green_joker', 0)
+            if mult_val > 0:
+                ctx.add_mult(mult_val, f"Green Joker ({mult_val})")
+            return
+
+        # Runner: +15 Chips whenever hand contains a Straight
+        if name == "Runner":
+            chips_val = joker_state.get('runner', 0)
+            if chips_val > 0:
+                ctx.add_chips(chips_val, f"Runner ({chips_val} chips)")
+            return
+
+        # Square Joker: +4 Chips for each hand played with exactly 4 cards
+        if name == "Square Joker":
+            chips_val = joker_state.get('square_joker', 0)
+            if chips_val > 0:
+                ctx.add_chips(chips_val, f"Square Joker ({chips_val} chips)")
+            return
+
+        # Blue Joker: +2 Chips per remaining card in deck
+        if name == "Blue Joker":
+            chips_val = deck_size * 2
+            ctx.add_chips(chips_val, f"Blue Joker ({deck_size} cards)")
+            return
+
+        # Supernova: +Mult equal to times hand type played this run
+        if name == "Supernova":
+            hand_type_name = ctx.hand.hand_type.name
+            times_played = joker_state.get('supernova', {}).get(hand_type_name, 0)
+            if times_played > 0:
+                ctx.add_mult(times_played, f"Supernova ({times_played}x {hand_type_name})")
             return
 
         # Check conditions
@@ -323,6 +410,15 @@ class ScoringEngine:
             elif mod_type == 'debt_limit':
                 # Credit Card - economy modifier
                 pass
+
+        # Apply joker edition bonuses (Foil/Holo/Poly on the joker itself)
+        edition = joker.get('edition')
+        if edition == 'Foil':
+            ctx.add_chips(50, f"{name} (Foil)")
+        elif edition == 'Holographic':
+            ctx.add_mult(10, f"{name} (Holo)")
+        elif edition == 'Polychrome':
+            ctx.multiply_mult(1.5, f"{name} (Poly)")
 
     def _check_conditions(self, conditions: list, ctx: ScoringContext) -> bool:
         """Check if all conditions are met."""

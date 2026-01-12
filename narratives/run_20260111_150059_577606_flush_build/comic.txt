@@ -1,0 +1,30 @@
+COMIC SCRIPT: BALATRO RUN
+========================================
+
+PANEL 1:
+[Ante 1]
+The Tribe appeared. Everything changed.
+
+PANEL 2:
+[Ante 2]
+BIG blind. Score: 1,260. Required: 1,200. Margin: 5.0%. Barely.
+
+PANEL 3:
+[Ante 2]
+BOSS blind. Score: 1,784. Required: 1,600. Margin: 11.5%. Barely.
+
+PANEL 4:
+[Ante 3]
+SMALL blind. Score: 2,048. Required: 2,000. Margin: 2.4%. Barely.
+
+PANEL 5:
+[Ante 3]
+BIG blind. Score: 3,382. Required: 3,000. Margin: 12.7%. Barely.
+
+PANEL 6:
+[Ante 3]
+BOSS blind. Scored 1,708. Needed 4,000. Not enough.
+
+PANEL 7:
+[Ante 3]
+Defeat at Ante 3. 8 blinds beaten. The run ended, but the lesson remained.
