@@ -557,31 +557,74 @@ class ShopAI:
         return score
 
     def _score_joker(self, joker: dict, game_state) -> float:
-        """Score a joker based on current game state."""
+        """Score a joker based on current game state and synergies."""
         score = 0
         effect = joker.get("effect", {})
         modifiers = effect.get("modifiers", [])
+        conditions = effect.get("conditions", [])
+        name = joker.get("name", "")
 
+        # Base scoring from modifiers
         for mod in modifiers:
             mod_type = mod.get("type", "")
 
             if mod_type == "x_mult":
-                # X-mult is very valuable
                 score += mod.get("value", 1) * 50
-
             elif mod_type == "add_mult":
                 score += mod.get("value", 0) * 2
-
             elif mod_type == "add_chips":
                 score += mod.get("value", 0) * 0.5
-
             elif mod_type in ("earn_money", "give_money"):
                 score += mod.get("value", 0) * 3
 
-        # Bonus for rarity
+        # Rarity bonus
         rarity = joker.get("rarity", "Common")
         rarity_bonus = {"Common": 0, "Uncommon": 5, "Rare": 15, "Legendary": 50}
         score += rarity_bonus.get(rarity, 0)
+
+        # SYNERGY SCORING
+
+        # Check if joker synergizes with leveled hand types
+        for cond in conditions:
+            if cond.get("type") == "hand_contains":
+                required_hand = cond.get("hand", "").upper().replace(" ", "_")
+                hand_level = game_state.hand_levels.get(required_hand, 1)
+                if hand_level >= 2:
+                    score += 15 * hand_level  # Bonus for leveled hands
+
+        # Suit synergy with existing jokers
+        existing_suits = set()
+        for existing in game_state.jokers:
+            ex_effect = existing.get("effect", {})
+            for cond in ex_effect.get("conditions", []):
+                if cond.get("type") == "suit":
+                    existing_suits.add(cond.get("suit", "").lower())
+
+        for cond in conditions:
+            if cond.get("type") == "suit":
+                req_suit = cond.get("suit", "").lower()
+                if req_suit in existing_suits:
+                    score += 20  # Same suit synergy
+
+        # Scaling jokers are valuable early
+        scaling_jokers = {"Ride the Bus", "Green Joker", "Ice Cream", "Runner", "Square Joker", "Supernova"}
+        if name in scaling_jokers and game_state.ante <= 3:
+            score += 15
+
+        # X-mult jokers synergize with high-mult existing jokers
+        has_xmult = any(m.get("type") == "x_mult" for m in modifiers)
+        existing_mult = sum(
+            m.get("value", 0) for j in game_state.jokers
+            for m in j.get("effect", {}).get("modifiers", [])
+            if m.get("type") == "add_mult"
+        )
+        if has_xmult and existing_mult >= 10:
+            score += 25  # x-mult amplifies existing mult
+
+        # Retrigger jokers (Hack, Dusk, Sock and Buskin) synergize with chip-heavy cards
+        retrigger_jokers = {"Hack", "Dusk", "Sock and Buskin"}
+        if name in retrigger_jokers:
+            score += 10  # Generally good
 
         return score
 
