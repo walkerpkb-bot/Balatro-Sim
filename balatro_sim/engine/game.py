@@ -13,6 +13,7 @@ from .deck import Deck, Hand, Card
 from .hand_detector import HandDetector, HandDetectorConfig, HandType, DetectedHand
 from .scoring import ScoringEngine, ScoreBreakdown
 from .history import RunHistory
+from .boss_blinds import BossBlind, BossBlindState, BossEffect, get_boss_for_ante
 
 
 class BlindType(Enum):
@@ -55,6 +56,9 @@ class GameConfig:
     consumable_slots: int = 2
     ante_count: int = 8
     enable_shop: bool = True
+    # Deck modifications
+    no_face_cards: bool = False  # Abandoned deck
+    suits: list = None  # Checkered deck (e.g., ["Spades", "Hearts"])
 
 
 class GameState:
@@ -79,8 +83,14 @@ class GameState:
         self.hands_remaining = self.config.starting_hands
         self.discards_remaining = self.config.starting_discards
 
-        # Deck and hand
-        self.deck = Deck.standard_52()
+        # Deck and hand - apply deck modifications
+        if self.config.no_face_cards or self.config.suits:
+            self.deck = Deck.custom(
+                suits=self.config.suits,
+                no_face_cards=self.config.no_face_cards
+            )
+        else:
+            self.deck = Deck.standard_52()
         self.deck.shuffle()
         self.hand = Hand()
 
@@ -91,6 +101,19 @@ class GameState:
         # Shop tracking
         self.jokers_purchased: list[str] = []
         self.planets_used: int = 0
+        self.vouchers_owned: list[str] = []  # Names of owned vouchers
+
+        # Voucher bonuses (accumulated from purchased vouchers)
+        self.voucher_bonuses = {
+            'extra_hands': 0,
+            'extra_discards': 0,
+            'extra_hand_size': 0,
+            'extra_joker_slots': 0,
+            'extra_consumable_slots': 0,
+            'shop_discount': 0.0,
+            'reroll_discount': 0,
+            'interest_cap': 5,  # Default interest cap
+        }
 
         # Hand levels
         self.hand_levels: dict[HandType, int] = {ht: 1 for ht in HandType}
@@ -118,6 +141,9 @@ class GameState:
         # Scoring engine
         self.hand_detector = HandDetector(hand_levels=self.hand_levels)
         self.scoring_engine = ScoringEngine()
+
+        # Boss blind state (set when entering boss blind)
+        self.current_boss: Optional[BossBlindState] = None
 
         # Load blind requirements
         self.blind_requirements = self._load_blind_requirements()
@@ -147,16 +173,26 @@ class GameState:
         blind_key = self.current_blind.name.lower()
 
         if ante_key in self.blind_requirements:
-            return self.blind_requirements[ante_key].get(blind_key, 999999)
+            base_score = self.blind_requirements[ante_key].get(blind_key, 999999)
+        else:
+            # Endless mode scaling (rough estimate)
+            base = self.blind_requirements.get("ante_8", {}).get(blind_key, 100000)
+            scale = 1.6 ** (self.ante - 8)
+            base_score = int(base * scale)
 
-        # Endless mode scaling (rough estimate)
-        base = self.blind_requirements.get("ante_8", {}).get(blind_key, 100000)
-        scale = 1.6 ** (self.ante - 8)
-        return int(base * scale)
+        # Apply boss multiplier if active
+        if self.current_boss:
+            base_score = int(base_score * self.current_boss.get_score_multiplier())
+
+        return base_score
 
     def draw_hand(self) -> None:
         """Draw cards up to hand size."""
-        cards_needed = self.config.hand_size - self.hand.size()
+        hand_size = self.config.hand_size + self.voucher_bonuses.get('extra_hand_size', 0)
+        # Apply boss hand size modifier
+        if self.current_boss:
+            hand_size += self.current_boss.get_hand_size_modifier()
+        cards_needed = hand_size - self.hand.size()
         if cards_needed > 0:
             drawn = self.deck.draw(cards_needed)
             self.hand.add(drawn)
@@ -187,14 +223,15 @@ class GameState:
         # Check if this is the final hand (for Dusk retrigger)
         is_final_hand = self.hands_remaining == 1
 
-        # Score the hand (pass joker_state for scaling jokers)
+        # Score the hand (pass joker_state for scaling jokers, boss_state for debuffs)
         breakdown = self.scoring_engine.score_hand(
             detected,
             self.jokers,
             held_cards=held_cards,
             is_final_hand=is_final_hand,
             joker_state=self.joker_state,
-            deck_size=len(self.deck.cards) + len(self.deck.discard_pile)
+            deck_size=len(self.deck.cards) + len(self.deck.discard_pile),
+            boss_state=self.current_boss
         )
 
         # Update joker state after scoring
@@ -269,8 +306,9 @@ class GameState:
             else:
                 money_earned = 5
 
-            # Interest (20% of money, max $5)
-            interest = min(5, int(self.money * 0.2))
+            # Interest (20% of money, capped by vouchers)
+            interest_cap = self.voucher_bonuses.get('interest_cap', 5)
+            interest = min(interest_cap, int(self.money * 0.2))
             money_earned += interest
 
         self.money += money_earned
@@ -292,9 +330,9 @@ class GameState:
             self.ante += 1
             self.current_blind = BlindType.SMALL
 
-        # Reset for new blind
-        self.hands_remaining = self.config.starting_hands
-        self.discards_remaining = self.config.starting_discards
+        # Reset for new blind (apply voucher bonuses)
+        self.hands_remaining = self.config.starting_hands + self.voucher_bonuses.get('extra_hands', 0)
+        self.discards_remaining = self.config.starting_discards + self.voucher_bonuses.get('extra_discards', 0)
 
         # Return hand cards to deck before reset
         remaining_cards = self.hand.clear()
@@ -305,11 +343,37 @@ class GameState:
 
     def add_joker(self, joker: dict, source: str = "starting") -> bool:
         """Add a joker if there's room."""
-        if len(self.jokers) >= self.config.joker_slots:
+        max_slots = self.config.joker_slots + self.voucher_bonuses.get('extra_joker_slots', 0)
+        if len(self.jokers) >= max_slots:
             return False
         self.jokers.append(joker)
         self.history.add_joker_acquired(self.ante, joker.get("name", "Unknown"), source)
         return True
+
+    def add_voucher(self, voucher_name: str, voucher_effect: dict) -> None:
+        """Add a voucher and apply its effects."""
+        self.vouchers_owned.append(voucher_name)
+
+        # Apply voucher effects to bonuses
+        for key, value in voucher_effect.items():
+            if key == 'extra_hands':
+                self.voucher_bonuses['extra_hands'] += value
+            elif key == 'extra_discards':
+                self.voucher_bonuses['extra_discards'] += value
+            elif key == 'starting_draw':  # Hand size
+                self.voucher_bonuses['extra_hand_size'] += value
+            elif key == 'joker_slots':
+                self.voucher_bonuses['extra_joker_slots'] += value
+            elif key == 'consumable_slots':
+                self.voucher_bonuses['extra_consumable_slots'] += value
+            elif key == 'shop_discount':
+                self.voucher_bonuses['shop_discount'] += value
+            elif key == 'reroll_discount':
+                self.voucher_bonuses['reroll_discount'] += value
+            elif key == 'interest_cap':
+                self.voucher_bonuses['interest_cap'] = max(
+                    self.voucher_bonuses['interest_cap'], value
+                )
 
     def level_up_hand(self, hand_type: HandType) -> None:
         """Increase the level of a hand type."""
@@ -323,14 +387,20 @@ class BasicStrategy:
     Used for simulations.
     """
 
-    def select_cards_to_play(self, hand: Hand, game: GameState) -> list[int]:
+    def select_cards_to_play(self, hand: Hand, game: GameState, must_play_count: int = None) -> list[int]:
         """
         Select which cards to play.
         Returns indices of cards to play.
+
+        Args:
+            must_play_count: If set (e.g., The Psychic boss), must play exactly this many cards
         """
         cards = hand.cards
         if not cards:
             return []
+
+        # Determine how many cards to play
+        play_count = must_play_count if must_play_count else 5
 
         # Try to find the best hand from available cards
         best_score = 0
@@ -339,8 +409,8 @@ class BasicStrategy:
         # Try different combinations (simplified - just try obvious ones)
         detector = game.hand_detector
 
-        # Try playing all cards (up to 5)
-        all_indices = list(range(min(5, len(cards))))
+        # Try playing cards (up to play_count)
+        all_indices = list(range(min(play_count, len(cards))))
         if all_indices:
             test_cards = [cards[i] for i in all_indices]
             detected = detector.detect(test_cards)
@@ -356,7 +426,11 @@ class BasicStrategy:
         for rank, count in rank_counts.items():
             if count >= 2:
                 # Get indices of cards with this rank
-                indices = [i for i, c in enumerate(cards) if c.rank == rank][:min(5, count)]
+                indices = [i for i, c in enumerate(cards) if c.rank == rank][:min(play_count, count)]
+                # If must_play_count, pad with other cards
+                if must_play_count and len(indices) < must_play_count:
+                    other_indices = [i for i in range(len(cards)) if i not in indices]
+                    indices.extend(other_indices[:must_play_count - len(indices)])
                 test_cards = [cards[i] for i in indices]
                 detected = detector.detect(test_cards)
                 breakdown = game.scoring_engine.score_hand(detected, game.jokers)
@@ -368,7 +442,7 @@ class BasicStrategy:
         if not best_indices:
             sorted_indices = sorted(range(len(cards)),
                                   key=lambda i: cards[i].chip_value, reverse=True)
-            best_indices = sorted_indices[:min(5, len(cards))]
+            best_indices = sorted_indices[:min(play_count, len(cards))]
 
         return best_indices
 
@@ -403,6 +477,21 @@ def simulate_blind(game: GameState, strategy = None) -> BlindResult:
     if strategy is None:
         strategy = BasicStrategy()
 
+    # Set up boss blind if this is a boss fight
+    boss_name = None
+    if game.current_blind == BlindType.BOSS:
+        boss = get_boss_for_ante(game.ante)
+        game.current_boss = BossBlindState(boss)
+        boss_name = boss.name
+
+        # Apply boss modifiers to starting resources
+        # The Water: start with 0 discards
+        game.discards_remaining = max(0, game.discards_remaining + game.current_boss.get_discard_modifier())
+        # The Needle: only 1 hand
+        game.hands_remaining = max(1, game.hands_remaining + game.current_boss.get_hands_modifier())
+    else:
+        game.current_boss = None
+
     score_required = game.get_score_requirement()
     total_score = 0
     hands_played = []
@@ -410,20 +499,53 @@ def simulate_blind(game: GameState, strategy = None) -> BlindResult:
     game.draw_hand()
 
     while game.hands_remaining > 0 and total_score < score_required:
+        # The Hook: discard random cards at start of each hand
+        if game.current_boss:
+            random_discards = game.current_boss.get_random_discards()
+            if random_discards > 0 and game.hand.size() > random_discards:
+                import random as rng
+                discard_indices = rng.sample(range(game.hand.size()), min(random_discards, game.hand.size()))
+                # Don't use normal discard (it decrements counter), just remove cards
+                cards_to_remove = game.hand.select(discard_indices)
+                removed = game.hand.remove(cards_to_remove)
+                game.deck.discard(removed)
+
         # Optionally discard first
         if game.discards_remaining > 0 and game.hands_remaining > 1:
             discard_indices = strategy.select_cards_to_discard(game.hand, game)
             if discard_indices:
                 game.discard_cards(discard_indices)
 
-        # Play a hand
-        play_indices = strategy.select_cards_to_play(game.hand, game)
+        # The Psychic: must play exactly 5 cards
+        if game.current_boss and game.current_boss.must_play_5_cards():
+            play_indices = strategy.select_cards_to_play(game.hand, game, must_play_count=5)
+        else:
+            play_indices = strategy.select_cards_to_play(game.hand, game)
+
         if not play_indices:
             break
+
+        # Check hand type allowed (The Eye, The Mouth)
+        if game.current_boss:
+            # Preview what hand type would be played
+            preview_cards = game.hand.select(play_indices)
+            preview_hand = game.hand_detector.detect(preview_cards)
+            if not game.current_boss.check_hand_allowed(preview_hand.hand_type.name):
+                # Try to find a different hand, or just play anyway (AI limitation)
+                pass  # For now, allow it - real AI improvement would find alternative
 
         detected, breakdown = game.play_cards(play_indices)
         total_score += breakdown.final_score
         hands_played.append((detected.hand_type.name, breakdown.final_score))
+
+        # Record hand type for The Eye/The Mouth tracking
+        if game.current_boss:
+            game.current_boss.record_hand_played(detected.hand_type.name)
+
+        # The Tooth: lose money per card played
+        if game.current_boss:
+            money_loss = game.current_boss.get_money_loss_per_card() * len(detected.all_cards)
+            game.money = max(0, game.money - money_loss)
 
         # Draw new cards
         game.draw_hand()
@@ -432,6 +554,9 @@ def simulate_blind(game: GameState, strategy = None) -> BlindResult:
     hands_used = game.config.starting_hands - game.hands_remaining
     discards_used = game.config.starting_discards - game.discards_remaining
     money_earned = game.end_blind(success)
+
+    # Clear boss state after blind
+    game.current_boss = None
 
     # Log blind result to history
     best_hand = max(hands_played, key=lambda x: x[1])[0] if hands_played else None
@@ -443,7 +568,8 @@ def simulate_blind(game: GameState, strategy = None) -> BlindResult:
         success=success,
         hands_used=hands_used,
         discards_used=discards_used,
-        best_hand=best_hand
+        best_hand=best_hand,
+        boss_name=boss_name
     )
 
     return BlindResult(
@@ -468,15 +594,30 @@ def simulate_shop(game: GameState, all_jokers: list, shop_ai=None) -> dict:
         shop_ai = ShopAI()
 
     shop = Shop(all_jokers)
-    shop.generate(owned_jokers=game.jokers)
+    shop.generate(
+        owned_jokers=game.jokers,
+        owned_vouchers=game.vouchers_owned,
+        ante=game.ante
+    )
 
     decisions = shop_ai.decide_purchases(shop, game)
     results = {
         "jokers_bought": [],
         "consumables_bought": [],
+        "vouchers_bought": [],
         "planets_used": [],
         "money_spent": 0
     }
+
+    # Buy vouchers first (permanent upgrades)
+    for idx in decisions.get("vouchers_to_buy", []):
+        if idx < len(shop.vouchers):
+            voucher = shop.vouchers[idx]
+            if voucher.cost <= game.money:
+                game.money -= voucher.cost
+                game.add_voucher(voucher.name, voucher.effect)
+                results["vouchers_bought"].append(voucher.name)
+                results["money_spent"] += voucher.cost
 
     # Buy jokers
     for idx in decisions["jokers_to_buy"]:
@@ -517,20 +658,60 @@ def simulate_shop(game: GameState, all_jokers: list, shop_ai=None) -> dict:
                             hand_type.name,
                             old_level + 1
                         )
+                elif consumable.type == ConsumableType.TAROT:
+                    # Use tarots that provide immediate benefit
+                    from .shop import apply_tarot
+                    effect = consumable.effect
+                    # Use Hermit (money) immediately
+                    if effect.get("double_money") or effect.get("random_edition"):
+                        msg = apply_tarot(consumable, game)
+                        if "tarots_used" not in results:
+                            results["tarots_used"] = []
+                        results["tarots_used"].append(msg)
+                    else:
+                        # Store other tarots for later use
+                        extra_slots = game.voucher_bonuses.get('extra_consumable_slots', 0)
+                        max_slots = game.config.consumable_slots + extra_slots
+                        if len(game.consumables) < max_slots:
+                            game.consumables.append(consumable)
+                elif consumable.type == ConsumableType.SPECTRAL:
+                    # Use spectrals that provide immediate benefit
+                    from .shop import apply_spectral
+                    effect = consumable.effect
+                    # Use money-generating spectrals immediately
+                    if effect.get("gain_money") or effect.get("destroy_for_money") or effect.get("level_up_all"):
+                        msg = apply_spectral(consumable, game, all_jokers)
+                        if "spectrals_used" not in results:
+                            results["spectrals_used"] = []
+                        results["spectrals_used"].append(msg)
+                    else:
+                        # Store for later
+                        extra_slots = game.voucher_bonuses.get('extra_consumable_slots', 0)
+                        max_slots = game.config.consumable_slots + extra_slots
+                        if len(game.consumables) < max_slots:
+                            game.consumables.append(consumable)
                 else:
                     # Store other consumables if room
-                    if len(game.consumables) < game.config.consumable_slots:
+                    extra_slots = game.voucher_bonuses.get('extra_consumable_slots', 0)
+                    max_slots = game.config.consumable_slots + extra_slots
+                    if len(game.consumables) < max_slots:
                         game.consumables.append(consumable)
 
-    # Log shop visit
-    money_before = game.money + results["money_spent"]
+    # Log shop visit with all consumable types
     game.history.add_shop_visit(
         ante=game.ante,
         jokers_bought=results["jokers_bought"],
-        planets_used=[p.split(":")[0].strip() for p in results["planets_used"]],  # Extract planet names
+        planets_used=[p.split(":")[0].strip() for p in results["planets_used"]],
         money_spent=results["money_spent"],
-        money_remaining=game.money
+        money_remaining=game.money,
+        vouchers_bought=results.get("vouchers_bought"),
+        tarots_used=results.get("tarots_used"),
+        spectrals_used=results.get("spectrals_used")
     )
+
+    # Log individual voucher acquisitions for narrative
+    for voucher_name in results.get("vouchers_bought", []):
+        game.history.add_voucher_acquired(game.ante, voucher_name)
 
     return results
 

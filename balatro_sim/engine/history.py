@@ -54,41 +54,81 @@ class RunHistory:
         )
 
     def add_shop_visit(self, ante: int, jokers_bought: list, planets_used: list,
-                       money_spent: int, money_remaining: int):
+                       money_spent: int, money_remaining: int,
+                       vouchers_bought: list = None, tarots_used: list = None,
+                       spectrals_used: list = None):
         """Log shop purchases."""
+        data = {
+            "jokers_bought": jokers_bought,
+            "planets_used": planets_used,
+            "money_spent": money_spent,
+            "money_remaining": money_remaining
+        }
+        if vouchers_bought:
+            data["vouchers_bought"] = vouchers_bought
+        if tarots_used:
+            data["tarots_used"] = tarots_used
+        if spectrals_used:
+            data["spectrals_used"] = spectrals_used
+
         self.add_event(
             ante=ante,
             event_type="shop_visit",
+            data=data
+        )
+
+    def add_voucher_acquired(self, ante: int, voucher_name: str, effect_summary: str = None):
+        """Log voucher purchase."""
+        self.add_event(
+            ante=ante,
+            event_type="voucher_acquired",
             data={
-                "jokers_bought": jokers_bought,
-                "planets_used": planets_used,
-                "money_spent": money_spent,
-                "money_remaining": money_remaining
+                "voucher": voucher_name,
+                "effect": effect_summary
+            }
+        )
+
+    def add_consumable_used(self, ante: int, consumable_name: str, consumable_type: str,
+                            effect_description: str):
+        """Log tarot/spectral usage."""
+        self.add_event(
+            ante=ante,
+            event_type="consumable_used",
+            data={
+                "name": consumable_name,
+                "type": consumable_type,
+                "effect": effect_description
             }
         )
 
     def add_blind_result(self, ante: int, blind_type: str, score: int,
                          required: int, success: bool, hands_used: int,
-                         discards_used: int = 0, best_hand: str = None):
+                         discards_used: int = 0, best_hand: str = None,
+                         boss_name: str = None):
         """Log blind attempt."""
         margin = score - required
         margin_pct = (margin / required * 100) if required > 0 else 0
+
+        data = {
+            "score": score,
+            "required": required,
+            "success": success,
+            "margin": margin,
+            "margin_pct": round(margin_pct, 1),
+            "hands_used": hands_used,
+            "discards_used": discards_used,
+            "best_hand": best_hand,
+            "close_call": abs(margin_pct) < 20
+        }
+
+        if boss_name:
+            data["boss_name"] = boss_name
 
         self.add_event(
             ante=ante,
             blind_type=blind_type,
             event_type="blind_result",
-            data={
-                "score": score,
-                "required": required,
-                "success": success,
-                "margin": margin,
-                "margin_pct": round(margin_pct, 1),
-                "hands_used": hands_used,
-                "discards_used": discards_used,
-                "best_hand": best_hand,
-                "close_call": abs(margin_pct) < 20
-            }
+            data=data
         )
 
     def add_joker_acquired(self, ante: int, joker_name: str, source: str = "shop"):
@@ -177,15 +217,24 @@ class RunHistory:
         """Generate a quick summary of the run."""
         blind_results = [e for e in self.events if e.event_type == "blind_result"]
         close_calls = [e for e in blind_results if e.data.get("close_call")]
+        shop_visits = [e for e in self.events if e.event_type == "shop_visit"]
 
         run_end = next((e for e in self.events if e.event_type == "run_end"), None)
+
+        # Count boss fights
+        boss_fights = [e for e in blind_results if e.data.get("boss_name")]
 
         return {
             "total_blinds_attempted": len(blind_results),
             "blinds_won": sum(1 for e in blind_results if e.data.get("success")),
             "close_calls": len(close_calls),
             "jokers_acquired": sum(1 for e in self.events if e.event_type == "joker_acquired"),
-            "planets_used": sum(len(e.data.get("planets_used", [])) for e in self.events if e.event_type == "shop_visit"),
+            "vouchers_acquired": sum(1 for e in self.events if e.event_type == "voucher_acquired"),
+            "planets_used": sum(len(e.data.get("planets_used", [])) for e in shop_visits),
+            "tarots_used": sum(len(e.data.get("tarots_used", []) or []) for e in shop_visits),
+            "spectrals_used": sum(len(e.data.get("spectrals_used", []) or []) for e in shop_visits),
+            "boss_fights": len(boss_fights),
+            "bosses_defeated": sum(1 for e in boss_fights if e.data.get("success")),
             "victory": run_end.data.get("victory") if run_end else False
         }
 

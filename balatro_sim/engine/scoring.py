@@ -80,7 +80,8 @@ class ScoringEngine:
                    held_cards: list = None,
                    is_final_hand: bool = False,
                    joker_state: dict = None,
-                   deck_size: int = 52) -> ScoreBreakdown:
+                   deck_size: int = 52,
+                   boss_state = None) -> ScoreBreakdown:
         """
         Calculate the score for a played hand.
 
@@ -92,6 +93,7 @@ class ScoringEngine:
             is_final_hand: True if this is the last hand of the round (for Dusk)
             joker_state: State tracking for scaling jokers
             deck_size: Total cards in deck (for Blue Joker)
+            boss_state: BossBlindState for debuff effects (suit/face debuffs)
         """
         ctx = ScoringContext(hand=hand)
         held_cards = held_cards or []
@@ -104,11 +106,38 @@ class ScoringEngine:
         has_sock_and_buskin = any(j.get('name') == 'Sock and Buskin' for j in jokers)
 
         # 1. Base chips and mult from hand type
-        ctx.add_chips(hand.base_chips, f"{hand.hand_type.name} base")
-        ctx.add_mult(hand.base_mult, f"{hand.hand_type.name} base")
+        base_chips = hand.base_chips
+        base_mult = hand.base_mult
+
+        # The Flint: halve base chips and mult
+        if boss_state:
+            base_mult_modifier = boss_state.get_base_score_multiplier()
+            if base_mult_modifier != 1.0:
+                base_chips = int(base_chips * base_mult_modifier)
+                base_mult = int(base_mult * base_mult_modifier)
+                ctx.details.append(f"Base halved by The Flint")
+
+        ctx.add_chips(base_chips, f"{hand.hand_type.name} base")
+        ctx.add_mult(base_mult, f"{hand.hand_type.name} base")
 
         # 2. Add chips from scoring cards (with retriggers)
         scoring_cards = hand.all_cards if all_cards_score else hand.scoring_cards
+
+        # Filter out debuffed cards (boss effects)
+        if boss_state:
+            non_debuffed = []
+            for card in scoring_cards:
+                # Check suit debuff
+                if boss_state.is_suit_debuffed(card.suit):
+                    ctx.details.append(f"{card} debuffed (suit)")
+                    continue
+                # Check face card debuff
+                if boss_state.is_face_debuffed() and card.is_face_card:
+                    ctx.details.append(f"{card} debuffed (face)")
+                    continue
+                non_debuffed.append(card)
+            scoring_cards = non_debuffed
+
         for card in scoring_cards:
             # Calculate retrigger count for this card
             retriggers = 1  # Base: score once

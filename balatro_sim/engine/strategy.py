@@ -105,19 +105,30 @@ class SmartStrategy:
         options.sort(key=lambda x: x.score, reverse=True)
         return options
 
-    def select_cards_to_play(self, hand: Hand, game) -> list[int]:
+    def select_cards_to_play(self, hand: Hand, game, must_play_count: int = None) -> list[int]:
         """
         Select the best cards to play.
         Evaluates all combinations and picks highest scoring.
+
+        Args:
+            must_play_count: If set (e.g., The Psychic boss), must play exactly this many cards
         """
         if not hand.cards:
             return []
 
+        # If boss requires exactly N cards, only evaluate N-card plays
+        if must_play_count:
+            min_cards = must_play_count
+            max_cards = must_play_count
+        else:
+            min_cards = 1
+            max_cards = 5
+
         options = self.evaluate_all_plays(
             hand,
             jokers=game.jokers,
-            min_cards=1,
-            max_cards=5
+            min_cards=min_cards,
+            max_cards=max_cards
         )
 
         if not options:
@@ -315,16 +326,21 @@ class AggressiveStrategy(SmartStrategy):
     Good for when you're behind on score.
     """
 
-    def select_cards_to_play(self, hand: Hand, game) -> list[int]:
+    def select_cards_to_play(self, hand: Hand, game, must_play_count: int = None) -> list[int]:
         """Always play the maximum scoring option."""
-        options = self.evaluate_all_plays(hand, game.jokers, min_cards=1, max_cards=5)
+        if must_play_count:
+            options = self.evaluate_all_plays(hand, game.jokers, min_cards=must_play_count, max_cards=must_play_count)
+        else:
+            options = self.evaluate_all_plays(hand, game.jokers, min_cards=1, max_cards=5)
+
         if not options:
             return []
 
-        # Filter to only 5-card plays for maximum scoring potential
-        five_card_options = [o for o in options if len(o.cards) == 5]
-        if five_card_options:
-            return five_card_options[0].indices
+        # Filter to only 5-card plays for maximum scoring potential (unless boss forces different)
+        if not must_play_count:
+            five_card_options = [o for o in options if len(o.cards) == 5]
+            if five_card_options:
+                return five_card_options[0].indices
 
         return options[0].indices
 

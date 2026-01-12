@@ -45,6 +45,67 @@ PLANET_CARDS = {
     "Eris": HandType.FLUSH_FIVE,
 }
 
+
+# Voucher definitions
+@dataclass
+class Voucher:
+    """A voucher that provides a permanent upgrade."""
+    name: str
+    cost: int
+    effect: dict
+    description: str
+    tier: int = 1  # 1 = base, 2 = upgraded version
+
+    def __str__(self):
+        return f"{self.name} (${self.cost})"
+
+
+# Available vouchers and their effects
+VOUCHERS = [
+    # Tier 1 vouchers
+    Voucher("Overstock", 10, {"extra_shop_slots": 1}, "+1 card slot in shop", tier=1),
+    Voucher("Clearance Sale", 10, {"shop_discount": 0.25}, "25% off all items in shop", tier=1),
+    Voucher("Hone", 10, {"uncommon_rate_boost": 0.04}, "Better joker rarities", tier=1),
+    Voucher("Reroll Surplus", 10, {"reroll_discount": 2}, "-$2 per reroll", tier=1),
+    Voucher("Crystal Ball", 10, {"consumable_slots": 1}, "+1 consumable slot", tier=1),
+    Voucher("Telescope", 10, {"celestial_rate": 1.5}, "More planet cards appear", tier=1),
+    Voucher("Grabber", 10, {"extra_hands": 1}, "+1 hand per round", tier=1),
+    Voucher("Wasteful", 10, {"extra_discards": 1}, "+1 discard per round", tier=1),
+    Voucher("Seed Money", 10, {"interest_cap": 10}, "Raise interest cap to $10", tier=1),
+    Voucher("Blank", 10, {"starting_draw": 1}, "+1 hand size", tier=1),
+
+    # Tier 2 vouchers (require tier 1 to unlock)
+    Voucher("Overstock Plus", 10, {"extra_shop_slots": 1}, "+1 more card slot", tier=2),
+    Voucher("Liquidation", 10, {"shop_discount": 0.25}, "Additional 25% off", tier=2),
+    Voucher("Glow Up", 10, {"rare_rate_boost": 0.04}, "Even better rarities", tier=2),
+    Voucher("Reroll Glut", 10, {"reroll_discount": 2}, "-$2 more per reroll", tier=2),
+    Voucher("Omen Globe", 10, {"spectral_rate": 1.5}, "More spectral cards", tier=2),
+    Voucher("Nacho Tong", 10, {"extra_hands": 1}, "+1 more hand", tier=2),
+    Voucher("Recyclomancy", 10, {"extra_discards": 1}, "+1 more discard", tier=2),
+    Voucher("Money Tree", 10, {"interest_cap": 15}, "Raise cap to $15", tier=2),
+    Voucher("Antimatter", 10, {"joker_slots": 1}, "+1 joker slot", tier=2),
+    Voucher("Magic Trick", 10, {"play_hand_anywhere": True}, "Cards can go anywhere", tier=2),
+]
+
+
+def get_available_vouchers(owned_vouchers: list[str], ante: int = 1) -> list[Voucher]:
+    """Get vouchers available for purchase based on owned vouchers and ante."""
+    available = []
+    owned_names = set(owned_vouchers)
+
+    for voucher in VOUCHERS:
+        if voucher.name in owned_names:
+            continue
+        # Tier 2 requires owning the tier 1 version first (simplified check)
+        if voucher.tier == 2:
+            # Check if corresponding tier 1 is owned
+            tier1_names = [v.name for v in VOUCHERS if v.tier == 1]
+            if not any(name in owned_names for name in tier1_names):
+                continue
+        available.append(voucher)
+
+    return available
+
 # Rarity weights for joker spawning
 RARITY_WEIGHTS = {
     "Common": 70,
@@ -98,9 +159,11 @@ class Shop:
         # Track what's been bought this run (for Showman joker)
         self.purchased_joker_names: set = set()
 
-    def generate(self, owned_jokers: list = None, allow_duplicates: bool = False):
+    def generate(self, owned_jokers: list = None, allow_duplicates: bool = False,
+                 owned_vouchers: list = None, ante: int = 1):
         """Generate new shop contents."""
         owned_names = {j.get("name") for j in (owned_jokers or [])}
+        owned_vouchers = owned_vouchers or []
 
         # Generate jokers
         self.jokers = []
@@ -109,13 +172,23 @@ class Shop:
             if joker:
                 self.jokers.append(joker)
 
-        # Generate consumables (mix of planets and tarots)
+        # Generate consumables (mix of planets, tarots, and rarely spectrals)
         self.consumables = []
         for _ in range(self.config.consumable_slots):
-            if random.random() < 0.5:
+            roll = random.random()
+            if roll < 0.05:  # 5% chance for spectral
+                self.consumables.append(self._generate_spectral())
+            elif roll < 0.55:  # 50% chance for planet
                 self.consumables.append(self._generate_planet())
-            else:
+            else:  # 45% chance for tarot
                 self.consumables.append(self._generate_tarot())
+
+        # Generate voucher (one per shop)
+        self.vouchers = []
+        available = get_available_vouchers(owned_vouchers, ante)
+        if available:
+            voucher = random.choice(available)
+            self.vouchers.append(voucher)
 
     def _pick_random_joker(self, owned_names: set, allow_duplicates: bool) -> Optional[dict]:
         """Pick a random joker based on rarity weights."""
@@ -201,6 +274,36 @@ class Shop:
             cost=3
         )
 
+    def _generate_spectral(self) -> Consumable:
+        """Generate a random spectral card (rare and powerful)."""
+        spectrals = [
+            ("Familiar", {"create_joker": True, "type": "random"}),
+            ("Grim", {"destroy_for_money": True, "money_per_card": 4}),
+            ("Incantation", {"add_copies": 4, "rank": "random"}),
+            ("Talisman", {"add_seal": "Gold", "count": 1}),
+            ("Aura", {"add_edition": "random", "count": 1}),
+            ("Wraith", {"create_rare_joker": True, "cost": "all_money"}),
+            ("Sigil", {"convert_to_suit": "single", "count": "all"}),
+            ("Ouija", {"add_enhancement": "random", "reduce_hand_size": 1}),
+            ("Ectoplasm", {"add_negative": True, "reduce_hand_size": 1}),
+            ("Immolate", {"destroy_cards": 5, "gain_money": 20}),
+            ("Ankh", {"copy_random_joker": True, "destroy_others": True}),
+            ("Deja Vu", {"add_seal": "Red", "count": 1}),
+            ("Hex", {"add_polychrome": True, "destroy_other_jokers": True}),
+            ("Trance", {"add_seal": "Blue", "count": 1}),
+            ("Medium", {"add_seal": "Purple", "count": 1}),
+            ("Cryptid", {"copy_cards": 2}),
+            ("The Soul", {"create_legendary_joker": True}),
+            ("Black Hole", {"level_up_all": 1}),
+        ]
+        name, effect = random.choice(spectrals)
+        return Consumable(
+            name=name,
+            type=ConsumableType.SPECTRAL,
+            effect=effect,
+            cost=4
+        )
+
     def get_joker_cost(self, joker: dict) -> int:
         """Get the cost of a joker."""
         rarity = joker.get("rarity", "Common")
@@ -231,19 +334,32 @@ class ShopAI:
         Returns dict with:
             - jokers_to_buy: list of joker indices
             - consumables_to_buy: list of consumable indices
+            - vouchers_to_buy: list of voucher indices
             - use_consumables: list of (consumable, target) tuples
             - reroll: bool
         """
         decisions = {
             "jokers_to_buy": [],
             "consumables_to_buy": [],
+            "vouchers_to_buy": [],
             "use_consumables": [],
             "reroll": False
         }
 
         money = game_state.money
-        joker_slots_free = game_state.config.joker_slots - len(game_state.jokers)
-        consumable_slots_free = game_state.config.consumable_slots - len(game_state.consumables)
+        extra_joker_slots = game_state.voucher_bonuses.get('extra_joker_slots', 0)
+        joker_slots_free = game_state.config.joker_slots + extra_joker_slots - len(game_state.jokers)
+        extra_cons_slots = game_state.voucher_bonuses.get('extra_consumable_slots', 0)
+        consumable_slots_free = game_state.config.consumable_slots + extra_cons_slots - len(game_state.consumables)
+
+        # Evaluate vouchers first (permanent upgrades are valuable)
+        for i, voucher in enumerate(shop.vouchers):
+            if voucher.cost > money:
+                continue
+            voucher_score = self._score_voucher(voucher, game_state)
+            if voucher_score > 5:  # Worth buying
+                decisions["vouchers_to_buy"].append(i)
+                money -= voucher.cost
 
         # Evaluate jokers
         joker_scores = []
@@ -280,6 +396,25 @@ class ShopAI:
                     decisions["use_consumables"].append((consumable, None))
 
         return decisions
+
+    def _score_voucher(self, voucher: Voucher, game_state) -> float:
+        """Score a voucher based on its effect and game state."""
+        score = 0
+        effect = voucher.effect
+
+        # Extra hands/discards are very valuable
+        if 'extra_hands' in effect:
+            score += effect['extra_hands'] * 15
+        if 'extra_discards' in effect:
+            score += effect['extra_discards'] * 10
+        if 'starting_draw' in effect:
+            score += effect['starting_draw'] * 8
+        if 'joker_slots' in effect:
+            score += effect['joker_slots'] * 20
+        if 'interest_cap' in effect:
+            score += (effect['interest_cap'] - 5) * 2
+
+        return score
 
     def _score_joker(self, joker: dict, game_state) -> float:
         """Score a joker based on current game state."""
@@ -330,3 +465,252 @@ def apply_planet(consumable: Consumable, game_state) -> str:
         return f"{consumable.name}: {hand_type.name} leveled up to {old_level + 1}"
 
     return f"{consumable.name} had no effect"
+
+
+def apply_tarot(consumable: Consumable, game_state, target_cards: list = None) -> str:
+    """
+    Apply a tarot card's effect.
+
+    Args:
+        consumable: The tarot card to use
+        game_state: Current game state
+        target_cards: Cards to target (from hand or deck)
+
+    Returns:
+        Description of what happened
+    """
+    from .deck import Enhancement, Suit
+
+    if consumable.type != ConsumableType.TAROT:
+        return f"{consumable.name} is not a tarot card"
+
+    effect = consumable.effect
+    name = consumable.name
+
+    # Enhance cards (Magician, Empress, Hierophant, Lovers, Chariot, Justice, Devil, Tower)
+    if "enhance" in effect:
+        enhancement_name = effect["enhance"]
+        count = effect.get("count", 1)
+
+        # Get enhancement enum
+        try:
+            enhancement = Enhancement[enhancement_name.upper()]
+        except KeyError:
+            return f"{name}: Unknown enhancement {enhancement_name}"
+
+        # Apply to random cards in hand
+        cards_enhanced = 0
+        if game_state.hand and game_state.hand.cards:
+            targets = random.sample(
+                game_state.hand.cards,
+                min(count, len(game_state.hand.cards))
+            )
+            for card in targets:
+                card.enhancement = enhancement
+                cards_enhanced += 1
+
+        return f"{name}: Enhanced {cards_enhanced} cards with {enhancement_name}"
+
+    # Convert to suit (Star, Moon, Sun, World)
+    if "convert_to_suit" in effect:
+        suit_name = effect["convert_to_suit"]
+        try:
+            new_suit = Suit[suit_name.upper()]
+        except KeyError:
+            return f"{name}: Unknown suit {suit_name}"
+
+        cards_converted = 0
+        if game_state.hand and game_state.hand.cards:
+            # Convert up to 3 random cards
+            targets = random.sample(
+                game_state.hand.cards,
+                min(3, len(game_state.hand.cards))
+            )
+            for card in targets:
+                card.suit = new_suit
+                cards_converted += 1
+
+        return f"{name}: Converted {cards_converted} cards to {suit_name}"
+
+    # Double money (Hermit)
+    if effect.get("double_money"):
+        max_gain = effect.get("max", 20)
+        gain = min(game_state.money, max_gain)
+        game_state.money += gain
+        return f"{name}: Doubled ${gain}"
+
+    # Rank up cards (Strength)
+    if "rank_up" in effect:
+        from .deck import RANKS, RANK_ORDER
+        count = effect["rank_up"]
+        cards_upgraded = 0
+
+        if game_state.hand and game_state.hand.cards:
+            targets = random.sample(
+                game_state.hand.cards,
+                min(count, len(game_state.hand.cards))
+            )
+            for card in targets:
+                current_idx = RANK_ORDER.get(card.rank, 0)
+                if current_idx < len(RANKS) - 1:
+                    card.rank = RANKS[current_idx + 1]
+                    cards_upgraded += 1
+
+        return f"{name}: Upgraded {cards_upgraded} cards"
+
+    # Destroy cards (Hanged Man)
+    if "destroy_cards" in effect:
+        count = effect["destroy_cards"]
+        cards_destroyed = 0
+
+        if game_state.hand and game_state.hand.cards:
+            to_destroy = random.sample(
+                game_state.hand.cards,
+                min(count, len(game_state.hand.cards))
+            )
+            for card in to_destroy:
+                game_state.hand.cards.remove(card)
+                cards_destroyed += 1
+
+        return f"{name}: Destroyed {cards_destroyed} cards"
+
+    # Create planets (High Priestess)
+    if "create_planets" in effect:
+        # Simplified - just adds planet uses counter
+        count = effect["create_planets"]
+        return f"{name}: Created {count} planet cards (use later)"
+
+    # Create tarots (Emperor)
+    if "create_tarots" in effect:
+        count = effect["create_tarots"]
+        return f"{name}: Created {count} tarot cards (use later)"
+
+    # Random edition on joker (Wheel of Fortune)
+    if effect.get("random_edition"):
+        if game_state.jokers:
+            joker = random.choice(game_state.jokers)
+            editions = ['Foil', 'Holographic', 'Polychrome']
+            edition = random.choice(editions)
+            joker['edition'] = edition
+            return f"{name}: Added {edition} edition to {joker.get('name', 'joker')}"
+        return f"{name}: No jokers to enhance"
+
+    return f"{name}: Effect not implemented"
+
+
+def apply_spectral(consumable: Consumable, game_state, all_jokers: list = None) -> str:
+    """
+    Apply a spectral card's effect.
+
+    Args:
+        consumable: The spectral card to use
+        game_state: Current game state
+        all_jokers: List of all available jokers (for creating new ones)
+
+    Returns:
+        Description of what happened
+    """
+    from .deck import Seal, Enhancement, Edition
+    from .hand_detector import HandType
+
+    if consumable.type != ConsumableType.SPECTRAL:
+        return f"{consumable.name} is not a spectral card"
+
+    effect = consumable.effect
+    name = consumable.name
+
+    # Immolate: Destroy 5 cards, gain $20
+    if "gain_money" in effect and "destroy_cards" in effect:
+        cards_to_destroy = effect["destroy_cards"]
+        money_gain = effect["gain_money"]
+
+        destroyed = 0
+        if game_state.hand and game_state.hand.cards:
+            to_destroy = random.sample(
+                game_state.hand.cards,
+                min(cards_to_destroy, len(game_state.hand.cards))
+            )
+            for card in to_destroy:
+                game_state.hand.cards.remove(card)
+                destroyed += 1
+
+        game_state.money += money_gain
+        return f"{name}: Destroyed {destroyed} cards, gained ${money_gain}"
+
+    # Add seal to cards
+    if "add_seal" in effect:
+        seal_name = effect["add_seal"]
+        count = effect.get("count", 1)
+
+        try:
+            seal = Seal[seal_name.upper()]
+        except KeyError:
+            return f"{name}: Unknown seal {seal_name}"
+
+        cards_sealed = 0
+        if game_state.hand and game_state.hand.cards:
+            targets = random.sample(
+                game_state.hand.cards,
+                min(count, len(game_state.hand.cards))
+            )
+            for card in targets:
+                card.seal = seal
+                cards_sealed += 1
+
+        return f"{name}: Added {seal_name} seal to {cards_sealed} cards"
+
+    # Black Hole: Level up all hands
+    if "level_up_all" in effect:
+        levels = effect["level_up_all"]
+        for ht in HandType:
+            old = game_state.hand_levels.get(ht, 1)
+            game_state.hand_levels[ht] = old + levels
+        game_state.hand_detector.hand_levels = game_state.hand_levels
+        return f"{name}: Leveled up all hands by {levels}"
+
+    # Create a random joker
+    if effect.get("create_joker") and all_jokers:
+        owned_names = {j.get("name") for j in game_state.jokers}
+        available = [j for j in all_jokers if j.get("name") not in owned_names]
+        if available:
+            new_joker = random.choice(available).copy()
+            extra_slots = game_state.voucher_bonuses.get('extra_joker_slots', 0)
+            max_slots = game_state.config.joker_slots + extra_slots
+            if len(game_state.jokers) < max_slots:
+                game_state.jokers.append(new_joker)
+                return f"{name}: Created {new_joker.get('name', 'joker')}"
+        return f"{name}: No joker slot available"
+
+    # Grim: Destroy cards for money
+    if effect.get("destroy_for_money"):
+        money_per = effect.get("money_per_card", 4)
+        destroyed = 0
+        money_gained = 0
+
+        if game_state.hand and game_state.hand.cards:
+            # Destroy up to 2 cards
+            to_destroy = random.sample(
+                game_state.hand.cards,
+                min(2, len(game_state.hand.cards))
+            )
+            for card in to_destroy:
+                game_state.hand.cards.remove(card)
+                destroyed += 1
+                money_gained += money_per
+
+        game_state.money += money_gained
+        return f"{name}: Destroyed {destroyed} cards for ${money_gained}"
+
+    # Aura: Add random edition to card
+    if "add_edition" in effect:
+        editions = [Edition.FOIL, Edition.HOLOGRAPHIC, Edition.POLYCHROME]
+        edition = random.choice(editions)
+
+        if game_state.hand and game_state.hand.cards:
+            card = random.choice(game_state.hand.cards)
+            card.edition = edition
+            return f"{name}: Added {edition.value} to {card}"
+
+        return f"{name}: No cards to enhance"
+
+    return f"{name}: Effect not implemented"

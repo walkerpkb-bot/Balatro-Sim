@@ -107,6 +107,37 @@ class Deck:
                 cards.append(Card(rank=rank, suit=suit))
         return cls(cards=cards)
 
+    @classmethod
+    def custom(cls, suits: list[str] = None, no_face_cards: bool = False) -> "Deck":
+        """
+        Create a custom deck with specific modifications.
+
+        Args:
+            suits: List of suit names to include (e.g., ["Spades", "Hearts"])
+            no_face_cards: If True, exclude J, Q, K from the deck
+        """
+        cards = []
+
+        # Determine which suits to use
+        if suits:
+            suit_map = {s.value: s for s in Suit}
+            deck_suits = [suit_map[s] for s in suits if s in suit_map]
+        else:
+            deck_suits = list(Suit)
+
+        # Determine which ranks to use
+        if no_face_cards:
+            deck_ranks = [r for r in RANKS if r not in ["J", "Q", "K"]]
+        else:
+            deck_ranks = RANKS
+
+        # Build deck
+        for suit in deck_suits:
+            for rank in deck_ranks:
+                cards.append(Card(rank=rank, suit=suit))
+
+        return cls(cards=cards)
+
     def shuffle(self) -> None:
         """Shuffle the deck."""
         random.shuffle(self.cards)
