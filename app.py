@@ -160,13 +160,14 @@ if st.button("🎲 Run Simulation", type="primary", use_container_width=True):
                 # Show shop visit after blind (except last failed blind)
                 if result.shop_history and i < len(result.shop_history):
                     shop = result.shop_history[i]
-                    has_purchases = shop.jokers_bought or shop.vouchers_bought or shop.planets_used or shop.packs_opened
+                    packs = getattr(shop, 'packs_opened', None) or []
+                    has_purchases = shop.jokers_bought or shop.vouchers_bought or shop.planets_used or packs
                     if has_purchases:
                         with st.container():
                             # Show pack images if any packs were opened
-                            if shop.packs_opened:
-                                pack_cols = st.columns(len(shop.packs_opened) + 1)
-                                for p_idx, pack in enumerate(shop.packs_opened):
+                            if packs:
+                                pack_cols = st.columns(len(packs) + 1)
+                                for p_idx, pack in enumerate(packs):
                                     pack_type = pack.get("type", "")
                                     is_mega = "Mega" in str(pack.get("choices", []))
                                     pack_img = get_pack_image(pack_type, is_mega)
