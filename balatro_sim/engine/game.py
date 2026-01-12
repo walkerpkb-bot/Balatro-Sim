@@ -472,6 +472,48 @@ class BasicStrategy:
         return lonely_indices[:min(3, len(lonely_indices))]
 
 
+def use_consumables_before_blind(game: GameState) -> list[str]:
+    """
+    Strategically use stored consumables before a blind.
+    Returns list of consumables used.
+    """
+    from .shop import apply_planet, apply_tarot, ConsumableType
+
+    used = []
+    score_req = game.get_score_requirement()
+    is_boss = game.current_blind == BlindType.BOSS
+
+    # Use planets if score requirement is tough (ante 4+) or facing boss
+    if game.ante >= 4 or is_boss:
+        planets_to_use = []
+        for i, cons in enumerate(game.consumables):
+            if hasattr(cons, 'type') and cons.type == ConsumableType.PLANET:
+                planets_to_use.append(i)
+
+        # Use planets (reverse order to not mess up indices)
+        for i in reversed(planets_to_use):
+            cons = game.consumables.pop(i)
+            apply_planet(cons, game)
+            used.append(cons.name)
+
+    # Use strength tarots before boss blinds (those that give mult/chips to cards)
+    if is_boss:
+        tarots_to_use = []
+        for i, cons in enumerate(game.consumables):
+            if hasattr(cons, 'type') and cons.type == ConsumableType.TAROT:
+                effect = getattr(cons, 'effect', {})
+                # Use tarots that enhance cards
+                if effect.get('enhancement') or effect.get('gives'):
+                    tarots_to_use.append(i)
+
+        for i in reversed(tarots_to_use):
+            cons = game.consumables.pop(i)
+            apply_tarot(cons, game)
+            used.append(cons.name)
+
+    return used
+
+
 def simulate_blind(game: GameState, strategy = None) -> BlindResult:
     """Simulate playing a single blind."""
     if strategy is None:
@@ -823,6 +865,11 @@ def simulate_run(jokers: list = None, config: GameConfig = None, strategy=None,
     blinds_beaten = 0
 
     while True:
+        # Use stored consumables strategically before blind
+        consumables_used = use_consumables_before_blind(game)
+        if verbose and consumables_used:
+            print(f"  Used before blind: {consumables_used}")
+
         result = simulate_blind(game, strategy)
 
         if verbose:
