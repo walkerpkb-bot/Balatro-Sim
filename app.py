@@ -3,6 +3,7 @@ Balatro Simulator Web App
 Detailed Streamlit interface for running simulations.
 """
 
+import json
 import streamlit as st
 import sys
 from pathlib import Path
@@ -12,6 +13,33 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from balatro_sim.simulator import Simulator, RunSummary, BatchResult
 from balatro_sim.presets import PRESETS
+
+# Load image assets
+@st.cache_data
+def load_image_assets():
+    assets_path = Path(__file__).parent / "balatro_sim" / "data" / "image_assets.json"
+    if assets_path.exists():
+        with open(assets_path) as f:
+            return json.load(f)
+    return {"jokers": {}, "packs": {}, "decks": {}}
+
+IMAGE_ASSETS = load_image_assets()
+
+
+def get_joker_image(joker_name: str) -> str:
+    """Get image URL for a joker, with fallback."""
+    return IMAGE_ASSETS.get("jokers", {}).get(joker_name, "")
+
+
+def get_pack_image(pack_type: str, is_mega: bool = False) -> str:
+    """Get image URL for a pack type."""
+    pack_data = IMAGE_ASSETS.get("packs", {}).get(pack_type, {})
+    return pack_data.get("mega" if is_mega else "normal", "")
+
+
+def get_deck_image(deck_name: str) -> str:
+    """Get image URL for a deck."""
+    return IMAGE_ASSETS.get("decks", {}).get(deck_name, "")
 
 # Page config
 st.set_page_config(
@@ -45,6 +73,13 @@ selected_preset = st.sidebar.selectbox(
 
 # Show preset details
 preset = PRESETS[selected_preset]
+
+# Show deck image
+deck_name = preset.deck_type.value if hasattr(preset.deck_type, 'value') else str(preset.deck_type)
+deck_img = get_deck_image(deck_name)
+if deck_img:
+    st.sidebar.image(deck_img, width=120)
+
 st.sidebar.markdown(f"*{preset.description}*")
 st.sidebar.markdown(f"**Strategy:** {preset.strategy.value}")
 
@@ -125,15 +160,32 @@ if st.button("🎲 Run Simulation", type="primary", use_container_width=True):
                 # Show shop visit after blind (except last failed blind)
                 if result.shop_history and i < len(result.shop_history):
                     shop = result.shop_history[i]
-                    if shop.jokers_bought or shop.vouchers_bought or shop.planets_used:
-                        shop_items = []
-                        if shop.jokers_bought:
-                            shop_items.append(f"🃏 {', '.join(shop.jokers_bought)}")
-                        if shop.vouchers_bought:
-                            shop_items.append(f"🎫 {', '.join(shop.vouchers_bought)}")
-                        if shop.planets_used:
-                            shop_items.append(f"🪐 {', '.join(shop.planets_used)}")
-                        st.caption(f"  🛒 Shop: {' | '.join(shop_items)} (-${shop.money_spent})")
+                    has_purchases = shop.jokers_bought or shop.vouchers_bought or shop.planets_used or shop.packs_opened
+                    if has_purchases:
+                        with st.container():
+                            # Show pack images if any packs were opened
+                            if shop.packs_opened:
+                                pack_cols = st.columns(len(shop.packs_opened) + 1)
+                                for p_idx, pack in enumerate(shop.packs_opened):
+                                    pack_type = pack.get("type", "")
+                                    is_mega = "Mega" in str(pack.get("choices", []))
+                                    pack_img = get_pack_image(pack_type, is_mega)
+                                    with pack_cols[p_idx]:
+                                        if pack_img:
+                                            st.image(pack_img, width=40)
+                                        choices = pack.get("choices", [])
+                                        if choices:
+                                            st.caption(f"{', '.join(str(c) for c in choices[:2])}")
+
+                            shop_items = []
+                            if shop.jokers_bought:
+                                shop_items.append(f"🃏 {', '.join(shop.jokers_bought)}")
+                            if shop.vouchers_bought:
+                                shop_items.append(f"🎫 {', '.join(shop.vouchers_bought)}")
+                            if shop.planets_used:
+                                shop_items.append(f"🪐 {', '.join(shop.planets_used)}")
+                            if shop_items:
+                                st.caption(f"🛒 {' | '.join(shop_items)} (-${shop.money_spent})")
 
         st.divider()
 
@@ -144,7 +196,15 @@ if st.button("🎲 Run Simulation", type="primary", use_container_width=True):
             st.subheader("🃏 Jokers")
             if result.jokers_collected:
                 for joker in result.jokers_collected:
-                    st.markdown(f"- {joker}")
+                    joker_img = get_joker_image(joker)
+                    if joker_img:
+                        cols = st.columns([1, 3])
+                        with cols[0]:
+                            st.image(joker_img, width=50)
+                        with cols[1]:
+                            st.markdown(f"**{joker}**")
+                    else:
+                        st.markdown(f"- {joker}")
             else:
                 st.markdown("*None collected*")
 

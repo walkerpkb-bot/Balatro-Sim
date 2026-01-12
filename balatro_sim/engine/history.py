@@ -79,6 +79,20 @@ class RunHistory:
             data=data
         )
 
+    def add_pack_opened(self, ante: int, pack_type: str, is_mega: bool,
+                        options: list, choices: list):
+        """Log pack opening with choices made."""
+        self.add_event(
+            ante=ante,
+            event_type="pack_opened",
+            data={
+                "pack_type": pack_type,
+                "is_mega": is_mega,
+                "options_available": options,
+                "choices_made": choices
+            }
+        )
+
     def add_voucher_acquired(self, ante: int, voucher_name: str, effect_summary: str = None):
         """Log voucher purchase."""
         self.add_event(
@@ -223,11 +237,18 @@ class RunHistory:
         blind_results = [e for e in self.events if e.event_type == "blind_result"]
         close_calls = [e for e in blind_results if e.data.get("close_call")]
         shop_visits = [e for e in self.events if e.event_type == "shop_visit"]
+        pack_events = [e for e in self.events if e.event_type == "pack_opened"]
 
         run_end = next((e for e in self.events if e.event_type == "run_end"), None)
 
         # Count boss fights
         boss_fights = [e for e in blind_results if e.data.get("boss_name")]
+
+        # Count packs by type
+        packs_by_type = {}
+        for e in pack_events:
+            pack_type = e.data.get("pack_type", "Unknown")
+            packs_by_type[pack_type] = packs_by_type.get(pack_type, 0) + 1
 
         return {
             "total_blinds_attempted": len(blind_results),
@@ -238,6 +259,8 @@ class RunHistory:
             "planets_used": sum(len(e.data.get("planets_used", [])) for e in shop_visits),
             "tarots_used": sum(len(e.data.get("tarots_used", []) or []) for e in shop_visits),
             "spectrals_used": sum(len(e.data.get("spectrals_used", []) or []) for e in shop_visits),
+            "packs_opened": len(pack_events),
+            "packs_by_type": packs_by_type,
             "boss_fights": len(boss_fights),
             "bosses_defeated": sum(1 for e in boss_fights if e.data.get("success")),
             "victory": run_end.data.get("victory") if run_end else False

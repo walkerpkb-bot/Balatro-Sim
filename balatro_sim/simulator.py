@@ -43,6 +43,7 @@ class ShopDetail:
     vouchers_bought: list[str]
     planets_used: list[str]
     money_spent: int
+    packs_opened: list[dict] = None  # List of {"type": str, "is_mega": bool, "choices": list}
 
 
 @dataclass
@@ -351,6 +352,7 @@ class Simulator:
                     vouchers_bought=data.get("vouchers_bought", []) or [],
                     planets_used=data.get("planets_used", []),
                     money_spent=data.get("money_spent", 0),
+                    packs_opened=data.get("packs_opened", []),
                 ))
 
             elif event.event_type == "voucher_acquired":

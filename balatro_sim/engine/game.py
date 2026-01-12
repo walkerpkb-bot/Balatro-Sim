@@ -691,6 +691,24 @@ def simulate_shop(game: GameState, all_jokers: list, shop_ai=None) -> dict:
 
         results["packs_opened"].append(pack_result)
 
+        # Log pack opening with full details
+        option_names = []
+        for opt in pack.options:
+            if hasattr(opt, 'name'):
+                option_names.append(opt.name)
+            elif isinstance(opt, dict):
+                option_names.append(opt.get('name', str(opt)))
+            else:
+                option_names.append(str(opt))
+
+        game.history.add_pack_opened(
+            ante=game.ante,
+            pack_type=pack.pack_type.value,
+            is_mega=pack.is_mega,
+            options=option_names,
+            choices=pack_result["choices"]
+        )
+
     # Buy jokers
     for idx in decisions["jokers_to_buy"]:
         if idx < len(shop.jokers):
