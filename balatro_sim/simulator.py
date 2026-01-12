@@ -16,6 +16,36 @@ from .presets import Preset, StrategyType, DeckType, get_preset, list_presets, P
 
 
 @dataclass
+class BlindDetail:
+    """Details of a single blind attempt."""
+    ante: int
+    blind_type: str
+    boss_name: str  # None for small/big blinds
+    score: int
+    required: int
+    success: bool
+    hands_played: list  # List of (hand_type, score) tuples
+    hands_used: int
+    discards_used: int
+
+    @property
+    def margin_pct(self) -> float:
+        if self.required == 0:
+            return 0
+        return (self.score - self.required) / self.required * 100
+
+
+@dataclass
+class ShopDetail:
+    """Details of a shop visit."""
+    ante: int
+    jokers_bought: list[str]
+    vouchers_bought: list[str]
+    planets_used: list[str]
+    money_spent: int
+
+
+@dataclass
 class RunSummary:
     """Summary of a simulation run."""
     victory: bool
@@ -27,6 +57,11 @@ class RunSummary:
     planets_used: int
     hand_levels: dict[str, int]
     preset_used: str
+    # Detailed history
+    blind_history: list[BlindDetail] = None
+    shop_history: list[ShopDetail] = None
+    vouchers_acquired: list[str] = None
+    bosses_encountered: list[str] = None
 
     def __str__(self):
         result = "VICTORY!" if self.victory else "DEFEAT"
@@ -285,6 +320,42 @@ class Simulator:
         log_path = log_dir / f"run_{timestamp}_{preset_name}.json"
         game.history.save(str(log_path))
 
+        # Build detailed history from events
+        blind_history = []
+        shop_history = []
+        vouchers_acquired = []
+        bosses_encountered = []
+
+        for event in game.history.events:
+            if event.event_type == "blind_result":
+                data = event.data
+                blind_history.append(BlindDetail(
+                    ante=event.ante,
+                    blind_type=event.blind_type,
+                    boss_name=data.get("boss_name"),
+                    score=data.get("score", 0),
+                    required=data.get("required", 0),
+                    success=data.get("success", False),
+                    hands_played=data.get("hands_played", []),
+                    hands_used=data.get("hands_used", 0),
+                    discards_used=data.get("discards_used", 0),
+                ))
+                if data.get("boss_name"):
+                    bosses_encountered.append(data["boss_name"])
+
+            elif event.event_type == "shop_visit":
+                data = event.data
+                shop_history.append(ShopDetail(
+                    ante=event.ante,
+                    jokers_bought=data.get("jokers_bought", []),
+                    vouchers_bought=data.get("vouchers_bought", []) or [],
+                    planets_used=data.get("planets_used", []),
+                    money_spent=data.get("money_spent", 0),
+                ))
+
+            elif event.event_type == "voucher_acquired":
+                vouchers_acquired.append(event.data.get("voucher", ""))
+
         # Build summary
         return RunSummary(
             victory=victory,
@@ -296,6 +367,10 @@ class Simulator:
             planets_used=game.planets_used,
             hand_levels={ht.name: lv for ht, lv in game.hand_levels.items()},
             preset_used=preset_name,
+            blind_history=blind_history,
+            shop_history=shop_history,
+            vouchers_acquired=vouchers_acquired,
+            bosses_encountered=bosses_encountered,
         )
 
     def run_batch(self, preset: Union[str, Preset] = "standard",

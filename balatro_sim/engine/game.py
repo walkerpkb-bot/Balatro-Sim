@@ -569,7 +569,8 @@ def simulate_blind(game: GameState, strategy = None) -> BlindResult:
         hands_used=hands_used,
         discards_used=discards_used,
         best_hand=best_hand,
-        boss_name=boss_name
+        boss_name=boss_name,
+        hands_played=hands_played
     )
 
     return BlindResult(

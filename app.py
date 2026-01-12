@@ -1,6 +1,6 @@
 """
 Balatro Simulator Web App
-Simple Streamlit interface for running simulations.
+Detailed Streamlit interface for running simulations.
 """
 
 import streamlit as st
@@ -17,7 +17,7 @@ from balatro_sim.presets import PRESETS
 st.set_page_config(
     page_title="Balatro Simulator",
     page_icon="🃏",
-    layout="centered"
+    layout="wide"
 )
 
 st.title("🃏 Balatro Simulator")
@@ -53,8 +53,6 @@ run_mode = st.sidebar.radio("Mode", ["Single Run", "Batch Runs"])
 
 if run_mode == "Batch Runs":
     num_runs = st.sidebar.slider("Number of Runs", min_value=10, max_value=500, value=100, step=10)
-else:
-    verbose = st.sidebar.checkbox("Verbose Output", value=True)
 
 st.divider()
 
@@ -65,42 +63,122 @@ if st.button("🎲 Run Simulation", type="primary", use_container_width=True):
         with st.spinner("Running simulation..."):
             result = sim.run(selected_preset, verbose=False)
 
-        # Display result
+        # Display result header
         if result.victory:
             st.success("🏆 VICTORY!")
         else:
             st.error("💀 DEFEAT")
 
-        col1, col2, col3 = st.columns(3)
+        # Top-level metrics
+        col1, col2, col3, col4 = st.columns(4)
         with col1:
             st.metric("Ante Reached", result.ante_reached)
         with col2:
             st.metric("Blinds Beaten", f"{result.blinds_beaten}/24")
         with col3:
             st.metric("Final Money", f"${result.final_money}")
+        with col4:
+            bosses_beat = sum(1 for b in (result.blind_history or []) if b.boss_name and b.success)
+            st.metric("Bosses Defeated", f"{bosses_beat}/{len(result.bosses_encountered or [])}")
 
-        # Details
-        st.subheader("Run Details")
+        # Detailed run timeline
+        st.subheader("📜 Run Timeline")
 
-        col1, col2 = st.columns(2)
+        if result.blind_history:
+            for i, blind in enumerate(result.blind_history):
+                # Determine icon and color
+                if blind.success:
+                    icon = "✅"
+                    status_color = "green"
+                else:
+                    icon = "❌"
+                    status_color = "red"
+
+                # Boss indicator
+                if blind.boss_name:
+                    blind_label = f"**BOSS: {blind.boss_name}**"
+                else:
+                    blind_label = f"{blind.blind_type} Blind"
+
+                # Create expander for each blind
+                margin_str = f"+{blind.margin_pct:.0f}%" if blind.margin_pct > 0 else f"{blind.margin_pct:.0f}%"
+                with st.expander(f"{icon} Ante {blind.ante} - {blind_label} ({blind.score:,} / {blind.required:,}) {margin_str}"):
+                    col1, col2, col3 = st.columns(3)
+                    with col1:
+                        st.write(f"**Score:** {blind.score:,}")
+                        st.write(f"**Required:** {blind.required:,}")
+                    with col2:
+                        st.write(f"**Hands Used:** {blind.hands_used}")
+                        st.write(f"**Discards Used:** {blind.discards_used}")
+                    with col3:
+                        st.write(f"**Margin:** {margin_str}")
+                        if blind.boss_name:
+                            st.write(f"**Boss:** {blind.boss_name}")
+
+                    # Show hands played
+                    if blind.hands_played:
+                        st.markdown("**Hands Played:**")
+                        for hand_type, score in blind.hands_played:
+                            score_bar = "█" * min(20, max(1, score // 500))
+                            st.code(f"{hand_type:20} {score:>8,} {score_bar}")
+
+                # Show shop visit after blind (except last failed blind)
+                if result.shop_history and i < len(result.shop_history):
+                    shop = result.shop_history[i]
+                    if shop.jokers_bought or shop.vouchers_bought or shop.planets_used:
+                        shop_items = []
+                        if shop.jokers_bought:
+                            shop_items.append(f"🃏 {', '.join(shop.jokers_bought)}")
+                        if shop.vouchers_bought:
+                            shop_items.append(f"🎫 {', '.join(shop.vouchers_bought)}")
+                        if shop.planets_used:
+                            shop_items.append(f"🪐 {', '.join(shop.planets_used)}")
+                        st.caption(f"  🛒 Shop: {' | '.join(shop_items)} (-${shop.money_spent})")
+
+        st.divider()
+
+        # Summary panels
+        col1, col2, col3 = st.columns(3)
+
         with col1:
-            st.markdown("**Jokers Collected:**")
+            st.subheader("🃏 Jokers")
             if result.jokers_collected:
                 for joker in result.jokers_collected:
                     st.markdown(f"- {joker}")
             else:
-                st.markdown("*None*")
+                st.markdown("*None collected*")
 
         with col2:
-            st.markdown("**Hand Levels:**")
+            st.subheader("🎫 Vouchers")
+            if result.vouchers_acquired:
+                for voucher in result.vouchers_acquired:
+                    st.markdown(f"- {voucher}")
+            else:
+                st.markdown("*None acquired*")
+
+        with col3:
+            st.subheader("📈 Hand Levels")
             leveled = {k: v for k, v in result.hand_levels.items() if v > 1}
             if leveled:
-                for hand, level in sorted(leveled.items(), key=lambda x: -x[1])[:5]:
-                    st.markdown(f"- {hand}: Lv.{level}")
+                for hand, level in sorted(leveled.items(), key=lambda x: -x[1])[:8]:
+                    bar = "▓" * (level - 1)
+                    st.markdown(f"**{hand}:** Lv.{level} {bar}")
             else:
                 st.markdown("*No upgrades*")
 
-        st.markdown(f"**Planets Used:** {result.planets_used}")
+        # Boss encounters summary
+        if result.bosses_encountered:
+            st.subheader("👹 Bosses Encountered")
+            boss_results = []
+            for i, boss in enumerate(result.bosses_encountered):
+                # Find corresponding blind
+                boss_blinds = [b for b in result.blind_history if b.boss_name == boss]
+                if boss_blinds:
+                    b = boss_blinds[0]
+                    status = "✅ Defeated" if b.success else "❌ Lost"
+                    boss_results.append(f"- **{boss}** (Ante {b.ante}): {status}")
+            for br in boss_results:
+                st.markdown(br)
 
     else:  # Batch mode
         progress_bar = st.progress(0)
@@ -114,6 +192,8 @@ if st.button("🎲 Run Simulation", type="primary", use_container_width=True):
         total_money = 0
         total_jokers = 0
         total_planets = 0
+        total_vouchers = 0
+        total_bosses_beat = 0
         ante_distribution = {}
 
         for i in range(num_runs):
@@ -127,6 +207,8 @@ if st.button("🎲 Run Simulation", type="primary", use_container_width=True):
             total_money += summary.final_money
             total_jokers += len(summary.jokers_collected)
             total_planets += summary.planets_used
+            total_vouchers += len(summary.vouchers_acquired or [])
+            total_bosses_beat += sum(1 for b in (summary.blind_history or []) if b.boss_name and b.success)
             ante_distribution[summary.ante_reached] = ante_distribution.get(summary.ante_reached, 0) + 1
 
             # Update progress
@@ -172,11 +254,15 @@ if st.button("🎲 Run Simulation", type="primary", use_container_width=True):
         with col4:
             st.metric("Avg Money", f"${result.avg_money:.0f}")
 
-        col1, col2 = st.columns(2)
+        col1, col2, col3 = st.columns(3)
         with col1:
             st.metric("Avg Jokers", f"{result.avg_jokers:.1f}")
         with col2:
             st.metric("Avg Planets", f"{result.avg_planets:.1f}")
+        with col3:
+            st.metric("Avg Vouchers", f"{total_vouchers / num_runs:.1f}")
+
+        st.metric("Avg Bosses Defeated", f"{total_bosses_beat / num_runs:.1f}")
 
         # Ante distribution chart
         st.subheader("Ante Distribution")

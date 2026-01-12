@@ -104,7 +104,7 @@ class RunHistory:
     def add_blind_result(self, ante: int, blind_type: str, score: int,
                          required: int, success: bool, hands_used: int,
                          discards_used: int = 0, best_hand: str = None,
-                         boss_name: str = None):
+                         boss_name: str = None, hands_played: list = None):
         """Log blind attempt."""
         margin = score - required
         margin_pct = (margin / required * 100) if required > 0 else 0
@@ -123,6 +123,9 @@ class RunHistory:
 
         if boss_name:
             data["boss_name"] = boss_name
+
+        if hands_played:
+            data["hands_played"] = hands_played  # List of (hand_type, score) tuples
 
         self.add_event(
             ante=ante,
