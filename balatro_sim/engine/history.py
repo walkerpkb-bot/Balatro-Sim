@@ -56,7 +56,7 @@ class RunHistory:
     def add_shop_visit(self, ante: int, jokers_bought: list, planets_used: list,
                        money_spent: int, money_remaining: int,
                        vouchers_bought: list = None, tarots_used: list = None,
-                       spectrals_used: list = None):
+                       spectrals_used: list = None, packs_opened: list = None):
         """Log shop purchases."""
         data = {
             "jokers_bought": jokers_bought,
@@ -70,6 +70,8 @@ class RunHistory:
             data["tarots_used"] = tarots_used
         if spectrals_used:
             data["spectrals_used"] = spectrals_used
+        if packs_opened:
+            data["packs_opened"] = packs_opened
 
         self.add_event(
             ante=ante,

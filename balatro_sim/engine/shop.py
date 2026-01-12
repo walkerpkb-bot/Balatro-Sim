@@ -17,6 +17,28 @@ class ConsumableType(Enum):
     SPECTRAL = "Spectral"
 
 
+class PackType(Enum):
+    ARCANA = "Arcana"          # Tarot cards
+    CELESTIAL = "Celestial"    # Planet cards
+    SPECTRAL = "Spectral"      # Spectral cards
+    STANDARD = "Standard"      # Playing cards
+    BUFFOON = "Buffoon"        # Jokers
+
+
+@dataclass
+class Pack:
+    """A booster pack that offers choices."""
+    pack_type: PackType
+    cost: int
+    choices: int      # How many you can pick
+    options: list     # The cards/jokers to choose from
+    is_mega: bool = False
+
+    def __str__(self):
+        mega = "Mega " if self.is_mega else ""
+        return f"{mega}{self.pack_type.value} Pack (${self.cost})"
+
+
 @dataclass
 class Consumable:
     """A consumable card (Tarot, Planet, or Spectral)."""
@@ -128,6 +150,8 @@ class ShopConfig:
         "Rare": 8,
         "Legendary": 20
     })
+    pack_base_cost: int = 4
+    mega_pack_cost: int = 6
 
 
 class Shop:
@@ -155,6 +179,7 @@ class Shop:
         self.jokers: list[dict] = []
         self.consumables: list[Consumable] = []
         self.vouchers: list[dict] = []
+        self.packs: list[Pack] = []
 
         # Track what's been bought this run (for Showman joker)
         self.purchased_joker_names: set = set()
@@ -189,6 +214,13 @@ class Shop:
         if available:
             voucher = random.choice(available)
             self.vouchers.append(voucher)
+
+        # Generate booster packs
+        self.packs = []
+        for _ in range(self.config.pack_slots):
+            pack = self._generate_pack(owned_names)
+            if pack:
+                self.packs.append(pack)
 
     def _pick_random_joker(self, owned_names: set, allow_duplicates: bool) -> Optional[dict]:
         """Pick a random joker based on rarity weights."""
@@ -304,6 +336,93 @@ class Shop:
             cost=4
         )
 
+    def _generate_pack(self, owned_joker_names: set = None) -> Pack:
+        """Generate a random booster pack with its contents."""
+        owned_joker_names = owned_joker_names or set()
+
+        # 20% chance for mega pack
+        is_mega = random.random() < 0.20
+        cost = self.config.mega_pack_cost if is_mega else self.config.pack_base_cost
+
+        # Pack type weights: Arcana/Celestial more common, Buffoon rarer
+        pack_weights = {
+            PackType.ARCANA: 30,
+            PackType.CELESTIAL: 30,
+            PackType.STANDARD: 20,
+            PackType.SPECTRAL: 10,
+            PackType.BUFFOON: 10,
+        }
+
+        pack_type = random.choices(
+            list(pack_weights.keys()),
+            weights=list(pack_weights.values()),
+            k=1
+        )[0]
+
+        # Generate options based on pack type
+        if pack_type == PackType.ARCANA:
+            num_options = 5 if is_mega else 3
+            options = [self._generate_tarot() for _ in range(num_options)]
+            choices = 1 if not is_mega else 2
+
+        elif pack_type == PackType.CELESTIAL:
+            num_options = 5 if is_mega else 3
+            options = [self._generate_planet() for _ in range(num_options)]
+            choices = 1 if not is_mega else 2
+
+        elif pack_type == PackType.SPECTRAL:
+            num_options = 4 if is_mega else 2
+            options = [self._generate_spectral() for _ in range(num_options)]
+            choices = 1 if not is_mega else 2
+
+        elif pack_type == PackType.STANDARD:
+            num_options = 5 if is_mega else 3
+            options = self._generate_playing_cards(num_options)
+            choices = 1 if not is_mega else 2
+
+        elif pack_type == PackType.BUFFOON:
+            num_options = 4 if is_mega else 2
+            options = []
+            for _ in range(num_options):
+                joker = self._pick_random_joker(owned_joker_names, allow_duplicates=False)
+                if joker:
+                    options.append(joker)
+            choices = 1
+
+        return Pack(
+            pack_type=pack_type,
+            cost=cost,
+            choices=choices,
+            options=options,
+            is_mega=is_mega
+        )
+
+    def _generate_playing_cards(self, count: int) -> list:
+        """Generate random playing cards for Standard packs."""
+        from .deck import Card, Suit, RANKS, Enhancement, Edition, Seal
+
+        cards = []
+        for _ in range(count):
+            suit = random.choice(list(Suit))
+            rank = random.choice(RANKS)
+            card = Card(suit=suit, rank=rank)
+
+            # 15% chance for enhancement
+            if random.random() < 0.15:
+                card.enhancement = random.choice(list(Enhancement))
+
+            # 5% chance for edition
+            if random.random() < 0.05:
+                card.edition = random.choice([Edition.FOIL, Edition.HOLOGRAPHIC, Edition.POLYCHROME])
+
+            # 3% chance for seal
+            if random.random() < 0.03:
+                card.seal = random.choice(list(Seal))
+
+            cards.append(card)
+
+        return cards
+
     def get_joker_cost(self, joker: dict) -> int:
         """Get the cost of a joker."""
         rarity = joker.get("rarity", "Common")
@@ -335,6 +454,8 @@ class ShopAI:
             - jokers_to_buy: list of joker indices
             - consumables_to_buy: list of consumable indices
             - vouchers_to_buy: list of voucher indices
+            - packs_to_buy: list of pack indices
+            - pack_choices: dict of pack_idx -> list of chosen option indices
             - use_consumables: list of (consumable, target) tuples
             - reroll: bool
         """
@@ -342,6 +463,8 @@ class ShopAI:
             "jokers_to_buy": [],
             "consumables_to_buy": [],
             "vouchers_to_buy": [],
+            "packs_to_buy": [],
+            "pack_choices": {},
             "use_consumables": [],
             "reroll": False
         }
@@ -360,6 +483,23 @@ class ShopAI:
             if voucher_score > 5:  # Worth buying
                 decisions["vouchers_to_buy"].append(i)
                 money -= voucher.cost
+
+        # Evaluate packs (good value, especially Celestial and Buffoon)
+        for i, pack in enumerate(shop.packs):
+            if pack.cost > money:
+                continue
+
+            pack_score = self._score_pack(pack, game_state)
+            if pack_score > 3:  # Worth buying
+                decisions["packs_to_buy"].append(i)
+                # Choose best options from pack
+                choices = self._choose_from_pack(pack, game_state, joker_slots_free)
+                decisions["pack_choices"][i] = choices
+                money -= pack.cost
+
+                # If we chose a joker, reduce available slots
+                if pack.pack_type == PackType.BUFFOON:
+                    joker_slots_free -= len(choices)
 
         # Evaluate jokers
         joker_scores = []
@@ -450,6 +590,127 @@ class ShopAI:
         if consumable.type == ConsumableType.PLANET:
             return True  # Always use planets immediately
         return False
+
+    def _score_pack(self, pack: Pack, game_state) -> float:
+        """Score a pack based on type and game state."""
+        score = 0
+
+        # Base value by type
+        type_scores = {
+            PackType.CELESTIAL: 8,   # Planets are always good
+            PackType.BUFFOON: 7,     # Jokers are valuable
+            PackType.ARCANA: 5,      # Tarots are situational
+            PackType.SPECTRAL: 6,    # Spectrals can be powerful
+            PackType.STANDARD: 3,    # Cards are least exciting
+        }
+        score = type_scores.get(pack.pack_type, 3)
+
+        # Bonus for mega packs (more choices)
+        if pack.is_mega:
+            score += 2
+
+        # Celestial packs more valuable if we have leveled hands
+        if pack.pack_type == PackType.CELESTIAL:
+            leveled_hands = sum(1 for lv in game_state.hand_levels.values() if lv > 1)
+            score += leveled_hands * 0.5
+
+        # Buffoon packs less valuable if joker slots full
+        if pack.pack_type == PackType.BUFFOON:
+            extra_slots = game_state.voucher_bonuses.get('extra_joker_slots', 0)
+            slots_free = game_state.config.joker_slots + extra_slots - len(game_state.jokers)
+            if slots_free <= 0:
+                score = 0  # Can't take jokers
+
+        return score
+
+    def _choose_from_pack(self, pack: Pack, game_state, joker_slots_free: int) -> list[int]:
+        """Choose the best options from a pack. Returns indices of chosen options."""
+        if not pack.options:
+            return []
+
+        # Score each option
+        scored_options = []
+        for i, option in enumerate(pack.options):
+            score = self._score_pack_option(option, pack.pack_type, game_state)
+            scored_options.append((i, score))
+
+        # Sort by score descending
+        scored_options.sort(key=lambda x: x[1], reverse=True)
+
+        # Pick top N choices (limited by pack.choices and available slots for jokers)
+        num_to_pick = pack.choices
+        if pack.pack_type == PackType.BUFFOON:
+            num_to_pick = min(num_to_pick, joker_slots_free)
+
+        chosen = [idx for idx, score in scored_options[:num_to_pick] if score > 0]
+        return chosen
+
+    def _score_pack_option(self, option, pack_type: PackType, game_state) -> float:
+        """Score a single option from a pack."""
+
+        if pack_type == PackType.CELESTIAL:
+            # Score planet based on how much we use that hand type
+            consumable = option
+            hand_type = consumable.effect.get("levels_up")
+            if hand_type:
+                current_level = game_state.hand_levels.get(hand_type, 1)
+                # Prefer leveling already-leveled hands, or common hands
+                base_score = 5
+                if current_level > 1:
+                    base_score += current_level * 2  # Compound gains
+                # Bonus for common hand types
+                common_types = [HandType.PAIR, HandType.TWO_PAIR, HandType.FLUSH, HandType.STRAIGHT]
+                if hand_type in common_types:
+                    base_score += 3
+                return base_score
+            return 3
+
+        elif pack_type == PackType.ARCANA:
+            # Score tarot by effect usefulness
+            consumable = option
+            effect = consumable.effect
+
+            if effect.get("double_money"):
+                return 8 if game_state.money >= 10 else 4
+            if "enhance" in effect:
+                return 6
+            if "convert_to_suit" in effect:
+                return 5
+            if effect.get("random_edition"):
+                return 7 if game_state.jokers else 2
+            return 4
+
+        elif pack_type == PackType.SPECTRAL:
+            consumable = option
+            effect = consumable.effect
+
+            if effect.get("level_up_all"):  # Black Hole
+                return 15
+            if effect.get("create_legendary_joker"):  # The Soul
+                return 12
+            if effect.get("gain_money"):  # Immolate
+                return 8
+            return 5
+
+        elif pack_type == PackType.BUFFOON:
+            # Use existing joker scoring
+            return self._score_joker(option, game_state)
+
+        elif pack_type == PackType.STANDARD:
+            # Score playing cards by enhancement/edition/seal
+            card = option
+            score = 2  # Base value of adding a card
+
+            if hasattr(card, 'enhancement') and card.enhancement:
+                score += 4
+            if hasattr(card, 'edition') and card.edition:
+                score += 6
+            if hasattr(card, 'seal') and card.seal:
+                score += 5
+
+            return score
+
+        return 3
 
 
 def apply_planet(consumable: Consumable, game_state) -> str:

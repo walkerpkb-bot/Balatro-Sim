@@ -589,7 +589,7 @@ def simulate_shop(game: GameState, all_jokers: list, shop_ai=None) -> dict:
     Simulate a shop visit.
     Returns dict with purchases made.
     """
-    from .shop import Shop, ShopAI, apply_planet, ConsumableType
+    from .shop import Shop, ShopAI, apply_planet, apply_tarot, apply_spectral, ConsumableType, PackType
 
     if shop_ai is None:
         shop_ai = ShopAI()
@@ -606,6 +606,7 @@ def simulate_shop(game: GameState, all_jokers: list, shop_ai=None) -> dict:
         "jokers_bought": [],
         "consumables_bought": [],
         "vouchers_bought": [],
+        "packs_opened": [],
         "planets_used": [],
         "money_spent": 0
     }
@@ -619,6 +620,76 @@ def simulate_shop(game: GameState, all_jokers: list, shop_ai=None) -> dict:
                 game.add_voucher(voucher.name, voucher.effect)
                 results["vouchers_bought"].append(voucher.name)
                 results["money_spent"] += voucher.cost
+
+    # Buy and open packs
+    for pack_idx in decisions.get("packs_to_buy", []):
+        if pack_idx >= len(shop.packs):
+            continue
+        pack = shop.packs[pack_idx]
+        if pack.cost > game.money:
+            continue
+
+        game.money -= pack.cost
+        results["money_spent"] += pack.cost
+
+        # Get chosen options for this pack
+        chosen_indices = decisions.get("pack_choices", {}).get(pack_idx, [])
+        if not chosen_indices and pack.options:
+            # Default to first option if AI didn't choose
+            chosen_indices = [0]
+
+        pack_result = {"type": pack.pack_type.value, "choices": []}
+
+        for opt_idx in chosen_indices:
+            if opt_idx >= len(pack.options):
+                continue
+            option = pack.options[opt_idx]
+
+            if pack.pack_type == PackType.CELESTIAL:
+                # Apply planet
+                hand_type = option.effect.get("levels_up")
+                old_level = game.hand_levels.get(hand_type, 1) if hand_type else 1
+                msg = apply_planet(option, game)
+                results["planets_used"].append(msg)
+                game.planets_used += 1
+                pack_result["choices"].append(option.name)
+                if hand_type:
+                    game.history.add_planet_used(game.ante, option.name, hand_type.name, old_level + 1)
+
+            elif pack.pack_type == PackType.ARCANA:
+                # Apply tarot
+                msg = apply_tarot(option, game)
+                if "tarots_used" not in results:
+                    results["tarots_used"] = []
+                results["tarots_used"].append(msg)
+                pack_result["choices"].append(option.name)
+
+            elif pack.pack_type == PackType.SPECTRAL:
+                # Apply spectral
+                msg = apply_spectral(option, game, all_jokers)
+                if "spectrals_used" not in results:
+                    results["spectrals_used"] = []
+                results["spectrals_used"].append(msg)
+                pack_result["choices"].append(option.name)
+
+            elif pack.pack_type == PackType.BUFFOON:
+                # Add joker
+                extra_slots = game.voucher_bonuses.get('extra_joker_slots', 0)
+                max_slots = game.config.joker_slots + extra_slots
+                if len(game.jokers) < max_slots:
+                    game.jokers.append(option)
+                    joker_name = option.get("name", "Unknown")
+                    results["jokers_bought"].append(joker_name)
+                    pack_result["choices"].append(joker_name)
+                    game.history.add_joker_acquired(game.ante, joker_name, "buffoon_pack")
+
+            elif pack.pack_type == PackType.STANDARD:
+                # Add card to deck
+                game.deck.cards.append(option)
+                card_str = str(option)
+                pack_result["choices"].append(card_str)
+
+        results["packs_opened"].append(pack_result)
 
     # Buy jokers
     for idx in decisions["jokers_to_buy"]:
@@ -661,7 +732,6 @@ def simulate_shop(game: GameState, all_jokers: list, shop_ai=None) -> dict:
                         )
                 elif consumable.type == ConsumableType.TAROT:
                     # Use tarots that provide immediate benefit
-                    from .shop import apply_tarot
                     effect = consumable.effect
                     # Use Hermit (money) immediately
                     if effect.get("double_money") or effect.get("random_edition"):
@@ -677,7 +747,6 @@ def simulate_shop(game: GameState, all_jokers: list, shop_ai=None) -> dict:
                             game.consumables.append(consumable)
                 elif consumable.type == ConsumableType.SPECTRAL:
                     # Use spectrals that provide immediate benefit
-                    from .shop import apply_spectral
                     effect = consumable.effect
                     # Use money-generating spectrals immediately
                     if effect.get("gain_money") or effect.get("destroy_for_money") or effect.get("level_up_all"):
@@ -707,7 +776,8 @@ def simulate_shop(game: GameState, all_jokers: list, shop_ai=None) -> dict:
         money_remaining=game.money,
         vouchers_bought=results.get("vouchers_bought"),
         tarots_used=results.get("tarots_used"),
-        spectrals_used=results.get("spectrals_used")
+        spectrals_used=results.get("spectrals_used"),
+        packs_opened=results.get("packs_opened")
     )
 
     # Log individual voucher acquisitions for narrative
