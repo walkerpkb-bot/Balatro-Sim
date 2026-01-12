@@ -47,8 +47,6 @@ selected_preset = st.sidebar.selectbox(
 preset = PRESETS[selected_preset]
 st.sidebar.markdown(f"*{preset.description}*")
 st.sidebar.markdown(f"**Strategy:** {preset.strategy.value}")
-if preset.starting_jokers:
-    st.sidebar.markdown(f"**Starting Jokers:** {', '.join(preset.starting_jokers)}")
 
 # Run mode
 run_mode = st.sidebar.radio("Mode", ["Single Run", "Batch Runs"])
