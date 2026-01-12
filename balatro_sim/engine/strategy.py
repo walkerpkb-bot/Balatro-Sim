@@ -71,19 +71,63 @@ class SmartStrategy:
     """
     Intelligent card selection strategy.
     Evaluates all possible plays and picks the best one.
+    Considers joker synergies and hand levels for optimal selection.
     """
 
     def __init__(self):
         self.hand_detector = HandDetector()
         self.scoring_engine = ScoringEngine()
 
+    def _count_joker_synergies(self, cards: list[Card], jokers: list) -> int:
+        """Count how many joker conditions this card selection triggers."""
+        if not jokers:
+            return 0
+
+        synergy_count = 0
+        suits_in_play = {c.suit.value.lower() for c in cards}
+        ranks_in_play = {c.rank for c in cards}
+        has_face = any(c.is_face_card for c in cards)
+
+        for joker in jokers:
+            effect = joker.get('effect', {})
+            conditions = effect.get('conditions', [])
+
+            for cond in conditions:
+                cond_type = cond.get('type', '')
+
+                if cond_type == 'suit':
+                    req_suit = cond.get('suit', '').lower()
+                    if any(req_suit in s for s in suits_in_play):
+                        synergy_count += 1
+
+                elif cond_type == 'rank':
+                    req_rank = cond.get('rank', '')
+                    if req_rank == 'face_card' and has_face:
+                        synergy_count += 1
+                    elif req_rank in ranks_in_play:
+                        synergy_count += 1
+
+            # Special jokers that benefit from specific cards
+            name = joker.get('name', '')
+            if name == 'Hack' and any(r in ranks_in_play for r in ('2', '3', '4', '5')):
+                synergy_count += 1
+            elif name == 'Sock and Buskin' and has_face:
+                synergy_count += 1
+            elif name == 'Splash':
+                synergy_count += len(cards)  # More cards = more chips with Splash
+
+        return synergy_count
+
     def evaluate_all_plays(self, hand: Hand, jokers: list = None,
-                           min_cards: int = 1, max_cards: int = 5) -> list[PlayOption]:
+                           min_cards: int = 1, max_cards: int = 5,
+                           hand_levels: dict = None) -> list[PlayOption]:
         """
         Evaluate all possible card combinations and return scored options.
+        Considers joker synergies and hand levels for smarter ranking.
         """
         cards = hand.cards
         jokers = jokers or []
+        hand_levels = hand_levels or {}
         options = []
 
         # Try all combinations from min_cards to max_cards
@@ -101,14 +145,27 @@ class SmartStrategy:
                     breakdown=breakdown
                 ))
 
-        # Sort by score descending
-        options.sort(key=lambda x: x.score, reverse=True)
+        # Sort by effective score (base score + synergy bonus + level bonus)
+        def effective_score(opt: PlayOption) -> float:
+            base = opt.score
+            # Joker synergy bonus: +5% per synergy triggered
+            synergies = self._count_joker_synergies(opt.cards, jokers)
+            synergy_bonus = base * 0.05 * synergies
+            # Hand level bonus: +10% per level above 1
+            level = hand_levels.get(opt.hand_type.name, 1)
+            level_bonus = base * 0.10 * (level - 1)
+            # Card economy: slight preference for fewer cards at similar scores
+            economy_bonus = (5 - len(opt.cards)) * 10
+            return base + synergy_bonus + level_bonus + economy_bonus
+
+        options.sort(key=effective_score, reverse=True)
         return options
 
     def select_cards_to_play(self, hand: Hand, game, must_play_count: int = None) -> list[int]:
         """
         Select the best cards to play.
         Evaluates all combinations and picks highest scoring.
+        Considers joker synergies and hand levels for optimal selection.
 
         Args:
             must_play_count: If set (e.g., The Psychic boss), must play exactly this many cards
@@ -124,23 +181,21 @@ class SmartStrategy:
             min_cards = 1
             max_cards = 5
 
+        # Get hand levels from game state
+        hand_levels = getattr(game, 'hand_levels', {})
+
         options = self.evaluate_all_plays(
             hand,
             jokers=game.jokers,
             min_cards=min_cards,
-            max_cards=max_cards
+            max_cards=max_cards,
+            hand_levels=hand_levels
         )
 
         if not options:
             return []
 
-        # Get the best option
-        best = options[0]
-
-        # Strategic consideration: if we have many hands left and score is low,
-        # might want to play fewer cards to save good ones
-        # But for now, just play the highest scoring option
-        return best.indices
+        return options[0].indices
 
     def select_cards_to_discard(self, hand: Hand, game) -> list[int]:
         """
@@ -158,8 +213,11 @@ class SmartStrategy:
         rank_counts = Counter(c.rank for c in cards)
         suit_counts = Counter(c.suit for c in cards)
 
+        # Get hand levels for evaluation
+        hand_levels = getattr(game, 'hand_levels', {})
+
         # Find the best current play
-        best_options = self.evaluate_all_plays(hand, game.jokers, min_cards=1, max_cards=5)
+        best_options = self.evaluate_all_plays(hand, game.jokers, min_cards=1, max_cards=5, hand_levels=hand_levels)
         if not best_options:
             return []
 
@@ -208,8 +266,10 @@ class SmartStrategy:
         if game.discards_remaining <= 0:
             return False
 
+        hand_levels = getattr(game, 'hand_levels', {})
+
         # Evaluate current best play
-        best_options = self.evaluate_all_plays(hand, game.jokers, min_cards=1, max_cards=5)
+        best_options = self.evaluate_all_plays(hand, game.jokers, min_cards=1, max_cards=5, hand_levels=hand_levels)
         if not best_options:
             return False
 
@@ -258,7 +318,8 @@ class OptimizedStrategy(SmartStrategy):
         straight_draw = self._check_straight_draw(ranks_present)
 
         # Check for strong made hands
-        best_options = self.evaluate_all_plays(hand, game.jokers, min_cards=1, max_cards=5)
+        hand_levels = getattr(game, 'hand_levels', {})
+        best_options = self.evaluate_all_plays(hand, game.jokers, min_cards=1, max_cards=5, hand_levels=hand_levels)
         if not best_options:
             return []
 
@@ -328,10 +389,11 @@ class AggressiveStrategy(SmartStrategy):
 
     def select_cards_to_play(self, hand: Hand, game, must_play_count: int = None) -> list[int]:
         """Always play the maximum scoring option."""
+        hand_levels = getattr(game, 'hand_levels', {})
         if must_play_count:
-            options = self.evaluate_all_plays(hand, game.jokers, min_cards=must_play_count, max_cards=must_play_count)
+            options = self.evaluate_all_plays(hand, game.jokers, min_cards=must_play_count, max_cards=must_play_count, hand_levels=hand_levels)
         else:
-            options = self.evaluate_all_plays(hand, game.jokers, min_cards=1, max_cards=5)
+            options = self.evaluate_all_plays(hand, game.jokers, min_cards=1, max_cards=5, hand_levels=hand_levels)
 
         if not options:
             return []
