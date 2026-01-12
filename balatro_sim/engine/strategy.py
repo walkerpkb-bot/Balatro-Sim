@@ -197,10 +197,40 @@ class SmartStrategy:
 
         return options[0].indices
 
+    def _get_joker_preferred_suits(self, jokers: list) -> set:
+        """Get suits that jokers give bonuses for."""
+        preferred = set()
+        for joker in jokers:
+            effect = joker.get('effect', {})
+            for cond in effect.get('conditions', []):
+                if cond.get('type') == 'suit':
+                    preferred.add(cond.get('suit', '').lower())
+        return preferred
+
+    def _get_joker_preferred_ranks(self, jokers: list) -> set:
+        """Get ranks that jokers give bonuses for."""
+        preferred = set()
+        for joker in jokers:
+            effect = joker.get('effect', {})
+            for cond in effect.get('conditions', []):
+                if cond.get('type') == 'rank':
+                    rank = cond.get('rank', '')
+                    if rank == 'face_card':
+                        preferred.update(['J', 'Q', 'K'])
+                    else:
+                        preferred.add(rank)
+            # Special jokers
+            name = joker.get('name', '')
+            if name == 'Hack':
+                preferred.update(['2', '3', '4', '5'])
+            elif name in ('Sock and Buskin', 'Baron', 'Shoot the Moon'):
+                preferred.update(['J', 'Q', 'K'])
+        return preferred
+
     def select_cards_to_discard(self, hand: Hand, game) -> list[int]:
         """
         Smart discard strategy.
-        Identifies cards that don't contribute to potential good hands.
+        Considers joker synergies, hand levels, and draw potential.
         """
         if game.discards_remaining <= 0:
             return []
@@ -209,15 +239,13 @@ class SmartStrategy:
         if len(cards) <= 3:
             return []
 
-        # Analyze what we have
         rank_counts = Counter(c.rank for c in cards)
         suit_counts = Counter(c.suit for c in cards)
-
-        # Get hand levels for evaluation
         hand_levels = getattr(game, 'hand_levels', {})
+        jokers = game.jokers or []
 
         # Find the best current play
-        best_options = self.evaluate_all_plays(hand, game.jokers, min_cards=1, max_cards=5, hand_levels=hand_levels)
+        best_options = self.evaluate_all_plays(hand, jokers, min_cards=1, max_cards=5, hand_levels=hand_levels)
         if not best_options:
             return []
 
@@ -233,31 +261,59 @@ class SmartStrategy:
         if best_play.score >= score_per_hand_needed * 1.5:
             return []
 
-        # Identify "dead" cards - not part of pairs/trips and not helping flushes
+        # Get joker preferences
+        preferred_suits = self._get_joker_preferred_suits(jokers)
+        preferred_ranks = self._get_joker_preferred_ranks(jokers)
+
+        # Check for draws worth chasing
         dominated_suit = max(suit_counts, key=suit_counts.get)
+        flush_level = hand_levels.get('FLUSH', 1)
         flush_potential = suit_counts[dominated_suit] >= 3
 
-        discard_candidates = []
+        # Prioritize flush if leveled or joker prefers suit
+        flush_priority = flush_level >= 2 or dominated_suit.value.lower() in preferred_suits
+
+        # Score each card for discard priority (higher = more likely to discard)
+        discard_scores = []
         for i, card in enumerate(cards):
             if i in best_indices:
-                continue  # Keep cards in our best play
+                continue  # Never discard cards in best play
 
-            is_lonely = rank_counts[card.rank] == 1
-            helps_flush = card.suit == dominated_suit and flush_potential
+            score = 0
 
-            if is_lonely and not helps_flush:
-                # This card isn't helping
-                discard_candidates.append((i, card.chip_value))
+            # Lonely cards (no pairs) are discard candidates
+            if rank_counts[card.rank] == 1:
+                score += 50
 
-        # Sort by chip value (discard lowest value cards)
-        discard_candidates.sort(key=lambda x: x[1])
+            # Cards not helping flush draw
+            if flush_potential and card.suit != dominated_suit:
+                score += 30 if flush_priority else 15
 
-        # Discard up to 3 cards (or fewer if we're close on hands)
-        max_discard = min(3, len(discard_candidates))
+            # Low chip value cards more expendable
+            score += max(0, 11 - card.chip_value)
+
+            # BUT protect joker-synergy cards
+            if card.suit.value.lower() in preferred_suits:
+                score -= 40
+            if card.rank in preferred_ranks:
+                score -= 40
+            if card.is_face_card and any(j.get('name') in ('Sock and Buskin', 'Baron') for j in jokers):
+                score -= 50
+
+            discard_scores.append((i, score))
+
+        # Sort by discard score (highest = discard first)
+        discard_scores.sort(key=lambda x: x[1], reverse=True)
+
+        # Only discard cards with positive scores
+        candidates = [(i, s) for i, s in discard_scores if s > 0]
+
+        # Discard up to 3 cards
+        max_discard = min(3, len(candidates))
         if hands_left <= 2:
-            max_discard = min(2, max_discard)  # Be conservative near end
+            max_discard = min(2, max_discard)
 
-        return [idx for idx, _ in discard_candidates[:max_discard]]
+        return [idx for idx, _ in candidates[:max_discard]]
 
     def should_discard(self, hand: Hand, game) -> bool:
         """
