@@ -574,7 +574,17 @@ class CoachStrategy(SmartStrategy):
 
     FINANCING:
     ----------
-    [pending]
+    - Money is your friend early on. It buys OPTIONS.
+    - Fund a strong build once realized = clearer path.
+    - Fund TRYING ideas before committing = flexibility.
+    - Generate funds along the way = ability to strengthen/upgrade.
+    - Early game priority: build a money cushion.
+    - Interest mechanic: $1 per $5 held (up to $5 at $25). $25 = passive income.
+    - Don't spend everything. Leave room for future opportunities.
+    - Econ jokers early = compound returns over the run.
+    - Money tarots (Hermit) are valuable early.
+    - BUT: Econ doesn't WIN games - scoring power does. Econ is secondary.
+    - Don't prioritize econ OVER power jokers. Econ is a tiebreaker.
 
     ============================================================================
     """
@@ -641,6 +651,9 @@ class CoachStrategy(SmartStrategy):
     # Instead, we evaluate jokers fluidly based on how unconditional their value is.
     # A joker that "just works" without setup is more valuable when we have no direction.
     # But we don't commit to a list - we evaluate in context.
+
+    # Interest thresholds - money milestones that generate passive income
+    INTEREST_THRESHOLDS = [5, 10, 15, 20, 25]  # $1 interest per threshold reached
 
     def __init__(self):
         super().__init__()
@@ -730,9 +743,9 @@ class CoachStrategy(SmartStrategy):
             cond_type = cond.get("type", "")
             if cond_type in ("suit", "rank", "hand_contains"):
                 has_conditions = True
-                # If we already have jokers that want this suit/rank, it's less conditional
-                # (it fits our emerging direction)
-                # For now, just note it's conditional
+                # Conditional jokers without a build direction are RISKY
+                # They might not pay off - penalize them
+                score -= 10
 
         # Unconditional multipliers are great
         for mod in modifiers:
@@ -769,6 +782,118 @@ class CoachStrategy(SmartStrategy):
                 score -= 5   # Too late to scale
 
         return score
+
+    # ========================================================================
+    # FINANCING LOGIC
+    # ========================================================================
+
+    def _get_current_interest(self, money: int) -> int:
+        """Calculate current interest earned per round."""
+        return min(money // 5, 5)  # $1 per $5, max $5
+
+    def _get_next_interest_threshold(self, money: int) -> int:
+        """Get the next interest threshold to aim for."""
+        for threshold in self.INTEREST_THRESHOLDS:
+            if money < threshold:
+                return threshold
+        return 25  # Already at max
+
+    def _would_break_interest(self, current_money: int, cost: int) -> bool:
+        """Check if a purchase would drop us below an interest threshold."""
+        current_interest = self._get_current_interest(current_money)
+        after_interest = self._get_current_interest(current_money - cost)
+        return after_interest < current_interest
+
+    def _evaluate_economy_value(self, joker: dict, game) -> float:
+        """
+        Evaluate economy/money generation value of a joker.
+
+        Coaching insight: Money is your friend early on.
+        - Econ jokers early = compound returns over the run
+        - The earlier you get econ, the more rounds it pays off
+        - $4/round joker in ante 1 = potentially $30+ over the run
+        """
+        effect = joker.get("effect", {})
+        modifiers = effect.get("modifiers", [])
+        name = joker.get("name", "")
+        phase = self._get_game_phase(game)
+
+        econ_score = 0
+
+        # Direct money generation
+        # IMPORTANT: Econ is nice but SCORING POWER wins games.
+        # Econ is a tiebreaker, not a primary driver.
+        for mod in modifiers:
+            if mod.get("type") in ("earn_money", "give_money"):
+                base_value = mod.get("value", 0)
+
+                # Modest bonus - econ helps but doesn't win alone
+                if phase == "early":
+                    econ_score += base_value * 3  # Nice early but not over power
+                elif phase == "mid":
+                    econ_score += base_value * 2
+                else:
+                    econ_score += base_value * 1
+
+        # Known strong econ jokers - modest bonuses
+        # These help but shouldn't override scoring jokers
+        strong_econ = {
+            "Golden Joker": 12,      # $4 at end of round - reliable
+            "Rocket": 10,            # Scales with boss defeats
+            "Delayed Gratification": 8,   # $2 per discard unused
+            "Business Card": 6,      # $2 per face card
+            "Faceless Joker": 6,     # $5 if 3+ face cards discarded
+            "To the Moon": 10,       # Extra $1 interest per $5
+            "Satellite": 8,          # $ per unique planet used
+            "Egg": 5,                # Gains $3 sell value per round
+        }
+
+        if name in strong_econ:
+            base = strong_econ[name]
+            if phase == "early":
+                econ_score += base
+            elif phase == "mid":
+                econ_score += base * 0.7
+            else:
+                econ_score += base * 0.3
+
+        return econ_score
+
+    def _should_save_money(self, game, potential_cost: int) -> tuple[bool, str]:
+        """
+        Decide if we should save money instead of spending.
+
+        Returns (should_save, reason).
+
+        Coaching insight: Don't spend everything. Leave room for:
+        - Future build opportunities
+        - Interest generation
+        - Flexibility to try ideas
+        """
+        money = game.money
+        phase = self._get_game_phase(game)
+
+        # Early game: prioritize building toward $25 interest cap
+        if phase == "early":
+            # If we're close to next interest threshold, consider saving
+            next_threshold = self._get_next_interest_threshold(money)
+            if money >= next_threshold - 3 and potential_cost > (money - next_threshold):
+                return True, f"close_to_interest_{next_threshold}"
+
+            # Don't drop below $5 early if possible (lose all interest)
+            if money - potential_cost < 5 and money >= 5:
+                return True, "preserve_base_interest"
+
+        # Mid game: balance spending and saving
+        elif phase == "mid":
+            # Try to maintain at least $15 for flexibility
+            if money - potential_cost < 15 and money >= 20:
+                return True, "maintain_flexibility"
+
+        # Late game: spend more freely to win
+        # (less reason to save, need power now)
+
+        return False, ""
 
     # ========================================================================
     # PHASE DETECTION
@@ -849,10 +974,16 @@ class CoachStrategy(SmartStrategy):
         # Always start with the fluid unconditional value assessment
         unconditional_value = self._evaluate_unconditional_value(joker, game)
 
+        # Add economy value - money generation is especially good early
+        economy_value = self._evaluate_economy_value(joker, game)
+
         # === EARLY GAME: No lead yet ===
         if phase == "early" and not current_lead:
             # Be fluid - weight unconditional value highly
             score += unconditional_value
+
+            # Economy is nice but secondary - don't let it override power
+            score += economy_value * 0.5
 
             # Potential build leads are exciting - they give us direction
             if is_lead:
@@ -865,7 +996,8 @@ class CoachStrategy(SmartStrategy):
             # Is this joker a synergy with our lead?
             if joker_name in lead_info.get("synergies", []):
                 score += 70  # Strongly favor synergies
-                score += unconditional_value * 0.5  # Still consider base value
+                score += unconditional_value * 0.5
+                score += economy_value * 0.3  # Econ still has some value
 
             # Does this joker conflict with our lead?
             elif "*" in lead_info.get("anti_synergies", []):
@@ -878,17 +1010,20 @@ class CoachStrategy(SmartStrategy):
             elif is_lead and lead_strength > current_strength:
                 score += lead_strength * 6  # Consider the pivot
                 score += unconditional_value * 0.3
+                score += economy_value * 0.3
 
             # No special relationship - evaluate on merit
             else:
-                score += unconditional_value * 0.7  # Discount slightly vs synergies
+                score += unconditional_value * 0.7
+                score += economy_value * 0.5  # Econ always has value
 
         # === MID/LATE WITHOUT LEAD (drifting - need direction) ===
         else:
             # Really want a lead now - but don't ignore good jokers
             if is_lead:
                 score += lead_strength * 10
-            score += unconditional_value  # Take what's good
+            score += unconditional_value
+            score += economy_value * 0.7  # Econ less valuable late but still helps
 
         return score
 
@@ -901,10 +1036,17 @@ class CoachStrategy(SmartStrategy):
         Decide whether to buy a pack.
 
         Coaching notes:
-        - SHOP CHOICE: [pending]
-        - FINANCING: [pending]
+        - FINANCING: Consider if buying would hurt interest income.
+        - Early game: be more conservative, build money cushion.
+        - Packs are RNG - sometimes saving for direct joker is better.
         """
-        # Default to parent/shop AI behavior for now
+        cost = getattr(pack, 'cost', 4)
+
+        # Check if we should save instead
+        should_save, reason = self._should_save_money(game, cost)
+        if should_save:
+            return False
+
         return True
 
     def should_reroll(self, shop, game) -> bool:
@@ -912,11 +1054,43 @@ class CoachStrategy(SmartStrategy):
         Decide whether to reroll the shop.
 
         Coaching notes:
-        - SHOP CHOICE: [pending]
-        - FINANCING: [pending]
-        - PATIENCE: [pending]
+        - FINANCING: Rerolls cost money. Early game, that money could compound.
+        - Only reroll if current options are truly bad.
+        - Don't reroll below interest thresholds.
         """
-        return False
+        reroll_cost = 5  # Base cost
+
+        # Never reroll if it would break interest
+        if self._would_break_interest(game.money, reroll_cost):
+            return False
+
+        # Early game: be conservative with rerolls
+        phase = self._get_game_phase(game)
+        if phase == "early" and game.money < 15:
+            return False
+
+        return False  # Default conservative - more logic can be added
+
+    def should_buy_joker(self, joker: dict, cost: int, game) -> bool:
+        """
+        Final check on whether to buy a specific joker.
+
+        Even if a joker scores well, we might pass to preserve money.
+        """
+        # Get the joker's score
+        joker_score = self.evaluate_joker(joker, game)
+
+        # Check if we should save money instead
+        should_save, reason = self._should_save_money(game, cost)
+
+        # If we should save, only buy if the joker is REALLY good
+        if should_save:
+            # High-value threshold to override saving
+            if joker_score < 50:
+                return False
+
+        # Otherwise, buy if score is positive
+        return joker_score > 0
 
     # ========================================================================
     # SKIP DECISIONS
