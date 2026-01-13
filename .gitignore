@@ -4,3 +4,4 @@ __pycache__/
 .env
 batch nar/
 files.zip
+run_logs/

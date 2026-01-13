@@ -484,7 +484,27 @@ class ShopAI:
                 decisions["vouchers_to_buy"].append(i)
                 money -= voucher.cost
 
-        # Evaluate packs (good value, especially Celestial and Buffoon)
+        # PRIORITY: Buy jokers BEFORE packs in early game (ante <= 4)
+        # Direct jokers are more reliable than pack RNG
+        if game_state.ante <= 4 or joker_slots_free >= 3:
+            # Evaluate jokers first
+            joker_scores = []
+            for i, joker in enumerate(shop.jokers):
+                cost = shop.get_joker_cost(joker)
+                if cost > money or joker_slots_free <= 0:
+                    continue
+                score = self._score_joker(joker, game_state)
+                joker_scores.append((i, joker, cost, score))
+
+            joker_scores.sort(key=lambda x: x[3] / max(1, x[2]), reverse=True)
+
+            for i, joker, cost, score in joker_scores:
+                if cost <= money and joker_slots_free > 0 and score > 0:
+                    decisions["jokers_to_buy"].append(i)
+                    money -= cost
+                    joker_slots_free -= 1
+
+        # Evaluate packs (better in late game when we have money)
         for i, pack in enumerate(shop.packs):
             if pack.cost > money:
                 continue
@@ -492,18 +512,18 @@ class ShopAI:
             pack_score = self._score_pack(pack, game_state)
             if pack_score > 3:  # Worth buying
                 decisions["packs_to_buy"].append(i)
-                # Choose best options from pack
                 choices = self._choose_from_pack(pack, game_state, joker_slots_free)
                 decisions["pack_choices"][i] = choices
                 money -= pack.cost
 
-                # If we chose a joker, reduce available slots
                 if pack.pack_type == PackType.BUFFOON:
                     joker_slots_free -= len(choices)
 
-        # Evaluate jokers
+        # Evaluate remaining jokers (late game or after packs)
         joker_scores = []
         for i, joker in enumerate(shop.jokers):
+            if i in decisions["jokers_to_buy"]:  # Skip already bought
+                continue
             cost = shop.get_joker_cost(joker)
             if cost > money or joker_slots_free <= 0:
                 continue
@@ -515,6 +535,8 @@ class ShopAI:
 
         # Buy best jokers we can afford
         for i, joker, cost, score in joker_scores:
+            if i in decisions["jokers_to_buy"]:  # Double-check not already bought
+                continue
             if cost <= money and joker_slots_free > 0 and score > 0:
                 decisions["jokers_to_buy"].append(i)
                 money -= cost
