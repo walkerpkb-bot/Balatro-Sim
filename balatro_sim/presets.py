@@ -15,6 +15,7 @@ class StrategyType(Enum):
     SMART = "smart"
     OPTIMIZED = "optimized"
     AGGRESSIVE = "aggressive"
+    COACH = "coach"  # Human-coached strategy, iteratively developed
 
 
 class DeckType(Enum):

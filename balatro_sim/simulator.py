@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Optional, Union
 
 from .engine.game import simulate_run, simulate_blind, simulate_shop, GameConfig, GameState
-from .engine.strategy import BasicStrategy, SmartStrategy, OptimizedStrategy, AggressiveStrategy
+from .engine.strategy import BasicStrategy, SmartStrategy, OptimizedStrategy, AggressiveStrategy, CoachStrategy
 from .engine.hand_detector import HandType
 from .presets import Preset, StrategyType, DeckType, get_preset, list_presets, PRESETS
 
@@ -189,6 +189,7 @@ class Simulator:
             StrategyType.SMART: SmartStrategy,
             StrategyType.OPTIMIZED: OptimizedStrategy,
             StrategyType.AGGRESSIVE: AggressiveStrategy,
+            StrategyType.COACH: CoachStrategy,
         }
         return strategies.get(strategy_type, SmartStrategy)()
 

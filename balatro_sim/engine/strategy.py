@@ -499,6 +499,62 @@ class AggressiveStrategy(SmartStrategy):
         return super().select_cards_to_discard(hand, game)
 
 
+class CoachStrategy(SmartStrategy):
+    """
+    Human-coached strategy developed through iterative natural language feedback.
+
+    This strategy is built from the expertise of a 100+ hour Balatro player,
+    translating human intuition and heuristics into code logic.
+
+    VERSION: 0.1 - Initial branch from SmartStrategy
+
+    Coaching notes will be documented here as we iterate:
+    ---------------------------------------------------
+    [Session notes will be added here]
+    """
+
+    def __init__(self):
+        super().__init__()
+        # Track coaching-specific state
+        self.build_detector = BuildDetector()
+
+    # ========================================================================
+    # CARD SELECTION - What to play
+    # ========================================================================
+
+    def select_cards_to_play(self, hand: Hand, game, must_play_count: int = None) -> list[int]:
+        """
+        Select cards to play.
+
+        Coaching notes:
+        - [To be filled in through coaching sessions]
+        """
+        # For now, use parent SmartStrategy logic
+        # This will be replaced/enhanced through coaching
+        return super().select_cards_to_play(hand, game, must_play_count)
+
+    # ========================================================================
+    # DISCARD STRATEGY - What to throw away
+    # ========================================================================
+
+    def select_cards_to_discard(self, hand: Hand, game) -> list[int]:
+        """
+        Select cards to discard.
+
+        Coaching notes:
+        - [To be filled in through coaching sessions]
+        """
+        # For now, use parent SmartStrategy logic
+        # This will be replaced/enhanced through coaching
+        return super().select_cards_to_discard(hand, game)
+
+    # ========================================================================
+    # COACHING HELPERS - Supporting methods for coached logic
+    # ========================================================================
+
+    # Methods will be added here as coaching reveals needed functionality
+
+
 # ============================================================================
 # BUILD ARCHETYPES AND STRATEGIC PLANNING
 # ============================================================================
