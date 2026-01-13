@@ -132,7 +132,22 @@ def get_pack_image(pack_type: str, is_mega: bool = False) -> str:
 
 
 def get_deck_image(deck_name: str) -> str:
-    return IMAGE_ASSETS.get("decks", {}).get(deck_name, "")
+    # Map preset deck names to image asset keys
+    deck_map = {
+        "standard": "standard",
+        "red": "Red Deck",
+        "blue": "Blue Deck",
+        "yellow": "Yellow Deck",
+        "green": "Green Deck",
+        "black": "Black Deck",
+        "painted": "Painted Deck",
+        "abandoned": "Abandoned Deck",
+        "checkered": "Checkered Deck",
+        "plasma": "Plasma Deck",
+        "erratic": "Erratic Deck",
+    }
+    key = deck_map.get(deck_name.lower(), deck_name)
+    return IMAGE_ASSETS.get("decks", {}).get(key, "")
 
 
 # Initialize simulator (cached)
