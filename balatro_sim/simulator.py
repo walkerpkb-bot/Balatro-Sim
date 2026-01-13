@@ -213,14 +213,14 @@ class Simulator:
 
     def run(self, preset: Union[str, Preset] = "standard",
             verbose: bool = False,
-            strategy_override: 'StrategyType' = None) -> RunSummary:
+            strategy_override=None) -> RunSummary:
         """
-        Run a single simulation.
+        Run a single simulation with optional strategy override.
 
         Args:
             preset: Preset name (string) or Preset object
             verbose: Print detailed output during run
-            strategy_override: Override preset's strategy with this one
+            strategy_override: StrategyType to override preset's default strategy
 
         Returns:
             RunSummary with results
