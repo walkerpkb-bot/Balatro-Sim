@@ -1,0 +1,100 @@
+{
+  "metadata": {
+    "preset": "blue",
+    "deck": "blue"
+  },
+  "events": [
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "run_start",
+      "data": {
+        "starting_money": 4,
+        "starting_jokers": [],
+        "starting_hand_levels": {}
+      },
+      "timestamp": 0
+    },
+    {
+      "ante": 1,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 316,
+        "required": 300,
+        "success": true,
+        "margin": 16,
+        "margin_pct": 5.3,
+        "hands_used": 1,
+        "discards_used": 0,
+        "best_hand": "STRAIGHT",
+        "close_call": true
+      },
+      "timestamp": 1
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Steel Joker",
+        "source": "shop"
+      },
+      "timestamp": 2
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Steel Joker"
+        ],
+        "planets_used": [],
+        "money_spent": 7,
+        "money_remaining": 0
+      },
+      "timestamp": 3
+    },
+    {
+      "ante": 1,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 209,
+        "required": 450,
+        "success": false,
+        "margin": -241,
+        "margin_pct": -53.6,
+        "hands_used": 5,
+        "discards_used": 3,
+        "best_hand": "FLUSH",
+        "close_call": false
+      },
+      "timestamp": 4
+    },
+    {
+      "ante": 1,
+      "blind_type": "BIG",
+      "event_type": "run_end",
+      "data": {
+        "victory": false,
+        "blinds_beaten": 1,
+        "final_money": 0,
+        "final_jokers": [
+          "Steel Joker"
+        ],
+        "final_hand_levels": {}
+      },
+      "timestamp": 5
+    }
+  ],
+  "summary": {
+    "total_blinds_attempted": 2,
+    "blinds_won": 1,
+    "close_calls": 1,
+    "jokers_acquired": 1,
+    "planets_used": 0,
+    "victory": false
+  }
+}

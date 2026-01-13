@@ -1,0 +1,115 @@
+{
+  "metadata": {
+    "preset": "black",
+    "deck": "black"
+  },
+  "events": [
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "run_start",
+      "data": {
+        "starting_money": 4,
+        "starting_jokers": [],
+        "starting_hand_levels": {}
+      },
+      "timestamp": 0
+    },
+    {
+      "ante": 1,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 552,
+        "required": 300,
+        "success": true,
+        "margin": 252,
+        "margin_pct": 84.0,
+        "hands_used": 2,
+        "discards_used": 2,
+        "best_hand": "FULL_HOUSE",
+        "close_call": false
+      },
+      "timestamp": 1
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Devious Joker",
+        "source": "shop"
+      },
+      "timestamp": 2
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Venus",
+        "hand_type": "THREE_OF_A_KIND",
+        "new_level": 2
+      },
+      "timestamp": 3
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Devious Joker"
+        ],
+        "planets_used": [
+          "Venus"
+        ],
+        "money_spent": 7,
+        "money_remaining": 0
+      },
+      "timestamp": 4
+    },
+    {
+      "ante": 1,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 320,
+        "required": 450,
+        "success": false,
+        "margin": -130,
+        "margin_pct": -28.9,
+        "hands_used": 3,
+        "discards_used": 1,
+        "best_hand": "TWO_PAIR",
+        "close_call": false
+      },
+      "timestamp": 5
+    },
+    {
+      "ante": 1,
+      "blind_type": "BIG",
+      "event_type": "run_end",
+      "data": {
+        "victory": false,
+        "blinds_beaten": 1,
+        "final_money": 0,
+        "final_jokers": [
+          "Devious Joker"
+        ],
+        "final_hand_levels": {
+          "THREE_OF_A_KIND": 2
+        }
+      },
+      "timestamp": 6
+    }
+  ],
+  "summary": {
+    "total_blinds_attempted": 2,
+    "blinds_won": 1,
+    "close_calls": 0,
+    "jokers_acquired": 1,
+    "planets_used": 1,
+    "victory": false
+  }
+}

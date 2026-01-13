@@ -1,0 +1,976 @@
+{
+  "metadata": {
+    "preset": "standard",
+    "deck": "standard"
+  },
+  "events": [
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "run_start",
+      "data": {
+        "starting_money": 4,
+        "starting_jokers": [],
+        "starting_hand_levels": {}
+      },
+      "timestamp": 0
+    },
+    {
+      "ante": 1,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 484,
+        "required": 300,
+        "success": true,
+        "margin": 184,
+        "margin_pct": 61.3,
+        "hands_used": 3,
+        "discards_used": 2,
+        "best_hand": "FLUSH",
+        "close_call": false,
+        "hands_played": [
+          [
+            "TWO_PAIR",
+            116
+          ],
+          [
+            "TWO_PAIR",
+            108
+          ],
+          [
+            "FLUSH",
+            260
+          ]
+        ]
+      },
+      "timestamp": 1
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Mad Joker",
+        "source": "buffoon_pack"
+      },
+      "timestamp": 2
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "pack_opened",
+      "data": {
+        "pack_type": "Buffoon",
+        "is_mega": false,
+        "options_available": [
+          "Splash",
+          "Mad Joker"
+        ],
+        "choices_made": [
+          "Mad Joker"
+        ]
+      },
+      "timestamp": 3
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Mars",
+        "hand_type": "FOUR_OF_A_KIND",
+        "new_level": 2
+      },
+      "timestamp": 4
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Mad Joker"
+        ],
+        "planets_used": [
+          "Mars"
+        ],
+        "money_spent": 7,
+        "money_remaining": 0,
+        "packs_opened": [
+          {
+            "type": "Buffoon",
+            "choices": [
+              "Mad Joker"
+            ]
+          }
+        ]
+      },
+      "timestamp": 5
+    },
+    {
+      "ante": 1,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 936,
+        "required": 450,
+        "success": true,
+        "margin": 486,
+        "margin_pct": 108.0,
+        "hands_used": 2,
+        "discards_used": 0,
+        "best_hand": "TWO_PAIR",
+        "close_call": false,
+        "hands_played": [
+          [
+            "TWO_PAIR",
+            408
+          ],
+          [
+            "TWO_PAIR",
+            528
+          ]
+        ]
+      },
+      "timestamp": 6
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "pack_opened",
+      "data": {
+        "pack_type": "Spectral",
+        "is_mega": false,
+        "options_available": [
+          "Familiar",
+          "Immolate"
+        ],
+        "choices_made": [
+          "Immolate"
+        ]
+      },
+      "timestamp": 7
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 20,
+        "spectrals_used": [
+          "Immolate: Destroyed 5 cards, gained $20"
+        ],
+        "packs_opened": [
+          {
+            "type": "Spectral",
+            "choices": [
+              "Immolate"
+            ]
+          }
+        ]
+      },
+      "timestamp": 8
+    },
+    {
+      "ante": 1,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 720,
+        "required": 600,
+        "success": true,
+        "margin": 120,
+        "margin_pct": 20.0,
+        "hands_used": 1,
+        "discards_used": 1,
+        "best_hand": "TWO_PAIR",
+        "close_call": false,
+        "boss_name": "The Hook",
+        "hands_played": [
+          [
+            "TWO_PAIR",
+            720
+          ]
+        ]
+      },
+      "timestamp": 9
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Mars",
+        "hand_type": "FOUR_OF_A_KIND",
+        "new_level": 3
+      },
+      "timestamp": 10
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Uranus",
+        "hand_type": "TWO_PAIR",
+        "new_level": 2
+      },
+      "timestamp": 11
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "pack_opened",
+      "data": {
+        "pack_type": "Celestial",
+        "is_mega": true,
+        "options_available": [
+          "Mars",
+          "Uranus",
+          "Venus",
+          "Pluto",
+          "Mercury"
+        ],
+        "choices_made": [
+          "Mars",
+          "Uranus"
+        ]
+      },
+      "timestamp": 12
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Joker",
+        "source": "buffoon_pack"
+      },
+      "timestamp": 13
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "pack_opened",
+      "data": {
+        "pack_type": "Buffoon",
+        "is_mega": false,
+        "options_available": [
+          "Hallucination",
+          "Joker"
+        ],
+        "choices_made": [
+          "Joker"
+        ]
+      },
+      "timestamp": 14
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Photograph",
+        "source": "shop"
+      },
+      "timestamp": 15
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Even Steven",
+        "source": "shop"
+      },
+      "timestamp": 16
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Joker",
+          "Photograph",
+          "Even Steven"
+        ],
+        "planets_used": [
+          "Mars",
+          "Uranus"
+        ],
+        "money_spent": 29,
+        "money_remaining": 0,
+        "vouchers_bought": [
+          "Wasteful"
+        ],
+        "packs_opened": [
+          {
+            "type": "Celestial",
+            "choices": [
+              "Mars",
+              "Uranus"
+            ]
+          },
+          {
+            "type": "Buffoon",
+            "choices": [
+              "Joker"
+            ]
+          }
+        ]
+      },
+      "timestamp": 17
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "voucher_acquired",
+      "data": {
+        "voucher": "Wasteful",
+        "effect": null
+      },
+      "timestamp": 18
+    },
+    {
+      "ante": 2,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 1050,
+        "required": 800,
+        "success": true,
+        "margin": 250,
+        "margin_pct": 31.2,
+        "hands_used": 1,
+        "discards_used": -1,
+        "best_hand": "TWO_PAIR",
+        "close_call": false,
+        "hands_played": [
+          [
+            "TWO_PAIR",
+            1050
+          ]
+        ]
+      },
+      "timestamp": 19
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Venus",
+        "hand_type": "THREE_OF_A_KIND",
+        "new_level": 2
+      },
+      "timestamp": 20
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Venus"
+        ],
+        "money_spent": 3,
+        "money_remaining": 0
+      },
+      "timestamp": 21
+    },
+    {
+      "ante": 2,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 1818,
+        "required": 1200,
+        "success": true,
+        "margin": 618,
+        "margin_pct": 51.5,
+        "hands_used": 2,
+        "discards_used": -1,
+        "best_hand": "TWO_PAIR",
+        "close_call": false,
+        "hands_played": [
+          [
+            "STRAIGHT",
+            600
+          ],
+          [
+            "TWO_PAIR",
+            1218
+          ]
+        ]
+      },
+      "timestamp": 22
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Saturn",
+        "hand_type": "STRAIGHT",
+        "new_level": 2
+      },
+      "timestamp": 23
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "pack_opened",
+      "data": {
+        "pack_type": "Celestial",
+        "is_mega": false,
+        "options_available": [
+          "Eris",
+          "Saturn",
+          "Saturn"
+        ],
+        "choices_made": [
+          "Saturn"
+        ]
+      },
+      "timestamp": 24
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Saturn"
+        ],
+        "money_spent": 4,
+        "money_remaining": 0,
+        "packs_opened": [
+          {
+            "type": "Celestial",
+            "choices": [
+              "Saturn"
+            ]
+          }
+        ]
+      },
+      "timestamp": 25
+    },
+    {
+      "ante": 2,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 4764,
+        "required": 2400,
+        "success": true,
+        "margin": 2364,
+        "margin_pct": 98.5,
+        "hands_used": 2,
+        "discards_used": 0,
+        "best_hand": "TWO_PAIR",
+        "close_call": false,
+        "boss_name": "The Wall",
+        "hands_played": [
+          [
+            "FLUSH",
+            1656
+          ],
+          [
+            "TWO_PAIR",
+            3108
+          ]
+        ]
+      },
+      "timestamp": 26
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "pack_opened",
+      "data": {
+        "pack_type": "Spectral",
+        "is_mega": false,
+        "options_available": [
+          "Aura",
+          "Wraith"
+        ],
+        "choices_made": [
+          "Aura"
+        ]
+      },
+      "timestamp": 27
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 1,
+        "spectrals_used": [
+          "Aura: Added Poly to AD [Poly]"
+        ],
+        "packs_opened": [
+          {
+            "type": "Spectral",
+            "choices": [
+              "Aura"
+            ]
+          }
+        ]
+      },
+      "timestamp": 28
+    },
+    {
+      "ante": 3,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 2970,
+        "required": 2000,
+        "success": true,
+        "margin": 970,
+        "margin_pct": 48.5,
+        "hands_used": 2,
+        "discards_used": 0,
+        "best_hand": "FLUSH",
+        "close_call": false,
+        "hands_played": [
+          [
+            "HIGH_CARD",
+            270
+          ],
+          [
+            "FLUSH",
+            2700
+          ]
+        ]
+      },
+      "timestamp": 29
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "pack_opened",
+      "data": {
+        "pack_type": "Spectral",
+        "is_mega": false,
+        "options_available": [
+          "Trance",
+          "Grim"
+        ],
+        "choices_made": [
+          "Trance"
+        ]
+      },
+      "timestamp": 30
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 0,
+        "spectrals_used": [
+          "Trance: Added Blue seal to 1 cards"
+        ],
+        "packs_opened": [
+          {
+            "type": "Spectral",
+            "choices": [
+              "Trance"
+            ]
+          }
+        ]
+      },
+      "timestamp": 31
+    },
+    {
+      "ante": 3,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 4820,
+        "required": 3000,
+        "success": true,
+        "margin": 1820,
+        "margin_pct": 60.7,
+        "hands_used": 3,
+        "discards_used": 2,
+        "best_hand": "TWO_PAIR",
+        "close_call": false,
+        "hands_played": [
+          [
+            "PAIR",
+            320
+          ],
+          [
+            "FLUSH",
+            1728
+          ],
+          [
+            "TWO_PAIR",
+            2772
+          ]
+        ]
+      },
+      "timestamp": 32
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Mystic Summit",
+        "source": "buffoon_pack"
+      },
+      "timestamp": 33
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "pack_opened",
+      "data": {
+        "pack_type": "Buffoon",
+        "is_mega": false,
+        "options_available": [
+          "Ride the Bus",
+          "Mystic Summit"
+        ],
+        "choices_made": [
+          "Mystic Summit"
+        ]
+      },
+      "timestamp": 34
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Mystic Summit"
+        ],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 0,
+        "packs_opened": [
+          {
+            "type": "Buffoon",
+            "choices": [
+              "Mystic Summit"
+            ]
+          }
+        ]
+      },
+      "timestamp": 35
+    },
+    {
+      "ante": 3,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 4176,
+        "required": 4000,
+        "success": true,
+        "margin": 176,
+        "margin_pct": 4.4,
+        "hands_used": 2,
+        "discards_used": 1,
+        "best_hand": "TWO_PAIR",
+        "close_call": true,
+        "boss_name": "The Fish",
+        "hands_played": [
+          [
+            "TWO_PAIR",
+            2088
+          ],
+          [
+            "TWO_PAIR",
+            2088
+          ]
+        ]
+      },
+      "timestamp": 36
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "pack_opened",
+      "data": {
+        "pack_type": "Arcana",
+        "is_mega": false,
+        "options_available": [
+          "The Hanged Man",
+          "The Magician",
+          "The Hanged Man"
+        ],
+        "choices_made": [
+          "The Magician"
+        ]
+      },
+      "timestamp": 37
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 1,
+        "tarots_used": [
+          "The Magician: Enhanced 2 cards with Lucky"
+        ],
+        "packs_opened": [
+          {
+            "type": "Arcana",
+            "choices": [
+              "The Magician"
+            ]
+          }
+        ]
+      },
+      "timestamp": 38
+    },
+    {
+      "ante": 4,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 10356,
+        "required": 5000,
+        "success": true,
+        "margin": 5356,
+        "margin_pct": 107.1,
+        "hands_used": 2,
+        "discards_used": 0,
+        "best_hand": "STRAIGHT",
+        "close_call": false,
+        "hands_played": [
+          [
+            "TWO_PAIR",
+            2808
+          ],
+          [
+            "STRAIGHT",
+            7548
+          ]
+        ]
+      },
+      "timestamp": 39
+    },
+    {
+      "ante": 4,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Mars",
+        "hand_type": "FOUR_OF_A_KIND",
+        "new_level": 4
+      },
+      "timestamp": 40
+    },
+    {
+      "ante": 4,
+      "blind_type": null,
+      "event_type": "pack_opened",
+      "data": {
+        "pack_type": "Celestial",
+        "is_mega": false,
+        "options_available": [
+          "Mars",
+          "Mars",
+          "Earth"
+        ],
+        "choices_made": [
+          "Mars"
+        ]
+      },
+      "timestamp": 41
+    },
+    {
+      "ante": 4,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Mars"
+        ],
+        "money_spent": 4,
+        "money_remaining": 0,
+        "packs_opened": [
+          {
+            "type": "Celestial",
+            "choices": [
+              "Mars"
+            ]
+          }
+        ]
+      },
+      "timestamp": 42
+    },
+    {
+      "ante": 4,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 9136,
+        "required": 7500,
+        "success": true,
+        "margin": 1636,
+        "margin_pct": 21.8,
+        "hands_used": 2,
+        "discards_used": 0,
+        "best_hand": "TWO_PAIR",
+        "close_call": false,
+        "hands_played": [
+          [
+            "TWO_PAIR",
+            6400
+          ],
+          [
+            "TWO_PAIR",
+            2736
+          ]
+        ]
+      },
+      "timestamp": 43
+    },
+    {
+      "ante": 4,
+      "blind_type": null,
+      "event_type": "pack_opened",
+      "data": {
+        "pack_type": "Arcana",
+        "is_mega": false,
+        "options_available": [
+          "Death",
+          "The Tower",
+          "The Fool"
+        ],
+        "choices_made": [
+          "The Tower"
+        ]
+      },
+      "timestamp": 44
+    },
+    {
+      "ante": 4,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 0,
+        "tarots_used": [
+          "The Tower: Enhanced 2 cards with Stone"
+        ],
+        "packs_opened": [
+          {
+            "type": "Arcana",
+            "choices": [
+              "The Tower"
+            ]
+          }
+        ]
+      },
+      "timestamp": 45
+    },
+    {
+      "ante": 4,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 5650,
+        "required": 10000,
+        "success": false,
+        "margin": -4350,
+        "margin_pct": -43.5,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "STRAIGHT",
+        "close_call": false,
+        "boss_name": "The Water",
+        "hands_played": [
+          [
+            "HIGH_CARD",
+            1320
+          ],
+          [
+            "HIGH_CARD",
+            720
+          ],
+          [
+            "HIGH_CARD",
+            720
+          ],
+          [
+            "STRAIGHT",
+            2890
+          ]
+        ]
+      },
+      "timestamp": 46
+    },
+    {
+      "ante": 4,
+      "blind_type": "BOSS",
+      "event_type": "run_end",
+      "data": {
+        "victory": false,
+        "blinds_beaten": 11,
+        "final_money": 0,
+        "final_jokers": [
+          "Mad Joker",
+          "Joker",
+          "Photograph",
+          "Even Steven",
+          "Mystic Summit"
+        ],
+        "final_hand_levels": {
+          "TWO_PAIR": 2,
+          "THREE_OF_A_KIND": 2,
+          "STRAIGHT": 2,
+          "FOUR_OF_A_KIND": 4
+        }
+      },
+      "timestamp": 47
+    }
+  ],
+  "summary": {
+    "total_blinds_attempted": 12,
+    "blinds_won": 11,
+    "close_calls": 1,
+    "jokers_acquired": 5,
+    "vouchers_acquired": 1,
+    "planets_used": 6,
+    "tarots_used": 2,
+    "spectrals_used": 3,
+    "packs_opened": 11,
+    "packs_by_type": {
+      "Buffoon": 3,
+      "Spectral": 3,
+      "Celestial": 3,
+      "Arcana": 2
+    },
+    "boss_fights": 4,
+    "bosses_defeated": 3,
+    "victory": false
+  }
+}

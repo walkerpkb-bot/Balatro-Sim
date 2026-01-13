@@ -1,0 +1,504 @@
+{
+  "metadata": {
+    "preset": "standard",
+    "deck": "standard"
+  },
+  "events": [
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "run_start",
+      "data": {
+        "starting_money": 4,
+        "starting_jokers": [],
+        "starting_hand_levels": {}
+      },
+      "timestamp": 0
+    },
+    {
+      "ante": 1,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 332,
+        "required": 300,
+        "success": true,
+        "margin": 32,
+        "margin_pct": 10.7,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "TWO_PAIR",
+        "close_call": true,
+        "hands_played": [
+          [
+            "TWO_PAIR",
+            68
+          ],
+          [
+            "TWO_PAIR",
+            112
+          ],
+          [
+            "TWO_PAIR",
+            116
+          ],
+          [
+            "PAIR",
+            36
+          ]
+        ]
+      },
+      "timestamp": 1
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Sixth Sense",
+        "source": "shop"
+      },
+      "timestamp": 2
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Sixth Sense"
+        ],
+        "planets_used": [],
+        "money_spent": 6,
+        "money_remaining": 1
+      },
+      "timestamp": 3
+    },
+    {
+      "ante": 1,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 516,
+        "required": 450,
+        "success": true,
+        "margin": 66,
+        "margin_pct": 14.7,
+        "hands_used": 3,
+        "discards_used": 2,
+        "best_hand": "FULL_HOUSE",
+        "close_call": true,
+        "hands_played": [
+          [
+            "FULL_HOUSE",
+            360
+          ],
+          [
+            "TWO_PAIR",
+            68
+          ],
+          [
+            "TWO_PAIR",
+            88
+          ]
+        ]
+      },
+      "timestamp": 4
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Crafty Joker",
+        "source": "buffoon_pack"
+      },
+      "timestamp": 5
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Crafty Joker"
+        ],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 1
+      },
+      "timestamp": 6
+    },
+    {
+      "ante": 1,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 796,
+        "required": 600,
+        "success": true,
+        "margin": 196,
+        "margin_pct": 32.7,
+        "hands_used": 3,
+        "discards_used": 3,
+        "best_hand": "FULL_HOUSE",
+        "close_call": false,
+        "boss_name": "The Hook",
+        "hands_played": [
+          [
+            "FULL_HOUSE",
+            296
+          ],
+          [
+            "STRAIGHT",
+            220
+          ],
+          [
+            "FULL_HOUSE",
+            280
+          ]
+        ]
+      },
+      "timestamp": 7
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [],
+        "money_spent": 6,
+        "money_remaining": 0,
+        "tarots_used": [
+          "Wheel of Fortune: Added Foil edition to Sixth Sense",
+          "The Chariot: Enhanced 1 cards with Steel"
+        ]
+      },
+      "timestamp": 8
+    },
+    {
+      "ante": 2,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 1818,
+        "required": 800,
+        "success": true,
+        "margin": 1018,
+        "margin_pct": 127.2,
+        "hands_used": 3,
+        "discards_used": 3,
+        "best_hand": "FLUSH",
+        "close_call": false,
+        "hands_played": [
+          [
+            "TWO_PAIR",
+            336
+          ],
+          [
+            "TWO_PAIR",
+            276
+          ],
+          [
+            "FLUSH",
+            1206
+          ]
+        ]
+      },
+      "timestamp": 9
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Earth",
+        "hand_type": "FULL_HOUSE",
+        "new_level": 2
+      },
+      "timestamp": 10
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Earth"
+        ],
+        "money_spent": 3,
+        "money_remaining": 0
+      },
+      "timestamp": 11
+    },
+    {
+      "ante": 2,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 1754,
+        "required": 1200,
+        "success": true,
+        "margin": 554,
+        "margin_pct": 46.2,
+        "hands_used": 2,
+        "discards_used": 2,
+        "best_hand": "FULL_HOUSE",
+        "close_call": false,
+        "hands_played": [
+          [
+            "FLUSH",
+            848
+          ],
+          [
+            "FULL_HOUSE",
+            906
+          ]
+        ]
+      },
+      "timestamp": 12
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Jupiter",
+        "hand_type": "FLUSH",
+        "new_level": 2
+      },
+      "timestamp": 13
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Jupiter"
+        ],
+        "money_spent": 4,
+        "money_remaining": 0
+      },
+      "timestamp": 14
+    },
+    {
+      "ante": 2,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 1646,
+        "required": 1600,
+        "success": true,
+        "margin": 46,
+        "margin_pct": 2.9,
+        "hands_used": 3,
+        "discards_used": 3,
+        "best_hand": "FLUSH",
+        "close_call": true,
+        "boss_name": "The Ox",
+        "hands_played": [
+          [
+            "TWO_PAIR",
+            216
+          ],
+          [
+            "FLUSH",
+            1290
+          ],
+          [
+            "PAIR",
+            140
+          ]
+        ]
+      },
+      "timestamp": 15
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 1,
+        "tarots_used": [
+          "The Devil: Enhanced 2 cards with Gold"
+        ]
+      },
+      "timestamp": 16
+    },
+    {
+      "ante": 3,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 2864,
+        "required": 2000,
+        "success": true,
+        "margin": 864,
+        "margin_pct": 43.2,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "FLUSH",
+        "close_call": false,
+        "hands_played": [
+          [
+            "STRAIGHT",
+            508
+          ],
+          [
+            "TWO_PAIR",
+            184
+          ],
+          [
+            "FLUSH",
+            1290
+          ],
+          [
+            "FULL_HOUSE",
+            882
+          ]
+        ]
+      },
+      "timestamp": 17
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 0,
+        "tarots_used": [
+          "Justice: Enhanced 2 cards with Glass"
+        ]
+      },
+      "timestamp": 18
+    },
+    {
+      "ante": 3,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 5398,
+        "required": 3000,
+        "success": true,
+        "margin": 2398,
+        "margin_pct": 79.9,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "FLUSH",
+        "close_call": false,
+        "hands_played": [
+          [
+            "FLUSH",
+            1278
+          ],
+          [
+            "PAIR",
+            160
+          ],
+          [
+            "FLUSH",
+            1320
+          ],
+          [
+            "FLUSH",
+            2640
+          ]
+        ]
+      },
+      "timestamp": 19
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 0,
+        "tarots_used": [
+          "Justice: Enhanced 2 cards with Glass"
+        ]
+      },
+      "timestamp": 20
+    },
+    {
+      "ante": 3,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 2636,
+        "required": 4000,
+        "success": false,
+        "margin": -1364,
+        "margin_pct": -34.1,
+        "hands_used": 4,
+        "discards_used": 1,
+        "best_hand": "FLUSH",
+        "close_call": false,
+        "boss_name": "The Wheel",
+        "hands_played": [
+          [
+            "STRAIGHT",
+            920
+          ],
+          [
+            "FLUSH",
+            1320
+          ],
+          [
+            "TWO_PAIR",
+            196
+          ],
+          [
+            "TWO_PAIR",
+            200
+          ]
+        ]
+      },
+      "timestamp": 21
+    },
+    {
+      "ante": 3,
+      "blind_type": "BOSS",
+      "event_type": "run_end",
+      "data": {
+        "victory": false,
+        "blinds_beaten": 8,
+        "final_money": 0,
+        "final_jokers": [
+          "Sixth Sense",
+          "Crafty Joker"
+        ],
+        "final_hand_levels": {
+          "FLUSH": 2,
+          "FULL_HOUSE": 2
+        }
+      },
+      "timestamp": 22
+    }
+  ],
+  "summary": {
+    "total_blinds_attempted": 9,
+    "blinds_won": 8,
+    "close_calls": 3,
+    "jokers_acquired": 2,
+    "vouchers_acquired": 0,
+    "planets_used": 2,
+    "tarots_used": 5,
+    "spectrals_used": 0,
+    "boss_fights": 3,
+    "bosses_defeated": 2,
+    "victory": false
+  }
+}

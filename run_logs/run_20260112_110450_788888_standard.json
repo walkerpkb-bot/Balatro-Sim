@@ -1,0 +1,580 @@
+{
+  "metadata": {
+    "preset": "standard",
+    "deck": "standard"
+  },
+  "events": [
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "run_start",
+      "data": {
+        "starting_money": 4,
+        "starting_jokers": [],
+        "starting_hand_levels": {}
+      },
+      "timestamp": 0
+    },
+    {
+      "ante": 1,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 443,
+        "required": 300,
+        "success": true,
+        "margin": 143,
+        "margin_pct": 47.7,
+        "hands_used": 2,
+        "discards_used": 1,
+        "best_hand": "STRAIGHT",
+        "close_call": false,
+        "hands_played": [
+          [
+            "THREE_OF_A_KIND",
+            135
+          ],
+          [
+            "STRAIGHT",
+            308
+          ]
+        ]
+      },
+      "timestamp": 1
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [],
+        "money_spent": 6,
+        "money_remaining": 1,
+        "tarots_used": [
+          "The Tower: Enhanced 2 cards with Stone",
+          "The Empress: Enhanced 2 cards with Mult"
+        ]
+      },
+      "timestamp": 2
+    },
+    {
+      "ante": 1,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 776,
+        "required": 450,
+        "success": true,
+        "margin": 326,
+        "margin_pct": 72.4,
+        "hands_used": 2,
+        "discards_used": 0,
+        "best_hand": "FLUSH",
+        "close_call": false,
+        "hands_played": [
+          [
+            "TWO_PAIR",
+            312
+          ],
+          [
+            "FLUSH",
+            464
+          ]
+        ]
+      },
+      "timestamp": 3
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 1,
+        "tarots_used": [
+          "The Magician: Enhanced 2 cards with Lucky"
+        ]
+      },
+      "timestamp": 4
+    },
+    {
+      "ante": 1,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 1264,
+        "required": 600,
+        "success": true,
+        "margin": 664,
+        "margin_pct": 110.7,
+        "hands_used": 2,
+        "discards_used": 2,
+        "best_hand": "FLUSH",
+        "close_call": false,
+        "boss_name": "The Ox",
+        "hands_played": [
+          [
+            "FULL_HOUSE",
+            328
+          ],
+          [
+            "FLUSH",
+            936
+          ]
+        ]
+      },
+      "timestamp": 5
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Popcorn",
+        "source": "buffoon_pack"
+      },
+      "timestamp": 6
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Popcorn"
+        ],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 2
+      },
+      "timestamp": 7
+    },
+    {
+      "ante": 2,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 1276,
+        "required": 800,
+        "success": true,
+        "margin": 476,
+        "margin_pct": 59.5,
+        "hands_used": 1,
+        "discards_used": 0,
+        "best_hand": "TWO_PAIR",
+        "close_call": false,
+        "hands_played": [
+          [
+            "TWO_PAIR",
+            1276
+          ]
+        ]
+      },
+      "timestamp": 8
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 1,
+        "tarots_used": [
+          "The Moon: Converted 3 cards to Clubs"
+        ]
+      },
+      "timestamp": 9
+    },
+    {
+      "ante": 2,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 2976,
+        "required": 1200,
+        "success": true,
+        "margin": 1776,
+        "margin_pct": 148.0,
+        "hands_used": 1,
+        "discards_used": 0,
+        "best_hand": "FLUSH",
+        "close_call": false,
+        "hands_played": [
+          [
+            "FLUSH",
+            2976
+          ]
+        ]
+      },
+      "timestamp": 10
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Mars",
+        "hand_type": "FOUR_OF_A_KIND",
+        "new_level": 2
+      },
+      "timestamp": 11
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Mars"
+        ],
+        "money_spent": 4,
+        "money_remaining": 1
+      },
+      "timestamp": 12
+    },
+    {
+      "ante": 2,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 2220,
+        "required": 1600,
+        "success": true,
+        "margin": 620,
+        "margin_pct": 38.8,
+        "hands_used": 2,
+        "discards_used": 1,
+        "best_hand": "TWO_PAIR",
+        "close_call": false,
+        "boss_name": "The Arm",
+        "hands_played": [
+          [
+            "TWO_PAIR",
+            660
+          ],
+          [
+            "TWO_PAIR",
+            1560
+          ]
+        ]
+      },
+      "timestamp": 13
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Mars",
+        "hand_type": "FOUR_OF_A_KIND",
+        "new_level": 3
+      },
+      "timestamp": 14
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Mars"
+        ],
+        "money_spent": 4,
+        "money_remaining": 2
+      },
+      "timestamp": 15
+    },
+    {
+      "ante": 3,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 3224,
+        "required": 2000,
+        "success": true,
+        "margin": 1224,
+        "margin_pct": 61.2,
+        "hands_used": 3,
+        "discards_used": 3,
+        "best_hand": "FLUSH",
+        "close_call": false,
+        "hands_played": [
+          [
+            "PAIR",
+            832
+          ],
+          [
+            "TWO_PAIR",
+            880
+          ],
+          [
+            "FLUSH",
+            1512
+          ]
+        ]
+      },
+      "timestamp": 16
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Golden Ticket",
+        "source": "shop"
+      },
+      "timestamp": 17
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Golden Ticket"
+        ],
+        "planets_used": [],
+        "money_spent": 5,
+        "money_remaining": 0
+      },
+      "timestamp": 18
+    },
+    {
+      "ante": 3,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 4368,
+        "required": 3000,
+        "success": true,
+        "margin": 1368,
+        "margin_pct": 45.6,
+        "hands_used": 3,
+        "discards_used": 1,
+        "best_hand": "STRAIGHT",
+        "close_call": false,
+        "hands_played": [
+          [
+            "TWO_PAIR",
+            1352
+          ],
+          [
+            "TWO_PAIR",
+            748
+          ],
+          [
+            "STRAIGHT",
+            2268
+          ]
+        ]
+      },
+      "timestamp": 19
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Ceres",
+        "hand_type": "FLUSH_HOUSE",
+        "new_level": 2
+      },
+      "timestamp": 20
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Ceres"
+        ],
+        "money_spent": 4,
+        "money_remaining": 0
+      },
+      "timestamp": 21
+    },
+    {
+      "ante": 3,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 5085,
+        "required": 4000,
+        "success": true,
+        "margin": 1085,
+        "margin_pct": 27.1,
+        "hands_used": 3,
+        "discards_used": 3,
+        "best_hand": "FLUSH",
+        "close_call": false,
+        "boss_name": "The Fish",
+        "hands_played": [
+          [
+            "THREE_OF_A_KIND",
+            1701
+          ],
+          [
+            "FLUSH",
+            1632
+          ],
+          [
+            "FLUSH",
+            1752
+          ]
+        ]
+      },
+      "timestamp": 22
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Jolly Joker",
+        "source": "shop"
+      },
+      "timestamp": 23
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Jolly Joker"
+        ],
+        "planets_used": [],
+        "money_spent": 3,
+        "money_remaining": 2
+      },
+      "timestamp": 24
+    },
+    {
+      "ante": 4,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 5403,
+        "required": 5000,
+        "success": true,
+        "margin": 403,
+        "margin_pct": 8.1,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "TWO_PAIR",
+        "close_call": true,
+        "hands_played": [
+          [
+            "FLUSH",
+            1608
+          ],
+          [
+            "TWO_PAIR",
+            2040
+          ],
+          [
+            "HIGH_CARD",
+            1155
+          ],
+          [
+            "PAIR",
+            600
+          ]
+        ]
+      },
+      "timestamp": 25
+    },
+    {
+      "ante": 4,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 1,
+        "tarots_used": [
+          "The Tower: Enhanced 2 cards with Stone"
+        ]
+      },
+      "timestamp": 26
+    },
+    {
+      "ante": 4,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 7255,
+        "required": 7500,
+        "success": false,
+        "margin": -245,
+        "margin_pct": -3.3,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "FLUSH",
+        "close_call": true,
+        "hands_played": [
+          [
+            "FULL_HOUSE",
+            1512
+          ],
+          [
+            "FLUSH",
+            3500
+          ],
+          [
+            "HIGH_CARD",
+            1155
+          ],
+          [
+            "PAIR",
+            1088
+          ]
+        ]
+      },
+      "timestamp": 27
+    },
+    {
+      "ante": 4,
+      "blind_type": "BIG",
+      "event_type": "run_end",
+      "data": {
+        "victory": false,
+        "blinds_beaten": 10,
+        "final_money": 1,
+        "final_jokers": [
+          "Popcorn",
+          "Golden Ticket",
+          "Jolly Joker"
+        ],
+        "final_hand_levels": {
+          "FOUR_OF_A_KIND": 3,
+          "FLUSH_HOUSE": 2
+        }
+      },
+      "timestamp": 28
+    }
+  ],
+  "summary": {
+    "total_blinds_attempted": 11,
+    "blinds_won": 10,
+    "close_calls": 2,
+    "jokers_acquired": 3,
+    "vouchers_acquired": 0,
+    "planets_used": 3,
+    "tarots_used": 5,
+    "spectrals_used": 0,
+    "boss_fights": 3,
+    "bosses_defeated": 3,
+    "victory": false
+  }
+}

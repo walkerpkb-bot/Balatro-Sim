@@ -1,0 +1,331 @@
+{
+  "metadata": {
+    "preset": "standard",
+    "deck": "standard"
+  },
+  "events": [
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "run_start",
+      "data": {
+        "starting_money": 4,
+        "starting_jokers": [],
+        "starting_hand_levels": {}
+      },
+      "timestamp": 0
+    },
+    {
+      "ante": 1,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 375,
+        "required": 300,
+        "success": true,
+        "margin": 75,
+        "margin_pct": 25.0,
+        "hands_used": 2,
+        "discards_used": 1,
+        "best_hand": "FULL_HOUSE",
+        "close_call": false,
+        "hands_played": [
+          [
+            "THREE_OF_A_KIND",
+            135
+          ],
+          [
+            "FULL_HOUSE",
+            240
+          ]
+        ]
+      },
+      "timestamp": 1
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Saturn",
+        "hand_type": "STRAIGHT",
+        "new_level": 2
+      },
+      "timestamp": 2
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Pluto",
+        "hand_type": "HIGH_CARD",
+        "new_level": 2
+      },
+      "timestamp": 3
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Saturn",
+          "Pluto"
+        ],
+        "money_spent": 7,
+        "money_remaining": 0,
+        "packs_opened": [
+          {
+            "type": "Celestial",
+            "choices": [
+              "Saturn"
+            ]
+          }
+        ]
+      },
+      "timestamp": 4
+    },
+    {
+      "ante": 1,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 540,
+        "required": 450,
+        "success": true,
+        "margin": 90,
+        "margin_pct": 20.0,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "FULL_HOUSE",
+        "close_call": false,
+        "hands_played": [
+          [
+            "TWO_PAIR",
+            68
+          ],
+          [
+            "TWO_PAIR",
+            108
+          ],
+          [
+            "TWO_PAIR",
+            116
+          ],
+          [
+            "FULL_HOUSE",
+            248
+          ]
+        ]
+      },
+      "timestamp": 5
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 0,
+        "spectrals_used": [
+          "Aura: Added Poly to QS [Poly]"
+        ],
+        "packs_opened": [
+          {
+            "type": "Spectral",
+            "choices": [
+              "Aura"
+            ]
+          }
+        ]
+      },
+      "timestamp": 6
+    },
+    {
+      "ante": 1,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 1001,
+        "required": 600,
+        "success": true,
+        "margin": 401,
+        "margin_pct": 66.8,
+        "hands_used": 3,
+        "discards_used": 2,
+        "best_hand": "STRAIGHT",
+        "close_call": false,
+        "boss_name": "The Hook",
+        "hands_played": [
+          [
+            "TWO_PAIR",
+            150
+          ],
+          [
+            "FLUSH",
+            256
+          ],
+          [
+            "STRAIGHT",
+            595
+          ]
+        ]
+      },
+      "timestamp": 7
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Ceres",
+        "hand_type": "FLUSH_HOUSE",
+        "new_level": 2
+      },
+      "timestamp": 8
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Ceres"
+        ],
+        "money_spent": 3,
+        "money_remaining": 2
+      },
+      "timestamp": 9
+    },
+    {
+      "ante": 2,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 1081,
+        "required": 800,
+        "success": true,
+        "margin": 281,
+        "margin_pct": 35.1,
+        "hands_used": 2,
+        "discards_used": 2,
+        "best_hand": "STRAIGHT",
+        "close_call": false,
+        "hands_played": [
+          [
+            "STRAIGHT",
+            777
+          ],
+          [
+            "FULL_HOUSE",
+            304
+          ]
+        ]
+      },
+      "timestamp": 10
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Saturn",
+        "hand_type": "STRAIGHT",
+        "new_level": 3
+      },
+      "timestamp": 11
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Saturn"
+        ],
+        "money_spent": 4,
+        "money_remaining": 1,
+        "packs_opened": [
+          {
+            "type": "Celestial",
+            "choices": [
+              "Saturn"
+            ]
+          }
+        ]
+      },
+      "timestamp": 12
+    },
+    {
+      "ante": 2,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 816,
+        "required": 1200,
+        "success": false,
+        "margin": -384,
+        "margin_pct": -32.0,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "FULL_HOUSE",
+        "close_call": false,
+        "hands_played": [
+          [
+            "FULL_HOUSE",
+            324
+          ],
+          [
+            "PAIR",
+            28
+          ],
+          [
+            "FULL_HOUSE",
+            360
+          ],
+          [
+            "TWO_PAIR",
+            104
+          ]
+        ]
+      },
+      "timestamp": 13
+    },
+    {
+      "ante": 2,
+      "blind_type": "BIG",
+      "event_type": "run_end",
+      "data": {
+        "victory": false,
+        "blinds_beaten": 4,
+        "final_money": 1,
+        "final_jokers": [],
+        "final_hand_levels": {
+          "HIGH_CARD": 2,
+          "STRAIGHT": 3,
+          "FLUSH_HOUSE": 2
+        }
+      },
+      "timestamp": 14
+    }
+  ],
+  "summary": {
+    "total_blinds_attempted": 5,
+    "blinds_won": 4,
+    "close_calls": 0,
+    "jokers_acquired": 0,
+    "vouchers_acquired": 0,
+    "planets_used": 4,
+    "tarots_used": 0,
+    "spectrals_used": 1,
+    "boss_fights": 1,
+    "bosses_defeated": 1,
+    "victory": false
+  }
+}

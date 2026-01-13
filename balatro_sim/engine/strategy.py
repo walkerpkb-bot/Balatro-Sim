@@ -494,3 +494,264 @@ class AggressiveStrategy(SmartStrategy):
             return discard_indices[:min(3, max_discard)]
 
         return super().select_cards_to_discard(hand, game)
+
+
+# ============================================================================
+# BUILD ARCHETYPES AND STRATEGIC PLANNING
+# ============================================================================
+
+class BuildArchetype:
+    """Identified build archetypes."""
+    FLUSH = "flush"           # Focused on flush hands
+    STRAIGHT = "straight"     # Focused on straights
+    PAIRS = "pairs"           # Two pair, full house focused
+    MULT_STACK = "mult_stack" # High mult jokers
+    CHIP_STACK = "chip_stack" # High chip jokers
+    RETRIGGER = "retrigger"   # Retrigger-focused (Hack, Dusk, etc)
+    ECONOMY = "economy"       # Money generation focused
+    HYBRID = "hybrid"         # Mixed strategy
+
+
+class BuildDetector:
+    """Detects current build archetype from game state."""
+
+    def detect_build(self, game) -> tuple[str, float]:
+        """
+        Analyze game state and return (archetype, confidence).
+        Confidence is 0-1 indicating how strong the build is.
+        """
+        scores = {
+            BuildArchetype.FLUSH: self._score_flush_build(game),
+            BuildArchetype.STRAIGHT: self._score_straight_build(game),
+            BuildArchetype.PAIRS: self._score_pairs_build(game),
+            BuildArchetype.MULT_STACK: self._score_mult_build(game),
+            BuildArchetype.RETRIGGER: self._score_retrigger_build(game),
+            BuildArchetype.ECONOMY: self._score_economy_build(game),
+        }
+
+        best_archetype = max(scores, key=scores.get)
+        best_score = scores[best_archetype]
+
+        # Confidence based on how dominant the best archetype is
+        total = sum(scores.values()) or 1
+        confidence = best_score / total
+
+        if confidence < 0.3:
+            return BuildArchetype.HYBRID, confidence
+
+        return best_archetype, confidence
+
+    def _score_flush_build(self, game) -> float:
+        score = 0
+        # Check hand levels
+        flush_level = game.hand_levels.get(HandType.FLUSH, 1)
+        score += (flush_level - 1) * 10
+
+        # Check for flush-synergy jokers
+        for joker in game.jokers:
+            effect = joker.get('effect', {})
+            for cond in effect.get('conditions', []):
+                if cond.get('type') == 'suit':
+                    score += 15
+                if cond.get('type') == 'hand_contains' and 'flush' in cond.get('hand', '').lower():
+                    score += 20
+
+        return score
+
+    def _score_straight_build(self, game) -> float:
+        score = 0
+        straight_level = game.hand_levels.get(HandType.STRAIGHT, 1)
+        score += (straight_level - 1) * 10
+
+        # Four Fingers, Shortcut jokers
+        for joker in game.jokers:
+            name = joker.get('name', '')
+            if name in ('Four Fingers', 'Shortcut'):
+                score += 25
+
+        return score
+
+    def _score_pairs_build(self, game) -> float:
+        score = 0
+        pair_level = game.hand_levels.get(HandType.PAIR, 1)
+        two_pair_level = game.hand_levels.get(HandType.TWO_PAIR, 1)
+        fh_level = game.hand_levels.get(HandType.FULL_HOUSE, 1)
+
+        score += (pair_level - 1) * 5
+        score += (two_pair_level - 1) * 8
+        score += (fh_level - 1) * 12
+
+        return score
+
+    def _score_mult_build(self, game) -> float:
+        score = 0
+        for joker in game.jokers:
+            effect = joker.get('effect', {})
+            for mod in effect.get('modifiers', []):
+                if mod.get('type') == 'x_mult':
+                    score += mod.get('value', 1) * 20
+                elif mod.get('type') == 'add_mult':
+                    score += mod.get('value', 0) * 2
+
+        return score
+
+    def _score_retrigger_build(self, game) -> float:
+        score = 0
+        retrigger_jokers = {'Hack', 'Dusk', 'Sock and Buskin', 'Seltzer', 'Hanging Chad'}
+        for joker in game.jokers:
+            if joker.get('name') in retrigger_jokers:
+                score += 25
+
+        return score
+
+    def _score_economy_build(self, game) -> float:
+        score = 0
+        for joker in game.jokers:
+            effect = joker.get('effect', {})
+            for mod in effect.get('modifiers', []):
+                if mod.get('type') in ('earn_money', 'give_money'):
+                    score += mod.get('value', 0) * 5
+
+        return score
+
+
+class SkipDecisionAI:
+    """Decides whether to skip blinds based on game state and preview."""
+
+    def __init__(self):
+        self.build_detector = BuildDetector()
+
+    def should_skip(self, game, blind_info, preview) -> bool:
+        """
+        Decide whether to skip the current blind.
+        """
+        # Never skip boss blinds
+        if blind_info.blind_type.name == 'BOSS':
+            return False
+
+        # Get current build strength
+        archetype, confidence = self.build_detector.detect_build(game)
+
+        skip_score = 0
+
+        # Tag value
+        tag_value = self._evaluate_tag(blind_info.skip_tag, game, archetype)
+        skip_score += tag_value
+
+        # Money considerations
+        if game.money >= 20:
+            skip_score += 10
+        elif game.money < 5:
+            skip_score -= 20
+
+        # Boss consideration
+        boss = preview.boss_blind
+        if boss.boss_name in ('The Needle', 'The Water', 'The Psychic', 'The Eye'):
+            skip_score += 5
+
+        # Build confidence
+        if confidence > 0.6:
+            skip_score += 10
+        elif confidence < 0.3:
+            skip_score -= 10
+
+        # Early game penalty
+        if game.ante <= 2:
+            skip_score -= 15
+
+        # Late game bonus
+        if game.ante >= 5:
+            skip_score += 5
+
+        return skip_score > 15
+
+    def _evaluate_tag(self, tag, game, archetype: str) -> float:
+        """Score a tag's value for current game state."""
+        from .game import Tag
+
+        base_values = {
+            Tag.SKIP: 5,
+            Tag.UNCOMMON: 15,
+            Tag.RARE: 25,
+            Tag.NEGATIVE: 35,
+            Tag.CHARM: 12,
+            Tag.METEOR: 15,
+            Tag.STANDARD: 8,
+            Tag.BUFFOON: 18,
+            Tag.HANDY: 0,
+            Tag.D6: 10,
+            Tag.COUPON: 20,
+            Tag.JUGGLE: 8,
+        }
+
+        value = base_values.get(tag, 5)
+
+        # Adjust based on build
+        if tag == Tag.METEOR and archetype in (BuildArchetype.FLUSH, BuildArchetype.STRAIGHT):
+            value += 10
+        if tag == Tag.BUFFOON and len(game.jokers) < game.config.joker_slots:
+            value += 10
+        if tag == Tag.HANDY:
+            value = game.total_hands_played
+
+        return value
+
+
+class PivotDetector:
+    """Detects when a build isn't working and suggests pivots."""
+
+    def __init__(self):
+        self.build_detector = BuildDetector()
+        self.recent_scores = []
+
+    def record_blind_result(self, score_achieved: int, score_required: int):
+        """Record a blind result for analysis."""
+        margin = score_achieved / max(score_required, 1)
+        self.recent_scores.append(margin)
+        if len(self.recent_scores) > 6:
+            self.recent_scores.pop(0)
+
+    def should_pivot(self, game) -> tuple[bool, str, str]:
+        """
+        Check if current build should be pivoted.
+        Returns (should_pivot, current_build, suggested_build).
+        """
+        current_build, confidence = self.build_detector.detect_build(game)
+
+        if len(self.recent_scores) < 3:
+            return False, current_build, current_build
+
+        avg_margin = sum(self.recent_scores) / len(self.recent_scores)
+        recent_margin = sum(self.recent_scores[-3:]) / 3
+
+        struggling = recent_margin < 1.3 or (recent_margin < avg_margin * 0.8)
+
+        if not struggling:
+            return False, current_build, current_build
+
+        suggested = self._suggest_pivot(game, current_build)
+
+        if suggested != current_build:
+            return True, current_build, suggested
+
+        return False, current_build, current_build
+
+    def _suggest_pivot(self, game, current: str) -> str:
+        """Suggest a pivot based on available resources."""
+        level_scores = {}
+        for ht, level in game.hand_levels.items():
+            if level > 1:
+                if 'FLUSH' in ht.name:
+                    level_scores[BuildArchetype.FLUSH] = level_scores.get(BuildArchetype.FLUSH, 0) + level
+                elif 'STRAIGHT' in ht.name:
+                    level_scores[BuildArchetype.STRAIGHT] = level_scores.get(BuildArchetype.STRAIGHT, 0) + level
+                elif ht.name in ('PAIR', 'TWO_PAIR', 'THREE_OF_A_KIND', 'FULL_HOUSE', 'FOUR_OF_A_KIND'):
+                    level_scores[BuildArchetype.PAIRS] = level_scores.get(BuildArchetype.PAIRS, 0) + level
+
+        if current in level_scores:
+            del level_scores[current]
+
+        if level_scores:
+            return max(level_scores, key=level_scores.get)
+
+        return BuildArchetype.PAIRS if current != BuildArchetype.PAIRS else BuildArchetype.HYBRID

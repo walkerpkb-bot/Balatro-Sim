@@ -22,6 +22,50 @@ class BlindType(Enum):
     BOSS = auto()
 
 
+class Tag(Enum):
+    """Tags earned from skipping blinds."""
+    UNCOMMON = "Uncommon Tag"      # Free uncommon joker
+    RARE = "Rare Tag"              # Free rare joker
+    NEGATIVE = "Negative Tag"      # Free negative joker
+    FOIL = "Foil Tag"              # Free foil joker
+    HOLOGRAPHIC = "Holographic Tag"
+    POLYCHROME = "Polychrome Tag"
+    INVESTMENT = "Investment Tag"  # Double blind money
+    VOUCHER = "Voucher Tag"        # Free voucher
+    BOSS = "Boss Tag"              # Reroll boss blind
+    STANDARD = "Standard Tag"      # Free Standard pack
+    CHARM = "Charm Tag"            # Free Arcana pack
+    METEOR = "Meteor Tag"          # Free Celestial pack
+    BUFFOON = "Buffoon Tag"        # Free Buffoon pack
+    HANDY = "Handy Tag"            # +$1 per hand played this run
+    GARBAGE = "Garbage Tag"        # +$1 per unused hand/discard
+    COUPON = "Coupon Tag"          # Free shop items
+    DOUBLE = "Double Tag"          # Copy next tag
+    JUGGLE = "Juggle Tag"          # +3 hand size next round
+    D6 = "D6 Tag"                  # Free rerolls next shop
+    SKIP = "Skip Tag"              # +$5
+
+
+@dataclass
+class BlindInfo:
+    """Information about an upcoming blind."""
+    blind_type: BlindType
+    base_chips: int
+    reward_money: int
+    boss_name: str = None
+    boss_effect: str = None
+    skip_tag: Tag = None
+
+
+@dataclass
+class AntePreview:
+    """Preview of all blinds in current ante."""
+    ante: int
+    small_blind: BlindInfo
+    big_blind: BlindInfo
+    boss_blind: BlindInfo
+
+
 @dataclass
 class BlindResult:
     """Result of playing a blind."""
@@ -185,6 +229,80 @@ class GameState:
             base_score = int(base_score * self.current_boss.get_score_multiplier())
 
         return base_score
+
+    def get_ante_preview(self) -> AntePreview:
+        """Get preview of all blinds in current ante."""
+        ante_key = f"ante_{self.ante}"
+        reqs = self.blind_requirements.get(ante_key, {"small": 999, "big": 999, "boss": 999})
+
+        # Get boss info
+        boss = get_boss_for_ante(self.ante)
+
+        # Base rewards scale with ante
+        small_reward = 3 + self.ante
+        big_reward = 4 + self.ante
+
+        # Generate random tags for skip rewards
+        skip_tags = [Tag.SKIP, Tag.UNCOMMON, Tag.CHARM, Tag.METEOR, Tag.STANDARD,
+                     Tag.BUFFOON, Tag.HANDY, Tag.D6, Tag.COUPON, Tag.JUGGLE]
+
+        return AntePreview(
+            ante=self.ante,
+            small_blind=BlindInfo(
+                blind_type=BlindType.SMALL,
+                base_chips=reqs["small"],
+                reward_money=small_reward,
+                skip_tag=random.choice(skip_tags)
+            ),
+            big_blind=BlindInfo(
+                blind_type=BlindType.BIG,
+                base_chips=reqs["big"],
+                reward_money=big_reward,
+                skip_tag=random.choice(skip_tags)
+            ),
+            boss_blind=BlindInfo(
+                blind_type=BlindType.BOSS,
+                base_chips=reqs["boss"],
+                reward_money=self.ante + 5,
+                boss_name=boss.name,
+                boss_effect=boss.description if boss else None
+            )
+        )
+
+    def skip_blind(self, tag: Tag) -> dict:
+        """Skip current blind and apply tag reward. Returns reward details."""
+        reward = {"tag": tag.value, "money": 0, "joker": None, "pack": None}
+
+        if tag == Tag.SKIP:
+            reward["money"] = 5
+            self.money += 5
+        elif tag == Tag.UNCOMMON:
+            reward["joker"] = "uncommon"  # Shop will give free uncommon
+        elif tag == Tag.RARE:
+            reward["joker"] = "rare"
+        elif tag == Tag.HANDY:
+            reward["money"] = self.total_hands_played
+            self.money += self.total_hands_played
+        elif tag == Tag.D6:
+            reward["free_rerolls"] = 2
+        elif tag in (Tag.CHARM, Tag.METEOR, Tag.STANDARD, Tag.BUFFOON):
+            reward["pack"] = tag.value.replace(" Tag", " Pack")
+        elif tag == Tag.JUGGLE:
+            reward["hand_size_bonus"] = 3
+        elif tag == Tag.COUPON:
+            reward["free_shop_item"] = True
+
+        # Advance to next blind
+        self._advance_blind_after_skip()
+
+        return reward
+
+    def _advance_blind_after_skip(self):
+        """Advance blind state after skipping."""
+        if self.current_blind == BlindType.SMALL:
+            self.current_blind = BlindType.BIG
+        elif self.current_blind == BlindType.BIG:
+            self.current_blind = BlindType.BOSS
 
     def draw_hand(self) -> None:
         """Draw cards up to hand size."""
@@ -848,11 +966,19 @@ def simulate_shop(game: GameState, all_jokers: list, shop_ai=None) -> dict:
 
 
 def simulate_run(jokers: list = None, config: GameConfig = None, strategy=None,
-                 all_jokers: list = None, verbose: bool = False) -> RunResult:
-    """Simulate a complete Balatro run."""
+                 all_jokers: list = None, verbose: bool = False,
+                 enable_skips: bool = True) -> RunResult:
+    """Simulate a complete Balatro run with skip decisions and pivot detection."""
+    from .strategy import SkipDecisionAI, PivotDetector, BuildDetector
+
     game = GameState(config=config)
     if strategy is None:
         strategy = BasicStrategy()
+
+    # Initialize strategic AI components
+    skip_ai = SkipDecisionAI()
+    pivot_detector = PivotDetector()
+    build_detector = BuildDetector()
 
     # Add starting jokers
     if jokers:
@@ -865,12 +991,37 @@ def simulate_run(jokers: list = None, config: GameConfig = None, strategy=None,
     blinds_beaten = 0
 
     while True:
+        # Get ante preview (see all upcoming blinds)
+        preview = game.get_ante_preview()
+
+        # Get current blind info
+        if game.current_blind == BlindType.SMALL:
+            current_blind_info = preview.small_blind
+        elif game.current_blind == BlindType.BIG:
+            current_blind_info = preview.big_blind
+        else:
+            current_blind_info = preview.boss_blind
+
+        # Check if we should skip this blind (not boss)
+        if enable_skips and game.current_blind != BlindType.BOSS:
+            if skip_ai.should_skip(game, current_blind_info, preview):
+                tag = current_blind_info.skip_tag
+                reward = game.skip_blind(tag)
+                if verbose:
+                    print(f"Ante {game.ante}: SKIPPED {current_blind_info.blind_type.name} - {tag.value}")
+                    if reward.get("money"):
+                        print(f"  Reward: +${reward['money']}")
+                continue  # Move to next blind without playing
+
         # Use stored consumables strategically before blind
         consumables_used = use_consumables_before_blind(game)
         if verbose and consumables_used:
             print(f"  Used before blind: {consumables_used}")
 
         result = simulate_blind(game, strategy)
+
+        # Record result for pivot detection
+        pivot_detector.record_blind_result(result.score_achieved, result.score_required)
 
         if verbose:
             status = "WIN" if result.success else "LOSS"
@@ -888,6 +1039,13 @@ def simulate_run(jokers: list = None, config: GameConfig = None, strategy=None,
             )
 
         blinds_beaten += 1
+
+        # Check for pivot after each blind
+        should_pivot, old_build, new_build = pivot_detector.should_pivot(game)
+        if should_pivot:
+            if verbose:
+                print(f"  PIVOT: {old_build} -> {new_build}")
+            game.history.add_pivot(game.ante, old_build, new_build, "struggling")
 
         # Visit shop after beating a blind (before advancing)
         if enable_shop:

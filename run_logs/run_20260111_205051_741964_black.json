@@ -1,0 +1,57 @@
+{
+  "metadata": {
+    "preset": "black",
+    "deck": "black"
+  },
+  "events": [
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "run_start",
+      "data": {
+        "starting_money": 4,
+        "starting_jokers": [],
+        "starting_hand_levels": {}
+      },
+      "timestamp": 0
+    },
+    {
+      "ante": 1,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 116,
+        "required": 300,
+        "success": false,
+        "margin": -184,
+        "margin_pct": -61.3,
+        "hands_used": 3,
+        "discards_used": 2,
+        "best_hand": "PAIR",
+        "close_call": false
+      },
+      "timestamp": 1
+    },
+    {
+      "ante": 1,
+      "blind_type": "SMALL",
+      "event_type": "run_end",
+      "data": {
+        "victory": false,
+        "blinds_beaten": 0,
+        "final_money": 4,
+        "final_jokers": [],
+        "final_hand_levels": {}
+      },
+      "timestamp": 2
+    }
+  ],
+  "summary": {
+    "total_blinds_attempted": 1,
+    "blinds_won": 0,
+    "close_calls": 0,
+    "jokers_acquired": 0,
+    "planets_used": 0,
+    "victory": false
+  }
+}

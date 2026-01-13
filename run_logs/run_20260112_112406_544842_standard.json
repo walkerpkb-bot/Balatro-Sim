@@ -1,0 +1,198 @@
+{
+  "metadata": {
+    "preset": "standard",
+    "deck": "standard"
+  },
+  "events": [
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "run_start",
+      "data": {
+        "starting_money": 4,
+        "starting_jokers": [],
+        "starting_hand_levels": {}
+      },
+      "timestamp": 0
+    },
+    {
+      "ante": 1,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 400,
+        "required": 300,
+        "success": true,
+        "margin": 100,
+        "margin_pct": 33.3,
+        "hands_used": 2,
+        "discards_used": 1,
+        "best_hand": "FLUSH",
+        "close_call": false,
+        "hands_played": [
+          [
+            "TWO_PAIR",
+            104
+          ],
+          [
+            "FLUSH",
+            296
+          ]
+        ]
+      },
+      "timestamp": 1
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Neptune",
+        "hand_type": "STRAIGHT_FLUSH",
+        "new_level": 2
+      },
+      "timestamp": 2
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Neptune"
+        ],
+        "money_spent": 7,
+        "money_remaining": 0,
+        "tarots_used": [
+          "Death: Effect not implemented"
+        ],
+        "packs_opened": [
+          {
+            "type": "Arcana",
+            "choices": [
+              "Death"
+            ]
+          }
+        ]
+      },
+      "timestamp": 3
+    },
+    {
+      "ante": 1,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 492,
+        "required": 450,
+        "success": true,
+        "margin": 42,
+        "margin_pct": 9.3,
+        "hands_used": 2,
+        "discards_used": 0,
+        "best_hand": "FLUSH",
+        "close_call": true,
+        "hands_played": [
+          [
+            "FLUSH",
+            272
+          ],
+          [
+            "STRAIGHT",
+            220
+          ]
+        ]
+      },
+      "timestamp": 4
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 0,
+        "spectrals_used": [
+          "Familiar: Created Midas Mask"
+        ],
+        "packs_opened": [
+          {
+            "type": "Spectral",
+            "choices": [
+              "Familiar"
+            ]
+          }
+        ]
+      },
+      "timestamp": 5
+    },
+    {
+      "ante": 1,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 560,
+        "required": 600,
+        "success": false,
+        "margin": -40,
+        "margin_pct": -6.7,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "STRAIGHT",
+        "close_call": true,
+        "boss_name": "The Hook",
+        "hands_played": [
+          [
+            "TWO_PAIR",
+            120
+          ],
+          [
+            "PAIR",
+            44
+          ],
+          [
+            "STRAIGHT",
+            308
+          ],
+          [
+            "TWO_PAIR",
+            88
+          ]
+        ]
+      },
+      "timestamp": 6
+    },
+    {
+      "ante": 1,
+      "blind_type": "BOSS",
+      "event_type": "run_end",
+      "data": {
+        "victory": false,
+        "blinds_beaten": 2,
+        "final_money": 0,
+        "final_jokers": [
+          "Midas Mask"
+        ],
+        "final_hand_levels": {
+          "STRAIGHT_FLUSH": 2
+        }
+      },
+      "timestamp": 7
+    }
+  ],
+  "summary": {
+    "total_blinds_attempted": 3,
+    "blinds_won": 2,
+    "close_calls": 2,
+    "jokers_acquired": 0,
+    "vouchers_acquired": 0,
+    "planets_used": 1,
+    "tarots_used": 1,
+    "spectrals_used": 1,
+    "boss_fights": 1,
+    "bosses_defeated": 0,
+    "victory": false
+  }
+}
