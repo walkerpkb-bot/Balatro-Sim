@@ -1,0 +1,627 @@
+{
+  "metadata": {
+    "preset": "standard",
+    "deck": "standard"
+  },
+  "events": [
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "run_start",
+      "data": {
+        "starting_money": 4,
+        "starting_jokers": [],
+        "starting_hand_levels": {}
+      },
+      "timestamp": 0
+    },
+    {
+      "ante": 1,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 376,
+        "required": 300,
+        "success": true,
+        "margin": 76,
+        "margin_pct": 25.3,
+        "hands_used": 2,
+        "discards_used": 1,
+        "best_hand": "FLUSH",
+        "close_call": false,
+        "hands_played": [
+          [
+            "FLUSH",
+            260
+          ],
+          [
+            "TWO_PAIR",
+            116
+          ]
+        ]
+      },
+      "timestamp": 1
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Half Joker",
+        "source": "buffoon_pack"
+      },
+      "timestamp": 2
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "pack_opened",
+      "data": {
+        "pack_type": "Buffoon",
+        "is_mega": false,
+        "options_available": [
+          "Misprint",
+          "Half Joker"
+        ],
+        "choices_made": [
+          "Half Joker"
+        ]
+      },
+      "timestamp": 3
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Earth",
+        "hand_type": "FULL_HOUSE",
+        "new_level": 2
+      },
+      "timestamp": 4
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Half Joker"
+        ],
+        "planets_used": [
+          "Earth"
+        ],
+        "money_spent": 7,
+        "money_remaining": 0,
+        "packs_opened": [
+          {
+            "type": "Buffoon",
+            "choices": [
+              "Half Joker"
+            ]
+          }
+        ]
+      },
+      "timestamp": 5
+    },
+    {
+      "ante": 1,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 572,
+        "required": 450,
+        "success": true,
+        "margin": 122,
+        "margin_pct": 27.1,
+        "hands_used": 1,
+        "discards_used": 1,
+        "best_hand": "PAIR",
+        "close_call": false,
+        "hands_played": [
+          [
+            "PAIR",
+            572
+          ]
+        ]
+      },
+      "timestamp": 6
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "pack_opened",
+      "data": {
+        "pack_type": "Spectral",
+        "is_mega": false,
+        "options_available": [
+          "Aura",
+          "Deja Vu"
+        ],
+        "choices_made": [
+          "Aura"
+        ]
+      },
+      "timestamp": 7
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 0,
+        "spectrals_used": [
+          "Aura: Added Foil to 3S [Foil]"
+        ],
+        "packs_opened": [
+          {
+            "type": "Spectral",
+            "choices": [
+              "Aura"
+            ]
+          }
+        ]
+      },
+      "timestamp": 8
+    },
+    {
+      "ante": 1,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 660,
+        "required": 600,
+        "success": true,
+        "margin": 60,
+        "margin_pct": 10.0,
+        "hands_used": 1,
+        "discards_used": 1,
+        "best_hand": "PAIR",
+        "close_call": true,
+        "boss_name": "The House",
+        "hands_played": [
+          [
+            "PAIR",
+            660
+          ]
+        ]
+      },
+      "timestamp": 9
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Wrathful Joker",
+        "source": "shop"
+      },
+      "timestamp": 10
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Wrathful Joker"
+        ],
+        "planets_used": [],
+        "money_spent": 5,
+        "money_remaining": 0
+      },
+      "timestamp": 11
+    },
+    {
+      "ante": 2,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 1650,
+        "required": 800,
+        "success": true,
+        "margin": 850,
+        "margin_pct": 106.2,
+        "hands_used": 1,
+        "discards_used": 1,
+        "best_hand": "PAIR",
+        "close_call": false,
+        "hands_played": [
+          [
+            "PAIR",
+            1650
+          ]
+        ]
+      },
+      "timestamp": 12
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [],
+        "money_spent": 0,
+        "money_remaining": 3
+      },
+      "timestamp": 13
+    },
+    {
+      "ante": 2,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 2232,
+        "required": 1200,
+        "success": true,
+        "margin": 1032,
+        "margin_pct": 86.0,
+        "hands_used": 2,
+        "discards_used": 2,
+        "best_hand": "THREE_OF_A_KIND",
+        "close_call": false,
+        "hands_played": [
+          [
+            "PAIR",
+            750
+          ],
+          [
+            "THREE_OF_A_KIND",
+            1482
+          ]
+        ]
+      },
+      "timestamp": 14
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "pack_opened",
+      "data": {
+        "pack_type": "Arcana",
+        "is_mega": false,
+        "options_available": [
+          "Justice",
+          "The Devil",
+          "The Moon"
+        ],
+        "choices_made": [
+          "Justice"
+        ]
+      },
+      "timestamp": 15
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Sly Joker",
+        "source": "shop"
+      },
+      "timestamp": 16
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Sly Joker"
+        ],
+        "planets_used": [],
+        "money_spent": 7,
+        "money_remaining": 0,
+        "tarots_used": [
+          "Justice: Enhanced 2 cards with Glass"
+        ],
+        "packs_opened": [
+          {
+            "type": "Arcana",
+            "choices": [
+              "Justice"
+            ]
+          }
+        ]
+      },
+      "timestamp": 17
+    },
+    {
+      "ante": 2,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 2000,
+        "required": 1600,
+        "success": true,
+        "margin": 400,
+        "margin_pct": 25.0,
+        "hands_used": 1,
+        "discards_used": 0,
+        "best_hand": "PAIR",
+        "close_call": false,
+        "boss_name": "The Arm",
+        "hands_played": [
+          [
+            "PAIR",
+            2000
+          ]
+        ]
+      },
+      "timestamp": 18
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "pack_opened",
+      "data": {
+        "pack_type": "Spectral",
+        "is_mega": false,
+        "options_available": [
+          "Deja Vu",
+          "Ankh"
+        ],
+        "choices_made": [
+          "Deja Vu"
+        ]
+      },
+      "timestamp": 19
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [],
+        "money_spent": 4,
+        "money_remaining": 1,
+        "spectrals_used": [
+          "Deja Vu: Added Red seal to 1 cards"
+        ],
+        "packs_opened": [
+          {
+            "type": "Spectral",
+            "choices": [
+              "Deja Vu"
+            ]
+          }
+        ]
+      },
+      "timestamp": 20
+    },
+    {
+      "ante": 3,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 2000,
+        "required": 2000,
+        "success": true,
+        "margin": 0,
+        "margin_pct": 0.0,
+        "hands_used": 1,
+        "discards_used": 1,
+        "best_hand": "PAIR",
+        "close_call": true,
+        "hands_played": [
+          [
+            "PAIR",
+            2000
+          ]
+        ]
+      },
+      "timestamp": 21
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Saturn",
+        "hand_type": "STRAIGHT",
+        "new_level": 2
+      },
+      "timestamp": 22
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "pack_opened",
+      "data": {
+        "pack_type": "Celestial",
+        "is_mega": false,
+        "options_available": [
+          "Planet X",
+          "Saturn",
+          "Uranus"
+        ],
+        "choices_made": [
+          "Saturn"
+        ]
+      },
+      "timestamp": 23
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Saturn"
+        ],
+        "money_spent": 4,
+        "money_remaining": 0,
+        "packs_opened": [
+          {
+            "type": "Celestial",
+            "choices": [
+              "Saturn"
+            ]
+          }
+        ]
+      },
+      "timestamp": 24
+    },
+    {
+      "ante": 3,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 3810,
+        "required": 3000,
+        "success": true,
+        "margin": 810,
+        "margin_pct": 27.0,
+        "hands_used": 2,
+        "discards_used": 1,
+        "best_hand": "PAIR",
+        "close_call": false,
+        "hands_played": [
+          [
+            "PAIR",
+            2050
+          ],
+          [
+            "PAIR",
+            1760
+          ]
+        ]
+      },
+      "timestamp": 25
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Jupiter",
+        "hand_type": "FLUSH",
+        "new_level": 2
+      },
+      "timestamp": 26
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "pack_opened",
+      "data": {
+        "pack_type": "Celestial",
+        "is_mega": false,
+        "options_available": [
+          "Jupiter",
+          "Pluto",
+          "Venus"
+        ],
+        "choices_made": [
+          "Jupiter"
+        ]
+      },
+      "timestamp": 27
+    },
+    {
+      "ante": 3,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Jupiter"
+        ],
+        "money_spent": 4,
+        "money_remaining": 0,
+        "packs_opened": [
+          {
+            "type": "Celestial",
+            "choices": [
+              "Jupiter"
+            ]
+          }
+        ]
+      },
+      "timestamp": 28
+    },
+    {
+      "ante": 3,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 2520,
+        "required": 4000,
+        "success": false,
+        "margin": -1480,
+        "margin_pct": -37.0,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "TWO_PAIR",
+        "close_call": false,
+        "boss_name": "The Psychic",
+        "hands_played": [
+          [
+            "TWO_PAIR",
+            600
+          ],
+          [
+            "TWO_PAIR",
+            1080
+          ],
+          [
+            "PAIR",
+            140
+          ],
+          [
+            "TWO_PAIR",
+            700
+          ]
+        ]
+      },
+      "timestamp": 29
+    },
+    {
+      "ante": 3,
+      "blind_type": "BOSS",
+      "event_type": "run_end",
+      "data": {
+        "victory": false,
+        "blinds_beaten": 8,
+        "final_money": 0,
+        "final_jokers": [
+          "Half Joker",
+          "Wrathful Joker",
+          "Sly Joker"
+        ],
+        "final_hand_levels": {
+          "STRAIGHT": 2,
+          "FLUSH": 2,
+          "FULL_HOUSE": 2
+        }
+      },
+      "timestamp": 30
+    }
+  ],
+  "summary": {
+    "total_blinds_attempted": 9,
+    "blinds_won": 8,
+    "close_calls": 2,
+    "jokers_acquired": 3,
+    "vouchers_acquired": 0,
+    "planets_used": 3,
+    "tarots_used": 1,
+    "spectrals_used": 2,
+    "packs_opened": 6,
+    "packs_by_type": {
+      "Buffoon": 1,
+      "Spectral": 2,
+      "Arcana": 1,
+      "Celestial": 2
+    },
+    "boss_fights": 3,
+    "bosses_defeated": 2,
+    "victory": false
+  }
+}

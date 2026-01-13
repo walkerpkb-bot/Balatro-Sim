@@ -1,0 +1,387 @@
+{
+  "metadata": {
+    "preset": "standard",
+    "deck": "standard"
+  },
+  "events": [
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "run_start",
+      "data": {
+        "starting_money": 4,
+        "starting_jokers": [],
+        "starting_hand_levels": {}
+      },
+      "timestamp": 0
+    },
+    {
+      "ante": 1,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 360,
+        "required": 300,
+        "success": true,
+        "margin": 60,
+        "margin_pct": 20.0,
+        "hands_used": 2,
+        "discards_used": 1,
+        "best_hand": "FLUSH",
+        "close_call": false,
+        "hands_played": [
+          [
+            "FLUSH",
+            236
+          ],
+          [
+            "TWO_PAIR",
+            124
+          ]
+        ]
+      },
+      "timestamp": 1
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "joker_acquired",
+      "data": {
+        "joker": "Vagabond",
+        "source": "buffoon_pack"
+      },
+      "timestamp": 2
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "pack_opened",
+      "data": {
+        "pack_type": "Buffoon",
+        "is_mega": false,
+        "options_available": [
+          "Chaos the Clown",
+          "Vagabond"
+        ],
+        "choices_made": [
+          "Vagabond"
+        ]
+      },
+      "timestamp": 3
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Eris",
+        "hand_type": "FLUSH_FIVE",
+        "new_level": 2
+      },
+      "timestamp": 4
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [
+          "Vagabond"
+        ],
+        "planets_used": [
+          "Eris"
+        ],
+        "money_spent": 7,
+        "money_remaining": 0,
+        "packs_opened": [
+          {
+            "type": "Buffoon",
+            "choices": [
+              "Vagabond"
+            ]
+          }
+        ]
+      },
+      "timestamp": 5
+    },
+    {
+      "ante": 1,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 612,
+        "required": 450,
+        "success": true,
+        "margin": 162,
+        "margin_pct": 36.0,
+        "hands_used": 2,
+        "discards_used": 2,
+        "best_hand": "STRAIGHT",
+        "close_call": false,
+        "hands_played": [
+          [
+            "FLUSH",
+            304
+          ],
+          [
+            "STRAIGHT",
+            308
+          ]
+        ]
+      },
+      "timestamp": 6
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [],
+        "money_spent": 0,
+        "money_remaining": 4
+      },
+      "timestamp": 7
+    },
+    {
+      "ante": 1,
+      "blind_type": "BOSS",
+      "event_type": "blind_result",
+      "data": {
+        "score": 656,
+        "required": 600,
+        "success": true,
+        "margin": 56,
+        "margin_pct": 9.3,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "STRAIGHT",
+        "close_call": true,
+        "boss_name": "The Hook",
+        "hands_played": [
+          [
+            "STRAIGHT",
+            324
+          ],
+          [
+            "TWO_PAIR",
+            96
+          ],
+          [
+            "TWO_PAIR",
+            112
+          ],
+          [
+            "TWO_PAIR",
+            124
+          ]
+        ]
+      },
+      "timestamp": 8
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Eris",
+        "hand_type": "FLUSH_FIVE",
+        "new_level": 3
+      },
+      "timestamp": 9
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "pack_opened",
+      "data": {
+        "pack_type": "Celestial",
+        "is_mega": false,
+        "options_available": [
+          "Eris",
+          "Mars",
+          "Uranus"
+        ],
+        "choices_made": [
+          "Eris"
+        ]
+      },
+      "timestamp": 10
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "pack_opened",
+      "data": {
+        "pack_type": "Spectral",
+        "is_mega": false,
+        "options_available": [
+          "Hex",
+          "Ankh"
+        ],
+        "choices_made": [
+          "Hex"
+        ]
+      },
+      "timestamp": 11
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Eris"
+        ],
+        "money_spent": 8,
+        "money_remaining": 1,
+        "spectrals_used": [
+          "Hex: Effect not implemented"
+        ],
+        "packs_opened": [
+          {
+            "type": "Celestial",
+            "choices": [
+              "Eris"
+            ]
+          },
+          {
+            "type": "Spectral",
+            "choices": [
+              "Hex"
+            ]
+          }
+        ]
+      },
+      "timestamp": 12
+    },
+    {
+      "ante": 2,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 908,
+        "required": 800,
+        "success": true,
+        "margin": 108,
+        "margin_pct": 13.5,
+        "hands_used": 3,
+        "discards_used": 0,
+        "best_hand": "FULL_HOUSE",
+        "close_call": true,
+        "hands_played": [
+          [
+            "FULL_HOUSE",
+            336
+          ],
+          [
+            "FULL_HOUSE",
+            248
+          ],
+          [
+            "STRAIGHT",
+            324
+          ]
+        ]
+      },
+      "timestamp": 13
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Eris",
+        "hand_type": "FLUSH_FIVE",
+        "new_level": 4
+      },
+      "timestamp": 14
+    },
+    {
+      "ante": 2,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Eris"
+        ],
+        "money_spent": 3,
+        "money_remaining": 1
+      },
+      "timestamp": 15
+    },
+    {
+      "ante": 2,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 696,
+        "required": 1200,
+        "success": false,
+        "margin": -504,
+        "margin_pct": -42.0,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "FLUSH",
+        "close_call": false,
+        "hands_played": [
+          [
+            "TWO_PAIR",
+            104
+          ],
+          [
+            "STRAIGHT",
+            220
+          ],
+          [
+            "FLUSH",
+            272
+          ],
+          [
+            "TWO_PAIR",
+            100
+          ]
+        ]
+      },
+      "timestamp": 16
+    },
+    {
+      "ante": 2,
+      "blind_type": "BIG",
+      "event_type": "run_end",
+      "data": {
+        "victory": false,
+        "blinds_beaten": 4,
+        "final_money": 1,
+        "final_jokers": [
+          "Vagabond"
+        ],
+        "final_hand_levels": {
+          "FLUSH_FIVE": 4
+        }
+      },
+      "timestamp": 17
+    }
+  ],
+  "summary": {
+    "total_blinds_attempted": 5,
+    "blinds_won": 4,
+    "close_calls": 2,
+    "jokers_acquired": 1,
+    "vouchers_acquired": 0,
+    "planets_used": 3,
+    "tarots_used": 0,
+    "spectrals_used": 1,
+    "packs_opened": 3,
+    "packs_by_type": {
+      "Buffoon": 1,
+      "Celestial": 1,
+      "Spectral": 1
+    },
+    "boss_fights": 1,
+    "bosses_defeated": 1,
+    "victory": false
+  }
+}

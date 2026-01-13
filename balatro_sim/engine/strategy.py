@@ -32,18 +32,21 @@ class BasicStrategy:
         self.hand_detector = HandDetector()
         self.scoring_engine = ScoringEngine()
 
-    def select_play(self, hand: Hand, jokers: list = None,
-                    score_to_beat: int = 0, hands_left: int = 4) -> list[int]:
+    def select_cards_to_play(self, hand: Hand, game, must_play_count: int = None) -> list[int]:
         """Just play the best 5-card hand available."""
         cards = hand.cards
+        jokers = getattr(game, 'jokers', [])
+
         if len(cards) <= 5:
             return list(range(len(cards)))
 
-        # Try all 5-card combinations, pick the best
-        best_score = -1
-        best_indices = list(range(5))
+        num_cards = must_play_count or 5
 
-        for indices in combinations(range(len(cards)), 5):
+        # Try all N-card combinations, pick the best
+        best_score = -1
+        best_indices = list(range(min(num_cards, len(cards))))
+
+        for indices in combinations(range(len(cards)), min(num_cards, len(cards))):
             selected = [cards[i] for i in indices]
             detected = self.hand_detector.detect(selected)
             breakdown = self.scoring_engine.score_hand(detected, jokers or [])
@@ -54,9 +57,9 @@ class BasicStrategy:
 
         return best_indices
 
-    def select_discard(self, hand: Hand, jokers: list = None,
-                       discards_left: int = 3) -> list[int]:
+    def select_cards_to_discard(self, hand: Hand, game) -> list[int]:
         """Discard lowest value cards."""
+        discards_left = getattr(game, 'discards_remaining', 0)
         if discards_left <= 0 or len(hand.cards) <= 5:
             return []
 
