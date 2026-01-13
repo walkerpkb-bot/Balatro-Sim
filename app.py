@@ -13,7 +13,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from balatro_sim.simulator import Simulator, RunSummary, BatchResult
-from balatro_sim.presets import PRESETS
+from balatro_sim.presets import PRESETS, StrategyType
 
 # Page config - MUST be first Streamlit command
 st.set_page_config(
@@ -169,6 +169,22 @@ with st.sidebar:
 
     st.divider()
 
+    # Strategy selection
+    strategy_options = {
+        StrategyType.BASIC: "Basic - Simple highest score",
+        StrategyType.SMART: "Smart - Joker synergies + hand levels",
+        StrategyType.OPTIMIZED: "Optimized - Chases flushes/straights",
+        StrategyType.AGGRESSIVE: "Aggressive - High risk, high reward"
+    }
+    selected_strategy = st.selectbox(
+        "AI Strategy",
+        options=list(strategy_options.keys()),
+        format_func=lambda x: strategy_options[x],
+        index=1  # Default to Smart
+    )
+
+    st.divider()
+
     # Run mode
     run_mode = st.radio("Simulation Mode", ["Single Run", "Batch Analysis"], horizontal=True)
 
@@ -195,7 +211,7 @@ run_clicked = st.button("🎲 Run Simulation", type="primary", use_container_wid
 if run_clicked:
     if run_mode == "Single Run":
         with st.spinner("🎴 Shuffling deck and running simulation..."):
-            result = sim.run(selected_preset, verbose=False)
+            result = sim.run(selected_preset, verbose=False, strategy_override=selected_strategy)
 
         # Victory/Defeat banner
         if result.victory:
@@ -392,7 +408,7 @@ if run_clicked:
         ante_distribution = {}
 
         for i in range(num_runs):
-            summary = sim.run(selected_preset, verbose=False)
+            summary = sim.run(selected_preset, verbose=False, strategy_override=selected_strategy)
 
             if summary.victory:
                 wins += 1

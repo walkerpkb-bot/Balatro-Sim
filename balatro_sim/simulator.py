@@ -212,13 +212,15 @@ class Simulator:
         return [j["name"] for j in self.all_jokers]
 
     def run(self, preset: Union[str, Preset] = "standard",
-            verbose: bool = False) -> RunSummary:
+            verbose: bool = False,
+            strategy_override: 'StrategyType' = None) -> RunSummary:
         """
         Run a single simulation.
 
         Args:
             preset: Preset name (string) or Preset object
             verbose: Print detailed output during run
+            strategy_override: Override preset's strategy with this one
 
         Returns:
             RunSummary with results
@@ -239,8 +241,9 @@ class Simulator:
             if hasattr(config, key):
                 setattr(config, key, value)
 
-        # Get strategy
-        strategy = self._get_strategy(p.strategy)
+        # Get strategy (use override if provided)
+        strategy_type = strategy_override if strategy_override else p.strategy
+        strategy = self._get_strategy(strategy_type)
 
         # Get starting jokers
         starting_jokers = self._get_jokers(p.starting_jokers)

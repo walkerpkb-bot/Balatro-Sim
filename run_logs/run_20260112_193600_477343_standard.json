@@ -1,0 +1,173 @@
+{
+  "metadata": {
+    "preset": "standard",
+    "deck": "standard"
+  },
+  "events": [
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "run_start",
+      "data": {
+        "starting_money": 4,
+        "starting_jokers": [],
+        "starting_hand_levels": {}
+      },
+      "timestamp": 0
+    },
+    {
+      "ante": 1,
+      "blind_type": "SMALL",
+      "event_type": "blind_result",
+      "data": {
+        "score": 336,
+        "required": 300,
+        "success": true,
+        "margin": 36,
+        "margin_pct": 12.0,
+        "hands_used": 1,
+        "discards_used": 1,
+        "best_hand": "FULL_HOUSE",
+        "close_call": true,
+        "hands_played": [
+          [
+            "FULL_HOUSE",
+            336
+          ]
+        ]
+      },
+      "timestamp": 1
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Jupiter",
+        "hand_type": "FLUSH",
+        "new_level": 2
+      },
+      "timestamp": 2
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "pack_opened",
+      "data": {
+        "pack_type": "Celestial",
+        "is_mega": false,
+        "options_available": [
+          "Venus",
+          "Venus",
+          "Jupiter"
+        ],
+        "choices_made": [
+          "Jupiter"
+        ]
+      },
+      "timestamp": 3
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "hand_level_up",
+      "data": {
+        "planet": "Earth",
+        "hand_type": "FULL_HOUSE",
+        "new_level": 2
+      },
+      "timestamp": 4
+    },
+    {
+      "ante": 1,
+      "blind_type": null,
+      "event_type": "shop_visit",
+      "data": {
+        "jokers_bought": [],
+        "planets_used": [
+          "Jupiter",
+          "Earth"
+        ],
+        "money_spent": 7,
+        "money_remaining": 0,
+        "packs_opened": [
+          {
+            "type": "Celestial",
+            "choices": [
+              "Jupiter"
+            ]
+          }
+        ]
+      },
+      "timestamp": 5
+    },
+    {
+      "ante": 1,
+      "blind_type": "BIG",
+      "event_type": "blind_result",
+      "data": {
+        "score": 348,
+        "required": 450,
+        "success": false,
+        "margin": -102,
+        "margin_pct": -22.7,
+        "hands_used": 4,
+        "discards_used": 3,
+        "best_hand": "TWO_PAIR",
+        "close_call": false,
+        "hands_played": [
+          [
+            "TWO_PAIR",
+            112
+          ],
+          [
+            "PAIR",
+            28
+          ],
+          [
+            "TWO_PAIR",
+            108
+          ],
+          [
+            "TWO_PAIR",
+            100
+          ]
+        ]
+      },
+      "timestamp": 6
+    },
+    {
+      "ante": 1,
+      "blind_type": "BIG",
+      "event_type": "run_end",
+      "data": {
+        "victory": false,
+        "blinds_beaten": 1,
+        "final_money": 0,
+        "final_jokers": [],
+        "final_hand_levels": {
+          "FLUSH": 2,
+          "FULL_HOUSE": 2
+        }
+      },
+      "timestamp": 7
+    }
+  ],
+  "summary": {
+    "total_blinds_attempted": 2,
+    "blinds_won": 1,
+    "close_calls": 1,
+    "jokers_acquired": 0,
+    "vouchers_acquired": 0,
+    "planets_used": 2,
+    "tarots_used": 0,
+    "spectrals_used": 0,
+    "packs_opened": 1,
+    "packs_by_type": {
+      "Celestial": 1
+    },
+    "boss_fights": 0,
+    "bosses_defeated": 0,
+    "victory": false
+  }
+}
