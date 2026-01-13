@@ -3,6 +3,8 @@ Main API for Balatro simulation.
 Provides clean interface for running simulations.
 """
 
+__version__ = "2.0.0"  # Added strategy_override support
+
 import json
 from dataclasses import dataclass, field
 from datetime import datetime

@@ -12,7 +12,7 @@ from pathlib import Path
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from balatro_sim.simulator import Simulator, RunSummary, BatchResult
+from balatro_sim.simulator import Simulator, RunSummary, BatchResult, __version__ as sim_version
 from balatro_sim.presets import PRESETS, StrategyType
 
 # Page config - MUST be first Streamlit command
@@ -143,6 +143,7 @@ sim = get_simulator()
 # ============== SIDEBAR ==============
 with st.sidebar:
     st.markdown("## 🎰 Settings")
+    st.caption(f"Simulator v{sim_version}")
     st.divider()
 
     # Preset selection
