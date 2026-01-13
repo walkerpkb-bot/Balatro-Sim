@@ -565,9 +565,12 @@ class CoachStrategy(SmartStrategy):
 
     STAYING ALIVE:
     --------------
-    - Jokers that are universally good regardless of build.
-    - Take these while waiting for a build lead.
-    - Examples: Hanging Chad (retrigger first card)
+    - NO HARDCODED LIST. Being too rigid kills adaptability.
+    - Instead: evaluate "unconditional value" fluidly.
+    - Ask: does this joker need setup? Does it have conditions?
+    - Unconditional x_mult > conditional x_mult
+    - Retriggers generally strong. Economy helps survive.
+    - Scaling jokers: risky early, good mid, too late by late game.
 
     FINANCING:
     ----------
@@ -634,20 +637,10 @@ class CoachStrategy(SmartStrategy):
         # More will be added through coaching...
     }
 
-    # Jokers that are good regardless of build - take while waiting for a lead
-    STAYING_ALIVE_JOKERS = {
-        "Hanging Chad",      # Retrigger first card - universally good
-        "Greedy Joker",      # +$4 per diamond - money is always good
-        "Lusty Joker",       # +3 mult per heart - mult is always good
-        "Wrathful Joker",    # +3 mult per spade
-        "Gluttonous Joker",  # +3 mult per club
-        "Jolly Joker",       # +8 mult if pair - pairs are common
-        "Zany Joker",        # +12 mult if three of a kind
-        "Mad Joker",         # +10 mult if two pair
-        "Half Joker",        # +20 mult if 3 or fewer cards
-        "Raised Fist",       # Adds 2x lowest rank mult
-        # More will be added...
-    }
+    # NO HARDCODED "STAYING ALIVE" LIST
+    # Instead, we evaluate jokers fluidly based on how unconditional their value is.
+    # A joker that "just works" without setup is more valuable when we have no direction.
+    # But we don't commit to a list - we evaluate in context.
 
     def __init__(self):
         super().__init__()
@@ -711,9 +704,71 @@ class CoachStrategy(SmartStrategy):
             return True, self.BUILD_LEADS[joker_name]["strength"]
         return False, 0
 
-    def _is_staying_alive_joker(self, joker_name: str) -> bool:
-        """Check if joker is a 'staying alive' universal pick."""
-        return joker_name in self.STAYING_ALIVE_JOKERS
+    def _evaluate_unconditional_value(self, joker: dict, game) -> float:
+        """
+        Evaluate how "unconditionally useful" a joker is right now.
+
+        Instead of a hardcoded list, we look at:
+        - Does it require specific suits/ranks? (conditional = less valuable without build)
+        - Does it require specific hand types? (conditional)
+        - Does it have x_mult? (scaling = good)
+        - Does it make money? (always useful)
+        - Does it require setup/accumulation? (risky early)
+
+        Returns a fluid score, not a binary yes/no.
+        """
+        effect = joker.get("effect", {})
+        conditions = effect.get("conditions", [])
+        modifiers = effect.get("modifiers", [])
+        name = joker.get("name", "")
+
+        score = 0
+        has_conditions = False
+
+        # Check what conditions this joker requires
+        for cond in conditions:
+            cond_type = cond.get("type", "")
+            if cond_type in ("suit", "rank", "hand_contains"):
+                has_conditions = True
+                # If we already have jokers that want this suit/rank, it's less conditional
+                # (it fits our emerging direction)
+                # For now, just note it's conditional
+
+        # Unconditional multipliers are great
+        for mod in modifiers:
+            mod_type = mod.get("type", "")
+            if mod_type == "x_mult" and not has_conditions:
+                score += 30  # Unconditional x_mult is strong
+            elif mod_type == "x_mult" and has_conditions:
+                score += 10  # Conditional x_mult needs the condition met
+            elif mod_type == "add_mult" and not has_conditions:
+                score += 15
+            elif mod_type == "add_mult" and has_conditions:
+                score += 5
+            elif mod_type in ("earn_money", "give_money"):
+                score += mod.get("value", 0) * 2  # Money is always good
+
+        # Retrigger jokers are generally strong (Hanging Chad, Dusk, etc.)
+        if "retrigger" in str(effect).lower():
+            score += 20
+
+        # Economy jokers help us stay in the game
+        if any(mod.get("type") in ("earn_money", "give_money") for mod in modifiers):
+            score += 10
+
+        # Jokers that scale over time are risky early, good mid
+        scaling_jokers = {"Ride the Bus", "Green Joker", "Red Card", "Blue Joker",
+                         "Runner", "Ice Cream", "Obelisk", "Lucky Cat"}
+        phase = self._get_game_phase(game)
+        if name in scaling_jokers:
+            if phase == "early":
+                score += 5   # Risky - might not pay off
+            elif phase == "mid":
+                score += 15  # Good time to start scaling
+            else:
+                score -= 5   # Too late to scale
+
+        return score
 
     # ========================================================================
     # PHASE DETECTION
@@ -777,9 +832,10 @@ class CoachStrategy(SmartStrategy):
 
         Coaching notes:
         - GENERAL: Let RNG present build leads. Don't force a build.
-        - EARLY: No lead yet - favor staying alive jokers + potential leads.
+        - EARLY: No lead yet - be FLUID. Evaluate unconditional value.
         - MID/LATE: Have a lead - favor synergies, reject anti-synergies.
         - A stronger lead can override current lead (pivot opportunity).
+        - NO HARDCODED LISTS. Evaluate each joker in context.
         """
         phase = self._get_game_phase(game)
         joker_name = joker.get("name", "")
@@ -790,17 +846,17 @@ class CoachStrategy(SmartStrategy):
         # Check if this joker is a potential build lead
         is_lead, lead_strength = self._is_potential_lead(joker_name, game)
 
+        # Always start with the fluid unconditional value assessment
+        unconditional_value = self._evaluate_unconditional_value(joker, game)
+
         # === EARLY GAME: No lead yet ===
         if phase == "early" and not current_lead:
-            # Staying alive jokers are great early - they buy us time
-            if self._is_staying_alive_joker(joker_name):
-                score += 50
+            # Be fluid - weight unconditional value highly
+            score += unconditional_value
+
             # Potential build leads are exciting - they give us direction
             if is_lead:
-                score += lead_strength * 10
-            # Everything else gets a modest score - we're flexible
-            else:
-                score += 20
+                score += lead_strength * 8
 
         # === WE HAVE A BUILD LEAD ===
         elif current_lead:
@@ -808,36 +864,31 @@ class CoachStrategy(SmartStrategy):
 
             # Is this joker a synergy with our lead?
             if joker_name in lead_info.get("synergies", []):
-                score += 80  # Strongly favor synergies
+                score += 70  # Strongly favor synergies
+                score += unconditional_value * 0.5  # Still consider base value
 
             # Does this joker conflict with our lead?
             elif "*" in lead_info.get("anti_synergies", []):
                 # Lead like Stencil - don't add more jokers
                 score -= 100
             elif joker_name in lead_info.get("anti_synergies", []):
-                score -= 50  # Conflicts with our direction
+                score -= 40  # Conflicts with our direction
 
             # Is this a STRONGER lead that could pivot us?
             elif is_lead and lead_strength > current_strength:
-                score += lead_strength * 8  # Consider the pivot
+                score += lead_strength * 6  # Consider the pivot
+                score += unconditional_value * 0.3
 
-            # Staying alive jokers still have value
-            elif self._is_staying_alive_joker(joker_name):
-                score += 30
-
-            # Neutral jokers
+            # No special relationship - evaluate on merit
             else:
-                score += 10
+                score += unconditional_value * 0.7  # Discount slightly vs synergies
 
-        # === MID/LATE WITHOUT LEAD (unusual but possible) ===
+        # === MID/LATE WITHOUT LEAD (drifting - need direction) ===
         else:
-            # Really want a lead now
+            # Really want a lead now - but don't ignore good jokers
             if is_lead:
-                score += lead_strength * 12
-            elif self._is_staying_alive_joker(joker_name):
-                score += 40
-            else:
-                score += 15
+                score += lead_strength * 10
+            score += unconditional_value  # Take what's good
 
         return score
 
