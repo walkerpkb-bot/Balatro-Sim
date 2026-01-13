@@ -297,7 +297,7 @@ class Simulator:
 
             # Shop visit
             if config.enable_shop:
-                shop_result = simulate_shop(game, self.all_jokers)
+                shop_result = simulate_shop(game, self.all_jokers, strategy=strategy)
                 if verbose and (shop_result["jokers_bought"] or shop_result["planets_used"]):
                     if shop_result["jokers_bought"]:
                         print(f"  Shop: Bought {shop_result['jokers_bought']}")

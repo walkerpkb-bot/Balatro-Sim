@@ -443,8 +443,9 @@ class ShopAI:
     AI for making shop decisions.
     """
 
-    def __init__(self, strategy: str = "balanced"):
-        self.strategy = strategy  # "balanced", "aggressive", "economy"
+    def __init__(self, strategy_mode: str = "balanced", player_strategy=None):
+        self.strategy_mode = strategy_mode  # "balanced", "aggressive", "economy"
+        self.player_strategy = player_strategy  # Optional: strategy object with evaluate_joker
 
     def decide_purchases(self, shop: Shop, game_state) -> dict:
         """
@@ -581,6 +582,12 @@ class ShopAI:
     def _score_joker(self, joker: dict, game_state) -> float:
         """Score a joker based on current game state and synergies."""
         score = 0
+
+        # If we have a player strategy with evaluate_joker, use it
+        if self.player_strategy and hasattr(self.player_strategy, 'evaluate_joker'):
+            strategy_score = self.player_strategy.evaluate_joker(joker, game_state)
+            score += strategy_score
+
         effect = joker.get("effect", {})
         modifiers = effect.get("modifiers", [])
         conditions = effect.get("conditions", [])

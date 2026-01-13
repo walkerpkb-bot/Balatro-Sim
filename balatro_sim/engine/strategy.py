@@ -506,17 +506,227 @@ class CoachStrategy(SmartStrategy):
     This strategy is built from the expertise of a 100+ hour Balatro player,
     translating human intuition and heuristics into code logic.
 
-    VERSION: 0.1 - Initial branch from SmartStrategy
+    VERSION: 0.3 - Build leads concept
 
-    Coaching notes will be documented here as we iterate:
-    ---------------------------------------------------
-    [Session notes will be added here]
+    ============================================================================
+    COACHING KNOWLEDGE BASE
+    ============================================================================
+
+    GENERAL:
+    --------
+    - Don't force a build. Let RNG present "build leads" to you.
+    - A build lead is a joker that, when it appears, signals a direction.
+    - Once you have a lead, it influences ALL future decisions.
+    - Early game: stay open, wait for a lead to present itself.
+    - Stronger leads can override weaker ones (natural pivot).
+
+    EARLY GAME (Ante 1-2):
+    ----------------------
+    - You DON'T KNOW your build yet. Stay flexible.
+    - Wait for RNG to present a build lead.
+    - Take "staying alive" jokers while waiting.
+
+    MID GAME (Ante 3-5):
+    --------------------
+    - Build lead should be identified by now.
+    - Commit to the lead's requirements.
+    - Can still pivot if a stronger lead appears.
+
+    LATE GAME (Ante 6-8):
+    ---------------------
+    - Rarely get new build leads here.
+    - Focus on maximizing existing build.
+    - "Staying alive" becomes critical.
+
+    JOKER SELECTION:
+    ----------------
+    [pending]
+
+    SHOP CHOICE:
+    ------------
+    [pending]
+
+    SKIP CONSIDERATION:
+    -------------------
+    - Throwback: If acquired, commit to skipping EVERY blind to pump it.
+
+    PATIENCE:
+    ---------
+    [pending]
+
+    JOKER KNOWLEDGE:
+    ----------------
+    [pending - specific joker interactions]
+
+    BUILD MAXIMIZATION / SYNERGY:
+    -----------------------------
+    - Pareidolia + face card jokers (Smiley Face, Sock and Buskin)
+    - Suit-specific jokers (Bloodstone/Hearts, Onyx Agate/Spades) = commit to suit
+
+    STAYING ALIVE:
+    --------------
+    - Jokers that are universally good regardless of build.
+    - Take these while waiting for a build lead.
+    - Examples: Hanging Chad (retrigger first card)
+
+    FINANCING:
+    ----------
+    [pending]
+
+    ============================================================================
     """
+
+    # ========================================================================
+    # BUILD LEADS REGISTRY
+    # A build lead is a joker that defines your strategic direction.
+    # Once acquired, it influences all future decisions.
+    # ========================================================================
+
+    BUILD_LEADS = {
+        # Format: "Joker Name": {
+        #     "archetype": what kind of build this creates
+        #     "commitment": what you must do to maximize it
+        #     "strength": 1-10, how compelling this lead is
+        #     "synergies": jokers that work with this lead
+        #     "anti_synergies": jokers that conflict
+        # }
+
+        "Stencil": {
+            "archetype": "minimalist",
+            "commitment": "keep_joker_count_low",
+            "strength": 8,
+            "synergies": [],  # Works alone
+            "anti_synergies": ["*"],  # Conflicts with having many jokers
+        },
+
+        "Pareidolia": {
+            "archetype": "face_cards",
+            "commitment": "get_face_card_jokers",
+            "strength": 7,
+            "synergies": ["Smiley Face", "Sock and Buskin", "Photograph", "Scary Face", "Business Card", "Hanging Chad"],
+            "anti_synergies": [],
+        },
+
+        "Throwback": {
+            "archetype": "skipper",
+            "commitment": "skip_every_blind",
+            "strength": 6,
+            "synergies": [],
+            "anti_synergies": [],
+        },
+
+        "Bloodstone": {
+            "archetype": "hearts",
+            "commitment": "convert_deck_to_hearts",
+            "strength": 6,
+            "synergies": ["Lusty Joker", "Rough Gem"],
+            "anti_synergies": ["Onyx Agate", "Arrowhead", "Smeared Joker"],
+        },
+
+        "Onyx Agate": {
+            "archetype": "spades",
+            "commitment": "convert_deck_to_spades",
+            "strength": 6,
+            "synergies": ["Greedy Joker", "Arrowhead"],
+            "anti_synergies": ["Bloodstone", "Rough Gem"],
+        },
+
+        # More will be added through coaching...
+    }
+
+    # Jokers that are good regardless of build - take while waiting for a lead
+    STAYING_ALIVE_JOKERS = {
+        "Hanging Chad",      # Retrigger first card - universally good
+        "Greedy Joker",      # +$4 per diamond - money is always good
+        "Lusty Joker",       # +3 mult per heart - mult is always good
+        "Wrathful Joker",    # +3 mult per spade
+        "Gluttonous Joker",  # +3 mult per club
+        "Jolly Joker",       # +8 mult if pair - pairs are common
+        "Zany Joker",        # +12 mult if three of a kind
+        "Mad Joker",         # +10 mult if two pair
+        "Half Joker",        # +20 mult if 3 or fewer cards
+        "Raised Fist",       # Adds 2x lowest rank mult
+        # More will be added...
+    }
 
     def __init__(self):
         super().__init__()
-        # Track coaching-specific state
         self.build_detector = BuildDetector()
+        # Track current build lead
+        self.current_lead = None
+        self.lead_strength = 0
+
+    def _detect_build_lead(self, game) -> tuple[Optional[str], int]:
+        """
+        Scan owned jokers for build leads.
+        Returns (lead_joker_name, strength) or (None, 0).
+        """
+        best_lead = None
+        best_strength = 0
+
+        for joker in game.jokers:
+            name = joker.get("name", "")
+            if name in self.BUILD_LEADS:
+                lead_info = self.BUILD_LEADS[name]
+                if lead_info["strength"] > best_strength:
+                    best_lead = name
+                    best_strength = lead_info["strength"]
+
+        return best_lead, best_strength
+
+    def _get_lead_archetype(self, game) -> Optional[str]:
+        """Get the archetype of current build lead, if any."""
+        lead, _ = self._detect_build_lead(game)
+        if lead and lead in self.BUILD_LEADS:
+            return self.BUILD_LEADS[lead]["archetype"]
+        return None
+
+    def _joker_fits_lead(self, joker_name: str, game) -> bool:
+        """Check if a joker fits with current build lead."""
+        lead, _ = self._detect_build_lead(game)
+        if not lead:
+            return True  # No lead = everything is fine
+
+        lead_info = self.BUILD_LEADS[lead]
+
+        # Check anti-synergies
+        if "*" in lead_info.get("anti_synergies", []):
+            # This lead (like Stencil) conflicts with adding more jokers
+            return False
+        if joker_name in lead_info.get("anti_synergies", []):
+            return False
+
+        # Check if it's a synergy
+        if joker_name in lead_info.get("synergies", []):
+            return True  # Definitely take synergies
+
+        return True  # Neutral - doesn't conflict
+
+    def _is_potential_lead(self, joker_name: str, game) -> tuple[bool, int]:
+        """
+        Check if a joker could become a new build lead.
+        Returns (is_lead, strength).
+        """
+        if joker_name in self.BUILD_LEADS:
+            return True, self.BUILD_LEADS[joker_name]["strength"]
+        return False, 0
+
+    def _is_staying_alive_joker(self, joker_name: str) -> bool:
+        """Check if joker is a 'staying alive' universal pick."""
+        return joker_name in self.STAYING_ALIVE_JOKERS
+
+    # ========================================================================
+    # PHASE DETECTION
+    # ========================================================================
+
+    def _get_game_phase(self, game) -> str:
+        """Determine current game phase."""
+        if game.ante <= 2:
+            return "early"
+        elif game.ante <= 5:
+            return "mid"
+        else:
+            return "late"
 
     # ========================================================================
     # CARD SELECTION - What to play
@@ -527,10 +737,15 @@ class CoachStrategy(SmartStrategy):
         Select cards to play.
 
         Coaching notes:
-        - [To be filled in through coaching sessions]
+        - GENERAL: [pending]
+        - EARLY: [pending]
+        - MID: [pending]
+        - LATE: [pending]
         """
+        phase = self._get_game_phase(game)
+
+        # Phase-specific logic will be added through coaching
         # For now, use parent SmartStrategy logic
-        # This will be replaced/enhanced through coaching
         return super().select_cards_to_play(hand, game, must_play_count)
 
     # ========================================================================
@@ -542,11 +757,137 @@ class CoachStrategy(SmartStrategy):
         Select cards to discard.
 
         Coaching notes:
-        - [To be filled in through coaching sessions]
+        - GENERAL: [pending]
+        - PATIENCE: [pending]
+        - BUILD MAXIMIZATION: [pending]
         """
+        phase = self._get_game_phase(game)
+
+        # Phase-specific logic will be added through coaching
         # For now, use parent SmartStrategy logic
-        # This will be replaced/enhanced through coaching
         return super().select_cards_to_discard(hand, game)
+
+    # ========================================================================
+    # JOKER EVALUATION - For shop decisions
+    # ========================================================================
+
+    def evaluate_joker(self, joker: dict, game) -> float:
+        """
+        Score a joker for purchase consideration.
+
+        Coaching notes:
+        - GENERAL: Let RNG present build leads. Don't force a build.
+        - EARLY: No lead yet - favor staying alive jokers + potential leads.
+        - MID/LATE: Have a lead - favor synergies, reject anti-synergies.
+        - A stronger lead can override current lead (pivot opportunity).
+        """
+        phase = self._get_game_phase(game)
+        joker_name = joker.get("name", "")
+        current_lead, current_strength = self._detect_build_lead(game)
+
+        score = 0
+
+        # Check if this joker is a potential build lead
+        is_lead, lead_strength = self._is_potential_lead(joker_name, game)
+
+        # === EARLY GAME: No lead yet ===
+        if phase == "early" and not current_lead:
+            # Staying alive jokers are great early - they buy us time
+            if self._is_staying_alive_joker(joker_name):
+                score += 50
+            # Potential build leads are exciting - they give us direction
+            if is_lead:
+                score += lead_strength * 10
+            # Everything else gets a modest score - we're flexible
+            else:
+                score += 20
+
+        # === WE HAVE A BUILD LEAD ===
+        elif current_lead:
+            lead_info = self.BUILD_LEADS[current_lead]
+
+            # Is this joker a synergy with our lead?
+            if joker_name in lead_info.get("synergies", []):
+                score += 80  # Strongly favor synergies
+
+            # Does this joker conflict with our lead?
+            elif "*" in lead_info.get("anti_synergies", []):
+                # Lead like Stencil - don't add more jokers
+                score -= 100
+            elif joker_name in lead_info.get("anti_synergies", []):
+                score -= 50  # Conflicts with our direction
+
+            # Is this a STRONGER lead that could pivot us?
+            elif is_lead and lead_strength > current_strength:
+                score += lead_strength * 8  # Consider the pivot
+
+            # Staying alive jokers still have value
+            elif self._is_staying_alive_joker(joker_name):
+                score += 30
+
+            # Neutral jokers
+            else:
+                score += 10
+
+        # === MID/LATE WITHOUT LEAD (unusual but possible) ===
+        else:
+            # Really want a lead now
+            if is_lead:
+                score += lead_strength * 12
+            elif self._is_staying_alive_joker(joker_name):
+                score += 40
+            else:
+                score += 15
+
+        return score
+
+    # ========================================================================
+    # SHOP DECISIONS
+    # ========================================================================
+
+    def should_buy_pack(self, pack, game) -> bool:
+        """
+        Decide whether to buy a pack.
+
+        Coaching notes:
+        - SHOP CHOICE: [pending]
+        - FINANCING: [pending]
+        """
+        # Default to parent/shop AI behavior for now
+        return True
+
+    def should_reroll(self, shop, game) -> bool:
+        """
+        Decide whether to reroll the shop.
+
+        Coaching notes:
+        - SHOP CHOICE: [pending]
+        - FINANCING: [pending]
+        - PATIENCE: [pending]
+        """
+        return False
+
+    # ========================================================================
+    # SKIP DECISIONS
+    # ========================================================================
+
+    def should_skip_blind(self, game, blind_info, tag) -> bool:
+        """
+        Decide whether to skip current blind for the tag reward.
+
+        Coaching notes:
+        - SKIP CONSIDERATION: Throwback = skip EVERY blind to pump it.
+        - Other skip decisions pending more coaching.
+        """
+        # Check for Throwback commitment
+        lead, _ = self._detect_build_lead(game)
+        if lead == "Throwback":
+            # Throwback archetype: skip every small/big blind
+            if blind_info.blind_type.name != "BOSS":
+                return True
+
+        # Default: don't skip (more logic to be added)
+        return False
 
     # ========================================================================
     # COACHING HELPERS - Supporting methods for coached logic

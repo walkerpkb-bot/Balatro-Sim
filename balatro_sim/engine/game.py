@@ -744,15 +744,21 @@ def simulate_blind(game: GameState, strategy = None) -> BlindResult:
     )
 
 
-def simulate_shop(game: GameState, all_jokers: list, shop_ai=None) -> dict:
+def simulate_shop(game: GameState, all_jokers: list, shop_ai=None, strategy=None) -> dict:
     """
     Simulate a shop visit.
     Returns dict with purchases made.
+
+    Args:
+        game: Current game state
+        all_jokers: List of all available jokers
+        shop_ai: Optional ShopAI instance
+        strategy: Optional player strategy (for evaluate_joker integration)
     """
     from .shop import Shop, ShopAI, apply_planet, apply_tarot, apply_spectral, ConsumableType, PackType
 
     if shop_ai is None:
-        shop_ai = ShopAI()
+        shop_ai = ShopAI(player_strategy=strategy)
 
     shop = Shop(all_jokers)
     shop.generate(
