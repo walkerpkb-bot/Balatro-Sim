@@ -188,6 +188,7 @@ with st.sidebar:
     # Run mode
     run_mode = st.radio("Simulation Mode", ["Single Run", "Batch Analysis"], horizontal=True)
 
+    num_runs = 100  # Default
     if run_mode == "Batch Analysis":
         num_runs = st.slider("Number of Runs", min_value=10, max_value=500, value=100, step=10)
 
