@@ -199,7 +199,14 @@ with st.sidebar:
 
     # Strategy info
     with st.expander("Strategy Details"):
-        st.markdown(f"**Type:** {preset.strategy.value}")
+        st.markdown(f"**Type:** {selected_strategy.value}")
+        strategy_desc = {
+            StrategyType.BASIC: "Plays highest scoring hand without considering synergies",
+            StrategyType.SMART: "Considers joker synergies and hand levels for optimal plays",
+            StrategyType.OPTIMIZED: "Aggressively chases flushes and straights when viable",
+            StrategyType.AGGRESSIVE: "Takes bigger risks for potentially higher scores"
+        }
+        st.caption(strategy_desc.get(selected_strategy, ""))
         if preset.starting_jokers:
             st.markdown(f"**Starting Jokers:** {', '.join(preset.starting_jokers)}")
 
