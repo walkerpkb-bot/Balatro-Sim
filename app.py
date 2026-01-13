@@ -12,8 +12,10 @@ from pathlib import Path
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from balatro_sim.simulator import Simulator, RunSummary, BatchResult, __version__ as sim_version
+from balatro_sim.simulator import Simulator, RunSummary, BatchResult
 from balatro_sim.presets import PRESETS, StrategyType
+
+sim_version = "2.1.0"  # Local version tracking
 
 # Page config - MUST be first Streamlit command
 st.set_page_config(
@@ -213,7 +215,11 @@ run_clicked = st.button("🎲 Run Simulation", type="primary", use_container_wid
 if run_clicked:
     if run_mode == "Single Run":
         with st.spinner("🎴 Shuffling deck and running simulation..."):
-            result = sim.run(selected_preset, verbose=False, strategy_override=selected_strategy)
+            # Temporarily override preset strategy
+            original_strategy = PRESETS[selected_preset].strategy
+            PRESETS[selected_preset].strategy = selected_strategy
+            result = sim.run(selected_preset, verbose=False)
+            PRESETS[selected_preset].strategy = original_strategy
 
         # Victory/Defeat banner
         if result.victory:
@@ -409,8 +415,12 @@ if run_clicked:
         total_bosses_beat = 0
         ante_distribution = {}
 
+        # Temporarily override preset strategy for batch
+        original_strategy = PRESETS[selected_preset].strategy
+        PRESETS[selected_preset].strategy = selected_strategy
+
         for i in range(num_runs):
-            summary = sim.run(selected_preset, verbose=False, strategy_override=selected_strategy)
+            summary = sim.run(selected_preset, verbose=False)
 
             if summary.victory:
                 wins += 1
@@ -429,6 +439,9 @@ if run_clicked:
 
         progress_bar.empty()
         status_text.empty()
+
+        # Restore original strategy
+        PRESETS[selected_preset].strategy = original_strategy
 
         result = BatchResult(
             runs=num_runs,
