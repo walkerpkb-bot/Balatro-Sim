@@ -544,19 +544,56 @@ class CoachStrategy(SmartStrategy):
 
     SHOP CHOICE:
     ------------
-    [pending]
+    Three distinct shop behavior profiles, plus emergency pivot:
+
+    1. EARLY GAME - "Scanning for leads / waiting for power / seeding build"
+       - Not much money - hopefully saved/generated some (staying alive)
+       - CRITICAL: Sets tone for rest of run
+       - Looking for your ARC - picking power and running with it
+       - Clear obvious choices based on tier/rank
+       - BUT ALSO: less obvious jokers if they SEED a build idea
+       - Squinting to see what build awaits for high scores
+
+    2. MID GAME - "Build fill-out / complimenting / stacking / active synergizing"
+       - Choices should ADD to existing build idea
+       - Filling out the path you've highlighted
+       - Flush stuff? Face cards? One suit? One hand type?
+       - Narrowed down from wide options - now BUYING INTO IT
+       - Hopefully generated funding along the way
+
+    3. LATE GAME - "Topping off / over-powering / scaling"
+       - Build is hopefully complete and locked in
+       - ONLY looking for jokers that BEAT current AND don't break anything
+       - Spending on: standard packs, celestials, supportive tarots, vouchers
+       - Very selective on jokers - must be strict upgrade
+
+    4. PIVOT (emergency, any phase)
+       - Something coming will BREAK your build, causing death
+       - Scramble mode - come up with something quick
+       - Involves: selling jokers, steering toward something new
+       - Thinking quick on your feet, probably getting lucky
+       - [more coaching needed on pivot specifics]
 
     SKIP CONSIDERATION:
     -------------------
     - Throwback: If acquired, commit to skipping EVERY blind to pump it.
 
-    PATIENCE:
-    ---------
-    [pending]
-
     JOKER KNOWLEDGE:
     ----------------
-    [pending - specific joker interactions]
+    - Human-ranked tier list integrated (JOKER_POWER_TIERS)
+    - IMPORTANT: Tier list is SUBJECTIVE and CONTEXT-DEPENDENT
+    - It's a REFERENCE for strength, not biblical truth
+    - Many jokers move up/down tiers based on:
+      * Current build direction
+      * What synergies are available
+      * Game phase (early vs late)
+      * Deck composition
+    - S+ Tier: Blueprint, Brainstorm, Triboulet (usually game-winning)
+    - S Tier: Vampire, Cavendish, The Duo/Trio/Family, Canio, Campfire
+    - A Tier: Strong anchors - Bloodstone, Onyx Agate, Throwback, etc.
+    - B Tier: Solid context-dependent jokers
+    - C Tier: Often situational - can be great WITH the right build
+    - Use tier as baseline, let context adjust heavily
 
     BUILD MAXIMIZATION / SYNERGY:
     -----------------------------
@@ -618,53 +655,191 @@ class CoachStrategy(SmartStrategy):
     BUILD_LEADS = {
         # Format: "Joker Name": {
         #     "archetype": what kind of build this creates
-        #     "commitment": what you must do to maximize it
+        #     "commitment": behavior to adopt once this lead is chosen
         #     "strength": 1-10, how compelling this lead is
         #     "synergies": jokers that work with this lead
         #     "anti_synergies": jokers that conflict
         # }
 
+        # ===== MINIMALIST =====
         "Stencil": {
             "archetype": "minimalist",
-            "commitment": "keep_joker_count_low",
+            "commitment": "keep_joker_count_low",  # Sell jokers, don't buy more
             "strength": 8,
             "synergies": [],  # Works alone
             "anti_synergies": ["*"],  # Conflicts with having many jokers
         },
 
+        # ===== FACE CARDS =====
         "Pareidolia": {
             "archetype": "face_cards",
-            "commitment": "get_face_card_jokers",
+            "commitment": "prioritize_face_cards",  # Keep face cards, use tarots to create more
             "strength": 7,
-            "synergies": ["Smiley Face", "Sock and Buskin", "Photograph", "Scary Face", "Business Card", "Hanging Chad"],
+            "synergies": ["Smiley Face", "Sock and Buskin", "Photograph", "Scary Face",
+                         "Business Card", "Hanging Chad", "Baron", "Triboulet"],
+            "anti_synergies": ["Even Steven", "Hack"],
+        },
+        "Baron": {
+            "archetype": "kings",
+            "commitment": "prioritize_kings",  # Hold kings in hand, don't discard them
+            "strength": 6,
+            "synergies": ["Sock and Buskin", "Smiley Face", "Scary Face", "Pareidolia", "Mime"],
+            "anti_synergies": ["Even Steven", "Hack"],
+        },
+
+        # ===== SUIT BUILDS =====
+        "Bloodstone": {
+            "archetype": "hearts",
+            "commitment": "convert_to_hearts",  # Use tarots to change suits, prioritize hearts
+            "strength": 6,
+            "synergies": ["Lusty Joker", "Rough Gem", "Smeared Joker", "Fibonacci"],
+            "anti_synergies": ["Onyx Agate", "Arrowhead", "Greedy Joker", "Gluttonous Joker"],
+        },
+        "Onyx Agate": {
+            "archetype": "spades",
+            "commitment": "convert_to_spades",  # Use tarots to change suits, prioritize spades
+            "strength": 6,
+            "synergies": ["Greedy Joker", "Arrowhead", "Smeared Joker"],
+            "anti_synergies": ["Bloodstone", "Lusty Joker", "Rough Gem"],
+        },
+        "Arrowhead": {
+            "archetype": "diamonds",
+            "commitment": "convert_to_diamonds",  # Use tarots to change suits, prioritize diamonds
+            "strength": 5,
+            "synergies": ["Onyx Agate", "Greedy Joker", "Smeared Joker"],
+            "anti_synergies": ["Bloodstone", "Lusty Joker"],
+        },
+
+        # ===== HAND TYPE BUILDS =====
+        "The Duo": {
+            "archetype": "pairs",
+            "commitment": "always_play_pairs",  # Every hand should contain a pair
+            "strength": 8,
+            "synergies": ["The Trio", "The Family", "Mime", "Sock and Buskin", "Hanging Chad"],
+            "anti_synergies": [],
+        },
+        "The Trio": {
+            "archetype": "three_of_kind",
+            "commitment": "always_play_three_of_kind",  # Aim for trips in every hand
+            "strength": 8,
+            "synergies": ["The Duo", "The Family", "Mime", "Photograph"],
+            "anti_synergies": [],
+        },
+        "The Family": {
+            "archetype": "four_of_kind",
+            "commitment": "always_play_four_of_kind",  # Aim for quads
+            "strength": 8,
+            "synergies": ["The Duo", "The Trio", "Mime"],
+            "anti_synergies": [],
+        },
+        "Shortcut": {
+            "archetype": "straights",
+            "commitment": "play_straights",  # Keep run-building cards, discard outliers
+            "strength": 5,
+            "synergies": ["Four Fingers", "Hack", "Runner"],
+            "anti_synergies": [],
+        },
+        "Four Fingers": {
+            "archetype": "four_card_hands",
+            "commitment": "play_four_card_flushes_straights",  # Exploit 4-card hands
+            "strength": 5,
+            "synergies": ["Shortcut", "Smeared Joker"],
             "anti_synergies": [],
         },
 
+        # ===== RETRIGGER BUILDS =====
+        "Hack": {
+            "archetype": "low_cards",
+            "commitment": "keep_low_cards",  # Prioritize 2,3,4,5 - discard high cards
+            "strength": 6,
+            "synergies": ["Fibonacci", "Even Steven", "Raised Fist", "Walkie Talkie", "Seltzer"],
+            "anti_synergies": ["Baron", "Photograph", "Sock and Buskin"],
+        },
+        "Seltzer": {
+            "archetype": "retrigger",
+            "commitment": "maximize_retriggers",  # Position cards to retrigger, play triggerable cards
+            "strength": 7,
+            "synergies": ["Hack", "Sock and Buskin", "Hanging Chad", "Dusk", "Mime"],
+            "anti_synergies": [],
+        },
+
+        # ===== PARITY BUILDS =====
+        "Even Steven": {
+            "archetype": "even_ranks",
+            "commitment": "keep_even_cards",  # Discard odd-ranked cards
+            "strength": 5,
+            "synergies": ["Walkie Talkie", "Scholar", "Hack"],
+            "anti_synergies": ["Odd Todd", "Baron", "Photograph"],
+        },
+        "Odd Todd": {
+            "archetype": "odd_ranks",
+            "commitment": "keep_odd_cards",  # Discard even-ranked cards
+            "strength": 5,
+            "synergies": ["Fibonacci", "Raised Fist"],
+            "anti_synergies": ["Even Steven", "Walkie Talkie"],
+        },
+
+        # ===== ENHANCED CARD BUILDS =====
+        "Steel Joker": {
+            "archetype": "steel_cards",
+            "commitment": "create_steel_cards",  # Use tarots to make steel cards, protect them
+            "strength": 7,
+            "synergies": ["Mime", "Hanging Chad", "Dusk"],
+            "anti_synergies": [],
+        },
+        "Glass Joker": {
+            "archetype": "glass_cards",
+            "commitment": "create_glass_cards",  # Use tarots to make glass cards, accept the risk
+            "strength": 6,
+            "synergies": ["Hanging Chad", "Dusk", "Lucky Cat"],
+            "anti_synergies": [],
+        },
+
+        # ===== SPECIAL =====
         "Throwback": {
             "archetype": "skipper",
-            "commitment": "skip_every_blind",
+            "commitment": "skip_every_blind",  # Always skip small/big blinds for x_mult stacking
             "strength": 6,
             "synergies": [],
             "anti_synergies": [],
         },
-
-        "Bloodstone": {
-            "archetype": "hearts",
-            "commitment": "convert_deck_to_hearts",
-            "strength": 6,
-            "synergies": ["Lusty Joker", "Rough Gem"],
-            "anti_synergies": ["Onyx Agate", "Arrowhead", "Smeared Joker"],
+        "Blueprint": {
+            "archetype": "copy",
+            "commitment": "position_rightmost_joker",  # Best joker goes to Blueprint's right
+            "strength": 10,
+            "synergies": ["Brainstorm"],
+            "anti_synergies": [],
+        },
+        "Brainstorm": {
+            "archetype": "copy",
+            "commitment": "position_leftmost_joker",  # Brainstorm copies leftmost, order matters
+            "strength": 10,
+            "synergies": ["Blueprint"],
+            "anti_synergies": [],
         },
 
-        "Onyx Agate": {
-            "archetype": "spades",
-            "commitment": "convert_deck_to_spades",
-            "strength": 6,
-            "synergies": ["Greedy Joker", "Arrowhead"],
-            "anti_synergies": ["Bloodstone", "Rough Gem"],
+        # ===== SCALING =====
+        "Hologram": {
+            "archetype": "scaling_mult",
+            "commitment": "add_cards_to_deck",  # Use tarots/planets that add cards
+            "strength": 7,
+            "synergies": ["Mime", "Dusk", "Seltzer"],
+            "anti_synergies": [],
         },
-
-        # More will be added through coaching...
+        "Ride The Bus": {
+            "archetype": "scaling_mult",
+            "commitment": "avoid_face_cards",  # Never play face cards, discard them
+            "strength": 7,
+            "synergies": ["Even Steven", "Hack"],
+            "anti_synergies": ["Pareidolia", "Baron"],
+        },
+        "Campfire": {
+            "archetype": "scaling_mult",
+            "commitment": "sell_jokers_strategically",  # Sell weak jokers to pump Campfire
+            "strength": 8,
+            "synergies": [],
+            "anti_synergies": [],
+        },
     }
 
     # NO HARDCODED "STAYING ALIVE" LIST
@@ -674,6 +849,67 @@ class CoachStrategy(SmartStrategy):
 
     # Interest thresholds - money milestones that generate passive income
     INTEREST_THRESHOLDS = [5, 10, 15, 20, 25]  # $1 interest per threshold reached
+
+    # ========================================================================
+    # JOKER POWER TIERS - Human-ranked joker power list
+    # Based on 100+ hours of Balatro experience
+    #
+    # NOTE: This is SUBJECTIVE and CONTEXT-DEPENDENT - not biblical truth!
+    # A C-tier joker can be S-tier with the right build.
+    # An S-tier joker can be useless if it doesn't fit your direction.
+    # Use as a BASELINE reference, let build context adjust heavily.
+    # ========================================================================
+
+    JOKER_POWER_TIERS = {
+        # S+ Tier (100) - Build-defining, game-winning jokers
+        "Blueprint": 100, "Brainstorm": 100, "Triboulet": 100,
+
+        # S Tier (85) - Extremely powerful, often carry runs
+        "Vampire": 85, "Cavendish": 85, "The Duo": 85, "The Trio": 85,
+        "The Family": 85, "Spare Trousers": 85, "Canio": 85, "Campfire": 85,
+
+        # A Tier (70) - Strong jokers that can anchor builds
+        "Hiker": 70, "Fortune Teller": 70, "Rocket": 70, "Seltzer": 70,
+        "Trading Card": 70, "Bloodstone": 70, "Perkeo": 70, "Fibonacci": 70,
+        "Onyx Agate": 70, "Arrowhead": 70, "Sixth Sense": 70, "Space Joker": 70,
+        "Burnt Joker": 70, "Hologram": 70, "Driver's License": 70, "Steel Joker": 70,
+        "Ancient Joker": 70, "Card Sharp": 70, "Baseball Card": 70, "To Do List": 70,
+        "Business Card": 70, "Mail-In Rebate": 70, "Cloud 9": 70, "Golden Joker": 70,
+        "To The Moon": 70, "DNA": 70, "Green Joker": 70, "Gros Michel": 70,
+        "Ramen": 70, "Ride The Bus": 70, "Stuntman": 70, "The Tribe": 70,
+        "Throwback": 70, "Vagabond": 70,
+
+        # B Tier (50) - Solid jokers, good in right context
+        "Supernova": 50, "Scholar": 50, "Walkie Talkie": 50, "Sock and Buskin": 50,
+        "Smiley Face": 50, "Scary Face": 50, "Wee Joker": 50, "Square Joker": 50,
+        "Riff Raff": 50, "Half Joker": 50, "Invisible Joker": 50, "Constellation": 50,
+        "Certificate": 50, "Ceremonial Dagger": 50, "Raised Fist": 50, "Yorick": 50,
+        "Blackboard": 50, "Shoot The Moon": 50, "Egg": 50, "Abstract Joker": 50,
+        "Swashbuckler": 50, "Misprint": 50, "Turtle Bean": 50, "Madness": 50,
+        "Hack": 50, "Hit The Road": 50, "Rough Gem": 50, "Gluttonous Joker": 50,
+        "Wrathful Joker": 50, "Lusty Joker": 50, "Greedy Joker": 50, "Diet Cola": 50,
+        "Blue Joker": 50, "Bootstraps": 50, "Burglar": 50, "Acrobat": 50,
+        "Baron": 50, "Seeing Double": 50, "The Order": 50, "Cartomancer": 50,
+        "Flash Card": 50, "Delayed Gratification": 50, "Even Steven": 50, "Mime": 50,
+        "Popcorn": 50, "Castle": 50, "Odd Todd": 50, "Ice Cream": 50,
+        "Runner": 50, "Faceless Joker": 50, "Hanging Chad": 50, "8 Ball": 50,
+        "Photograph": 50, "Erosion": 50, "Lucky Cat": 50, "Glass Joker": 50,
+        "Flower Pot": 50, "Obelisk": 50, "Joker Stencil": 50, "Reserved Parking": 50,
+        "Joker": 50, "Oops! All 6s": 50, "Midas Mask": 50, "Mystic Summit": 50,
+        "Superposition": 50, "Satellite": 50,
+
+        # C Tier (30) - Situational, weak, or trap jokers
+        "Matador": 30, "The Idol": 30, "Juggler": 30, "Splash": 30,
+        "Pareidolia": 30, "Loyalty Card": 30, "Dusk": 30, "Jolly Joker": 30,
+        "Zany Joker": 30, "Wily Joker": 30, "Mad Joker": 30, "Clever Joker": 30,
+        "Sly Joker": 30, "Bull": 30, "Banner": 30, "Smeared Joker": 30,
+        "Astronomer": 30, "Drunkard": 30, "Droll Joker": 30, "Crafty Joker": 30,
+        "Crazy Joker": 30, "Devious Joker": 30, "Troubadour": 30, "Hallucination": 30,
+        "Chaos The Clown": 30, "Mr. Bones": 30, "Merry Andy": 30, "Red Card": 30,
+        "Showman": 30, "Stone Joker": 30, "Marble Joker": 30, "Gift Card": 30,
+        "Luchador": 30, "Golden Ticket": 30, "Credit Card": 30, "Shortcut": 30,
+        "Four Fingers": 30, "Séance": 30,
+    }
 
     def __init__(self):
         super().__init__()
@@ -940,16 +1176,114 @@ class CoachStrategy(SmartStrategy):
         Select cards to play.
 
         Coaching notes:
-        - GENERAL: [pending]
-        - EARLY: [pending]
-        - MID: [pending]
-        - LATE: [pending]
+        - Commitment system influences hand selection preferences
+        - The Duo/Trio/Family require specific hand types to trigger
+        - Ride The Bus requires avoiding face cards
+        - Suit builds prefer cards of the target suit
         """
-        phase = self._get_game_phase(game)
+        # Get commitment-based play preferences
+        prefs = self._apply_commitment_to_play(hand, game)
 
-        # Phase-specific logic will be added through coaching
-        # For now, use parent SmartStrategy logic
-        return super().select_cards_to_play(hand, game, must_play_count)
+        # Get all possible plays
+        if must_play_count:
+            min_cards = must_play_count
+            max_cards = must_play_count
+        else:
+            min_cards = 1
+            max_cards = 5
+
+        hand_levels = getattr(game, 'hand_levels', {})
+        options = self.evaluate_all_plays(
+            hand,
+            jokers=game.jokers,
+            min_cards=min_cards,
+            max_cards=max_cards,
+            hand_levels=hand_levels
+        )
+
+        if not options:
+            return []
+
+        # Filter/boost options based on commitment preferences
+        scored_options = []
+        for opt in options:
+            score = opt.score
+            dominated_suit = self._get_dominated_suit(opt.cards)
+            has_face = any(c.is_face_card for c in opt.cards)
+            has_pair = self._has_pair(opt.cards)
+            has_three = self._has_three_of_kind(opt.cards)
+            has_four = self._has_four_of_kind(opt.cards)
+
+            # Apply preference adjustments
+            if prefs["require_pair"] and has_pair:
+                score *= 1.5  # Strong bonus for triggering The Duo
+            elif prefs["require_pair"] and not has_pair:
+                score *= 0.3  # Heavy penalty - won't trigger x_mult
+
+            if prefs["require_three_of_kind"] and has_three:
+                score *= 1.5
+            elif prefs["require_three_of_kind"] and not has_three:
+                score *= 0.3
+
+            if prefs["require_four_of_kind"] and has_four:
+                score *= 1.5
+            elif prefs["require_four_of_kind"] and not has_four:
+                score *= 0.3
+
+            if prefs["avoid_face_cards"]:
+                if has_face:
+                    score *= 0.1  # Severely penalize - resets Ride The Bus
+                else:
+                    score *= 1.3  # Bonus for maintaining the mult
+
+            if prefs["prefer_suit"] and dominated_suit:
+                if dominated_suit.lower() == prefs["prefer_suit"]:
+                    score *= 1.2  # Bonus for playing target suit
+
+            if prefs["prefer_flush"] and opt.hand_type == HandType.FLUSH:
+                score *= 1.3
+
+            if prefs["prefer_straight"] and opt.hand_type == HandType.STRAIGHT:
+                score *= 1.3
+
+            if prefs["prefer_low_cards"]:
+                low_count = sum(1 for c in opt.cards if c.rank in ('2', '3', '4', '5'))
+                score *= (1 + 0.1 * low_count)  # More low cards = better
+
+            scored_options.append((opt, score))
+
+        # Sort by adjusted score
+        scored_options.sort(key=lambda x: x[1], reverse=True)
+
+        return scored_options[0][0].indices if scored_options else []
+
+    def _get_dominated_suit(self, cards: list) -> Optional[str]:
+        """Get the most common suit in the cards."""
+        if not cards:
+            return None
+        from collections import Counter
+        suits = Counter(c.suit.value for c in cards)
+        if suits:
+            return suits.most_common(1)[0][0]
+        return None
+
+    def _has_pair(self, cards: list) -> bool:
+        """Check if cards contain a pair."""
+        from collections import Counter
+        ranks = Counter(c.rank for c in cards)
+        return any(count >= 2 for count in ranks.values())
+
+    def _has_three_of_kind(self, cards: list) -> bool:
+        """Check if cards contain three of a kind."""
+        from collections import Counter
+        ranks = Counter(c.rank for c in cards)
+        return any(count >= 3 for count in ranks.values())
+
+    def _has_four_of_kind(self, cards: list) -> bool:
+        """Check if cards contain four of a kind."""
+        from collections import Counter
+        ranks = Counter(c.rank for c in cards)
+        return any(count >= 4 for count in ranks.values())
 
     # ========================================================================
     # DISCARD STRATEGY - What to throw away
@@ -960,14 +1294,33 @@ class CoachStrategy(SmartStrategy):
         Select cards to discard.
 
         Coaching notes:
-        - GENERAL: [pending]
-        - PATIENCE: [pending]
-        - BUILD MAXIMIZATION: [pending]
+        - Commitment system influences what to discard
+        - Build lead dictates which cards to prioritize keeping
         """
-        phase = self._get_game_phase(game)
+        if game.discards_remaining <= 0:
+            return []
 
-        # Phase-specific logic will be added through coaching
-        # For now, use parent SmartStrategy logic
+        cards = hand.cards
+        if len(cards) <= 3:
+            return []
+
+        # Get commitment-based discard recommendations
+        commitment_discards = self._apply_commitment_to_discard(cards, game)
+
+        if commitment_discards:
+            # Commitment has opinions - respect them but limit to 3
+            # Also don't discard cards that are part of our best play
+            best_options = self.evaluate_all_plays(hand, game.jokers, min_cards=1, max_cards=5)
+            best_indices = set(best_options[0].indices) if best_options else set()
+
+            # Filter out cards in best play
+            safe_discards = [i for i in commitment_discards if i not in best_indices]
+
+            # Limit to max discards
+            max_discard = min(3, game.discards_remaining)
+            return safe_discards[:max_discard]
+
+        # No commitment opinion - fall back to parent logic
         return super().select_cards_to_discard(hand, game)
 
     # ========================================================================
@@ -979,85 +1332,111 @@ class CoachStrategy(SmartStrategy):
         Score a joker for purchase consideration.
 
         Coaching notes:
-        - GENERAL: Let RNG present build leads. Don't force a build.
-        - EARLY: No lead yet - be FLUID. Evaluate unconditional value.
-        - MID/LATE: Have a lead - favor synergies, reject anti-synergies.
-        - A stronger lead can override current lead (pivot opportunity).
-        - NO HARDCODED LISTS. Evaluate each joker in context.
+        - PRIMARY: Use human-ranked JOKER_POWER_TIERS as baseline
+        - SECONDARY: Apply shop behavior profile adjustments
+        - TERTIARY: Apply commitment-based shop preferences
+        - Shop behaviors: scanning (early), filling (mid), topping (late), pivot (emergency)
         """
-        phase = self._get_game_phase(game)
         joker_name = joker.get("name", "")
         current_lead, current_strength = self._detect_build_lead(game)
 
-        score = 0
+        # Check commitment-based shop preferences first
+        shop_prefs = self._apply_commitment_to_shop(game)
+        if shop_prefs.get("avoid_jokers"):
+            # Stencil commitment - don't buy more jokers
+            return -100
 
-        # Check if this joker is a potential build lead
+        # === PRIMARY: Start with human-ranked tier score ===
+        tier_score = self.JOKER_POWER_TIERS.get(joker_name, 40)
+        score = tier_score
+
+        # Get current shop behavior profile
+        behavior = self._get_shop_behavior(game)
+
+        # Check if this joker seeds/leads a build
         is_lead, lead_strength = self._is_potential_lead(joker_name, game)
+        seeds_build, seed_type = self._joker_seeds_build(joker, game)
 
-        # Always start with the fluid unconditional value assessment
-        unconditional_value = self._evaluate_unconditional_value(joker, game)
-
-        # Add economy value - money generation is especially good early
+        # Economy value as small modifier (more relevant when scanning)
         economy_value = self._evaluate_economy_value(joker, game)
 
-        # === EARLY GAME: No lead yet ===
-        if phase == "early" and not current_lead:
-            # Be fluid - weight unconditional value highly
-            score += unconditional_value
+        # === SCANNING: Early game, looking for arc ===
+        if behavior == "scanning":
+            # Clear obvious choices based on tier
+            # Plus: less obvious jokers that SEED a build idea
+            if seeds_build or is_lead:
+                score += 25  # Potential to define our arc
 
-            # Economy is nice but secondary - don't let it override power
-            score += economy_value * 0.5
-
-            # Potential build leads are exciting - they give us direction
             if is_lead:
-                score += lead_strength * 8
+                score += lead_strength * 5  # Build leads are exciting
 
-        # === WE HAVE A BUILD LEAD ===
-        elif current_lead:
-            lead_info = self.BUILD_LEADS[current_lead]
-            performance = self._get_build_performance()
+            # Economy helps us stay alive while scanning
+            score += economy_value * 0.4
 
-            # Is this joker a synergy with our lead?
-            if joker_name in lead_info.get("synergies", []):
-                score += 70  # Strongly favor synergies
-                score += unconditional_value * 0.5
-                score += economy_value * 0.3
+        # === FILLING: Mid game, buying into the path ===
+        elif behavior == "filling":
+            # Choices should ADD to existing build
+            fits_build = self._joker_fits_current_build(joker, game)
 
-                # BUILD IS WORKING - SCALE IT UP
-                # If we're crushing/healthy, synergies are even MORE valuable
-                if performance in ("crushing", "healthy"):
-                    score += 30  # Double down on what's working
+            if current_lead and current_lead in self.BUILD_LEADS:
+                lead_info = self.BUILD_LEADS[current_lead]
 
-            # Does this joker conflict with our lead?
-            elif "*" in lead_info.get("anti_synergies", []):
-                # Lead like Stencil - don't add more jokers
-                score -= 100
-            elif joker_name in lead_info.get("anti_synergies", []):
-                score -= 40  # Conflicts with our direction
+                # Synergies are highly valuable - filling out the build
+                if joker_name in lead_info.get("synergies", []):
+                    score += 50  # Strongly favor - this is what we're here for
 
-            # Is this a STRONGER lead that could pivot us?
-            elif is_lead and lead_strength > current_strength:
-                # Only consider pivot if we're NOT performing well
-                if performance in ("struggling", "critical", "unknown"):
-                    score += lead_strength * 6  # Consider the pivot
-                    score += unconditional_value * 0.3
-                    score += economy_value * 0.3
-                else:
-                    # Build is working - don't pivot just because something shiny appeared
-                    score += lead_strength * 2  # Small consideration only
+                # Anti-synergies are bad - don't break the path
+                elif joker_name in lead_info.get("anti_synergies", []):
+                    score -= 40
+                elif "*" in lead_info.get("anti_synergies", []):
+                    score -= 100  # Stencil etc
 
-            # No special relationship - evaluate on merit
-            else:
-                score += unconditional_value * 0.7
-                score += economy_value * 0.5
+                # Neutral but fits = modest bonus
+                elif fits_build:
+                    score += 15
 
-        # === MID/LATE WITHOUT LEAD (drifting - need direction) ===
-        else:
-            # Really want a lead now - but don't ignore good jokers
+            elif fits_build:
+                score += 20  # No formal lead but joker fits direction
+
+            # Economy less critical now, build matters more
+            score += economy_value * 0.2
+
+        # === TOPPING: Late game, only strict upgrades ===
+        elif behavior == "topping":
+            # ONLY take jokers that BEAT current AND don't break anything
+            is_upgrade = self._joker_is_strict_upgrade(joker, game)
+
+            if not is_upgrade:
+                # Not a strict upgrade - heavily penalize
+                score -= 30
+
+            # Must fit the locked-in build
+            if not self._joker_fits_current_build(joker, game):
+                score -= 50  # Can't break what's working
+
+            # Very selective - only high tier matters
+            if tier_score < 70:
+                score -= 20  # Not worth considering late
+
+            # Economy basically irrelevant now
+            score += economy_value * 0.1
+
+        # === PIVOT: Emergency scramble ===
+        elif behavior == "pivot":
+            # Looking for anything that can save the run
+            # High tier unconditional power is king
+            if tier_score >= 85:
+                score += 30  # S/S+ tier could save us
+
+            # Build leads offer new direction
             if is_lead:
-                score += lead_strength * 10
-            score += unconditional_value
-            score += economy_value * 0.7  # Econ less valuable late but still helps
+                score += lead_strength * 6
+
+            # Economy helps fund the pivot
+            score += economy_value * 0.3
+
+            # Don't care about current build fit - we're pivoting away
+            # (no penalty for anti-synergy with failing build)
 
         return score
 
@@ -1065,21 +1444,193 @@ class CoachStrategy(SmartStrategy):
     # SHOP DECISIONS
     # ========================================================================
 
+    def _get_shop_behavior(self, game) -> str:
+        """
+        Determine current shop behavior profile.
+
+        Returns: "scanning", "filling", "topping", or "pivot"
+        """
+        phase = self._get_game_phase(game)
+        performance = self._get_build_performance()
+        current_lead, _ = self._detect_build_lead(game)
+
+        # Check for pivot conditions first (emergency overrides phase)
+        if performance == "critical":
+            return "pivot"
+
+        # Phase-based behavior
+        if phase == "early":
+            return "scanning"  # Looking for arc, seeding build
+        elif phase == "mid":
+            if current_lead:
+                return "filling"  # Have direction, fill it out
+            else:
+                return "scanning"  # Still looking for direction
+        else:  # late
+            if performance in ("struggling", "critical"):
+                return "pivot"  # Emergency mode
+            return "topping"  # Lock in, only strict upgrades
+
+    def _joker_seeds_build(self, joker: dict, game) -> tuple[bool, str]:
+        """
+        Check if a joker could seed/start a new build direction.
+
+        Returns: (seeds_build, build_type)
+
+        Used in early game "scanning" to identify less obvious
+        jokers that could define an arc.
+        """
+        name = joker.get("name", "")
+        effect = joker.get("effect", {})
+        conditions = effect.get("conditions", [])
+
+        # Check if it's a known build lead
+        if name in self.BUILD_LEADS:
+            return True, self.BUILD_LEADS[name]["archetype"]
+
+        # Check for suit-specific jokers (could seed suit build)
+        for cond in conditions:
+            if cond.get("type") == "suit":
+                suit = cond.get("suit", "").lower()
+                return True, f"{suit}_build"
+
+        # Check for hand-type specific jokers
+        for cond in conditions:
+            if cond.get("type") == "hand_contains":
+                hand = cond.get("hand", "").lower()
+                if "flush" in hand:
+                    return True, "flush_build"
+                if "straight" in hand:
+                    return True, "straight_build"
+                if "pair" in hand or "two pair" in hand:
+                    return True, "pairs_build"
+
+        # Check for face card jokers
+        face_jokers = {"Sock and Buskin", "Smiley Face", "Scary Face",
+                       "Photograph", "Business Card", "Baron"}
+        if name in face_jokers:
+            return True, "face_card_build"
+
+        return False, ""
+
+    def _joker_fits_current_build(self, joker: dict, game) -> bool:
+        """
+        Check if a joker complements/adds to the current build.
+
+        Used in mid game "filling" to ensure purchases ADD to the path.
+        """
+        current_lead, _ = self._detect_build_lead(game)
+        if not current_lead:
+            return True  # No build = anything goes
+
+        joker_name = joker.get("name", "")
+
+        # Check if it's a synergy with our lead
+        if current_lead in self.BUILD_LEADS:
+            lead_info = self.BUILD_LEADS[current_lead]
+            if joker_name in lead_info.get("synergies", []):
+                return True
+            if joker_name in lead_info.get("anti_synergies", []):
+                return False
+
+        # Check if joker matches the archetype direction
+        archetype = self._get_lead_archetype(game)
+        seeds, seed_type = self._joker_seeds_build(joker, game)
+
+        if archetype and seeds:
+            # Does this joker's direction match our archetype?
+            if archetype in seed_type or seed_type in archetype:
+                return True
+
+        return self._joker_fits_current_direction(joker, game)
+
+    def _joker_is_strict_upgrade(self, joker: dict, game) -> bool:
+        """
+        Check if a joker is a strict upgrade over what we have.
+
+        Used in late game "topping" - must BEAT current AND not break anything.
+        """
+        joker_name = joker.get("name", "")
+        tier_score = self.JOKER_POWER_TIERS.get(joker_name, 40)
+
+        # Must not conflict with build
+        if not self._joker_fits_current_build(joker, game):
+            return False
+
+        # Must be high tier (A or above) to be worth considering late
+        if tier_score < 70:
+            return False
+
+        # Check if we have a weaker joker to replace
+        for owned in game.jokers:
+            owned_tier = self.JOKER_POWER_TIERS.get(owned.get("name", ""), 40)
+            if tier_score > owned_tier + 20:  # Significantly better
+                return True
+
+        # If we have open slots, any A+ tier that fits is an upgrade
+        if len(game.jokers) < game.config.joker_slots:
+            return True
+
+        return False
+
     def should_buy_pack(self, pack, game) -> bool:
         """
         Decide whether to buy a pack.
 
-        Coaching notes:
-        - FINANCING: Consider if buying would hurt interest income.
-        - Early game: be more conservative, build money cushion.
-        - Packs are RNG - sometimes saving for direct joker is better.
+        Coaching notes by shop behavior:
+        - SCANNING: Packs are RNG, prefer direct joker purchases if available
+        - FILLING: Packs less useful unless they support the build (planets)
+        - TOPPING: Standard packs, celestials are good here
+        - PIVOT: Depends on what we need
         """
         cost = getattr(pack, 'cost', 4)
+        pack_type = getattr(pack, 'type', 'standard').lower()
+        behavior = self._get_shop_behavior(game)
 
         # Check if we should save instead
         should_save, reason = self._should_save_money(game, cost)
-        if should_save:
+        if should_save and behavior != "pivot":
             return False
+
+        # Behavior-specific pack preferences
+        if behavior == "scanning":
+            # Early game - be conservative, building money cushion
+            # Packs are RNG, prefer seeing direct joker options
+            if game.money < 10:
+                return False
+            # Celestial/planet packs can help level hands
+            if "celestial" in pack_type or "planet" in pack_type:
+                return True
+            return game.money >= 15  # Only if we have cushion
+
+        elif behavior == "filling":
+            # Mid game - packs less useful unless supporting build
+            # Planet packs help level our key hand types
+            if "celestial" in pack_type or "planet" in pack_type:
+                return True
+            # Arcana can help modify deck
+            if "arcana" in pack_type:
+                return True
+            # Standard/buffoon packs are lower priority
+            return game.money >= 20
+
+        elif behavior == "topping":
+            # Late game - celestials and standard packs are good
+            # User said: "spending on standard packs, celestials, supportive tarots"
+            if "celestial" in pack_type or "planet" in pack_type:
+                return True
+            if "standard" in pack_type:
+                return True  # Can enhance cards
+            if "arcana" in pack_type:
+                return True  # Supportive tarots
+            # Buffoon packs - only if we need jokers
+            if "buffoon" in pack_type:
+                return len(game.jokers) < game.config.joker_slots
+            return True
+
+        elif behavior == "pivot":
+            # Emergency - any pack that might help
+            return True
 
         return True
 
@@ -1202,6 +1753,7 @@ class CoachStrategy(SmartStrategy):
         - Fund a critical purchase
         - Doesn't fit the build anymore (pivot)
         - Build lead changed, this conflicts
+        - Low tier joker taking up a slot
         """
         joker_name = joker.get("name", "")
         sell_value = self._get_joker_sell_value(joker)
@@ -1210,6 +1762,9 @@ class CoachStrategy(SmartStrategy):
         # Never sell our build lead
         if joker_name == current_lead:
             return False, "is_build_lead", 0
+
+        # Never sell S+ or S tier jokers (unless they conflict with lead)
+        tier_score = self.JOKER_POWER_TIERS.get(joker_name, 40)
 
         priority = 0
         reasons = []
@@ -1226,22 +1781,39 @@ class CoachStrategy(SmartStrategy):
         conditions = effect.get("conditions", [])
         if conditions:
             # Joker has conditions - is our build meeting them?
-            archetype = self._get_lead_archetype(game)
             fits_build = self._joker_fits_current_direction(joker, game)
             if not fits_build:
                 reasons.append("conditions_not_met")
                 priority += 30
 
-        # Check if we're at joker cap and this is the weakest
-        joker_score = self.evaluate_joker(joker, game)
-        if joker_score < 10:
-            reasons.append("low_value")
-            priority += 20
+        # Low tier jokers are sell candidates (C tier = 30)
+        if tier_score <= 30:
+            reasons.append("low_tier")
+            priority += 25
+        elif tier_score <= 50:
+            # B tier - slight sell consideration if we need room
+            priority += 10
 
-        # Stencil special case - if we have Stencil, selling others HELPS
-        if current_lead == "Stencil" and joker_name != "Stencil":
-            reasons.append("stencil_wants_fewer_jokers")
-            priority += 40
+        # Check commitment-based selling preferences
+        shop_prefs = self._apply_commitment_to_shop(game)
+        if shop_prefs.get("want_to_sell_jokers"):
+            # Stencil or Campfire - actively want to sell jokers
+            commitment = self._get_current_commitment(game)
+            if commitment == "keep_joker_count_low":
+                # Stencil - sell everything except Stencil itself
+                reasons.append("stencil_wants_fewer_jokers")
+                priority += 40
+            elif commitment == "sell_jokers_strategically":
+                # Campfire - sell weak jokers to pump x_mult
+                if tier_score <= 50:  # B tier or below
+                    reasons.append("campfire_fuel")
+                    priority += 30
+
+        # High tier protection - reduce priority for good jokers
+        if tier_score >= 85:
+            priority -= 30  # S and S+ tier - very reluctant to sell
+        elif tier_score >= 70:
+            priority -= 15  # A tier - somewhat reluctant
 
         should_sell = priority >= 30  # Threshold for recommending sale
         reason = reasons[0] if reasons else "none"
@@ -1347,7 +1919,7 @@ class CoachStrategy(SmartStrategy):
     # JOKER ORDERING (Left to Right Optimization)
     # ========================================================================
 
-    def get_optimal_joker_order(self, jokers: list) -> list:
+    def get_optimal_joker_order(self, jokers: list, game=None) -> list:
         """
         Return jokers in optimal scoring order (left to right).
 
@@ -1391,6 +1963,10 @@ class CoachStrategy(SmartStrategy):
         # Optimal order: chips -> mult -> retriggers -> xmult -> utility
         # Retriggers before xmult so retriggered cards get multiplied
         optimal_order = chip_jokers + mult_jokers + retrigger_jokers + xmult_jokers + utility_jokers
+
+        # Apply commitment-based adjustments (Blueprint/Brainstorm positioning)
+        if game is not None:
+            optimal_order = self._apply_commitment_to_joker_order(optimal_order, game)
 
         return optimal_order
 
@@ -1481,18 +2057,462 @@ class CoachStrategy(SmartStrategy):
         Decide whether to skip current blind for the tag reward.
 
         Coaching notes:
-        - SKIP CONSIDERATION: Throwback = skip EVERY blind to pump it.
-        - Other skip decisions pending more coaching.
+        - Commitment system can dictate skip behavior
+        - Throwback = skip EVERY blind to pump it
         """
-        # Check for Throwback commitment
-        lead, _ = self._detect_build_lead(game)
-        if lead == "Throwback":
-            # Throwback archetype: skip every small/big blind
-            if blind_info.blind_type.name != "BOSS":
-                return True
+        # Check if commitment dictates skip behavior
+        commitment_skip = self._apply_commitment_to_skip(game, blind_info)
+        if commitment_skip is not None:
+            return commitment_skip
 
         # Default: don't skip (more logic to be added)
         return False
+
+    # ========================================================================
+    # COMMITMENT SYSTEM - Behavioral changes based on build lead
+    # ========================================================================
+
+    def _get_current_commitment(self, game) -> Optional[str]:
+        """Get the commitment string for current build lead."""
+        lead, _ = self._detect_build_lead(game)
+        if lead and lead in self.BUILD_LEADS:
+            return self.BUILD_LEADS[lead].get("commitment")
+        return None
+
+    def _apply_commitment_to_discard(self, cards: list, game) -> list[int]:
+        """
+        Get discard recommendations based on current commitment.
+        Returns indices of cards that should be discarded.
+        """
+        commitment = self._get_current_commitment(game)
+        if not commitment:
+            return []
+
+        discard_indices = []
+
+        for i, card in enumerate(cards):
+            should_discard = False
+
+            # Face card commitments
+            if commitment == "prioritize_face_cards":
+                # Keep face cards, discard non-face
+                if not card.is_face_card:
+                    should_discard = True
+
+            elif commitment == "prioritize_kings":
+                # Never discard kings - but other non-kings can go
+                pass  # Don't actively discard, just protect kings
+
+            elif commitment == "avoid_face_cards":
+                # Ride The Bus - face cards reset mult, always discard them
+                if card.is_face_card:
+                    should_discard = True
+
+            # Suit commitments
+            elif commitment == "convert_to_hearts":
+                if card.suit.value.lower() != "hearts":
+                    should_discard = True
+
+            elif commitment == "convert_to_spades":
+                if card.suit.value.lower() != "spades":
+                    should_discard = True
+
+            elif commitment == "convert_to_diamonds":
+                if card.suit.value.lower() != "diamonds":
+                    should_discard = True
+
+            # Rank/parity commitments
+            elif commitment == "keep_low_cards":
+                # Hack - keep 2,3,4,5
+                if card.rank not in ('2', '3', '4', '5'):
+                    should_discard = True
+
+            elif commitment == "keep_even_cards":
+                # Even Steven - keep 2,4,6,8,10,Q
+                even_ranks = {'2', '4', '6', '8', '10', 'Q'}
+                if card.rank not in even_ranks:
+                    should_discard = True
+
+            elif commitment == "keep_odd_cards":
+                # Odd Todd - keep A,3,5,7,9,J,K
+                odd_ranks = {'A', '3', '5', '7', '9', 'J', 'K'}
+                if card.rank not in odd_ranks:
+                    should_discard = True
+
+            if should_discard:
+                discard_indices.append(i)
+
+        return discard_indices
+
+    def _apply_commitment_to_play(self, hand, game) -> dict:
+        """
+        Get play preferences based on current commitment.
+        Returns dict with preferences that can influence hand selection.
+        """
+        commitment = self._get_current_commitment(game)
+        prefs = {
+            "require_pair": False,
+            "require_three_of_kind": False,
+            "require_four_of_kind": False,
+            "prefer_flush": False,
+            "prefer_straight": False,
+            "avoid_face_cards": False,
+            "prefer_low_cards": False,
+            "prefer_suit": None,
+        }
+
+        if not commitment:
+            return prefs
+
+        if commitment == "always_play_pairs":
+            prefs["require_pair"] = True
+
+        elif commitment == "always_play_three_of_kind":
+            prefs["require_three_of_kind"] = True
+
+        elif commitment == "always_play_four_of_kind":
+            prefs["require_four_of_kind"] = True
+
+        elif commitment == "play_straights":
+            prefs["prefer_straight"] = True
+
+        elif commitment == "play_four_card_flushes_straights":
+            prefs["prefer_flush"] = True
+            prefs["prefer_straight"] = True
+
+        elif commitment == "avoid_face_cards":
+            prefs["avoid_face_cards"] = True
+
+        elif commitment == "keep_low_cards":
+            prefs["prefer_low_cards"] = True
+
+        elif commitment in ("convert_to_hearts", "prioritize_face_cards"):
+            # Pareidolia doesn't care about suit, but Bloodstone does
+            if "hearts" in commitment:
+                prefs["prefer_suit"] = "hearts"
+
+        elif commitment == "convert_to_spades":
+            prefs["prefer_suit"] = "spades"
+
+        elif commitment == "convert_to_diamonds":
+            prefs["prefer_suit"] = "diamonds"
+
+        return prefs
+
+    def _apply_commitment_to_shop(self, game) -> dict:
+        """
+        Get shop preferences based on current commitment.
+        Returns dict with what to prioritize in shop.
+        """
+        commitment = self._get_current_commitment(game)
+        prefs = {
+            "want_suit_changing_tarots": False,
+            "want_card_creating_tarots": False,
+            "want_steel_tarots": False,
+            "want_glass_tarots": False,
+            "avoid_jokers": False,
+            "want_to_sell_jokers": False,
+            "target_suit": None,
+        }
+
+        if not commitment:
+            return prefs
+
+        if commitment == "keep_joker_count_low":
+            prefs["avoid_jokers"] = True
+            prefs["want_to_sell_jokers"] = True
+
+        elif commitment in ("convert_to_hearts", "convert_to_spades", "convert_to_diamonds"):
+            prefs["want_suit_changing_tarots"] = True
+            prefs["target_suit"] = commitment.replace("convert_to_", "")
+
+        elif commitment == "create_steel_cards":
+            prefs["want_steel_tarots"] = True
+
+        elif commitment == "create_glass_cards":
+            prefs["want_glass_tarots"] = True
+
+        elif commitment == "add_cards_to_deck":
+            prefs["want_card_creating_tarots"] = True
+
+        elif commitment == "sell_jokers_strategically":
+            prefs["want_to_sell_jokers"] = True
+
+        return prefs
+
+    def _apply_commitment_to_skip(self, game, blind_info) -> Optional[bool]:
+        """
+        Check if commitment dictates skip behavior.
+        Returns True/False if commitment has opinion, None otherwise.
+        """
+        commitment = self._get_current_commitment(game)
+
+        if commitment == "skip_every_blind":
+            # Throwback - always skip non-boss blinds
+            if blind_info.blind_type.name != "BOSS":
+                return True
+
+        return None
+
+    def _apply_commitment_to_joker_order(self, jokers: list, game) -> list:
+        """
+        Adjust joker ordering based on commitment.
+        Blueprint/Brainstorm have specific positioning needs.
+        """
+        commitment = self._get_current_commitment(game)
+        if not commitment or not jokers:
+            return jokers
+
+        joker_names = [j.get("name", "") for j in jokers]
+
+        if commitment == "position_rightmost_joker":
+            # Blueprint copies the joker to its RIGHT
+            # We want the best non-Blueprint joker to Blueprint's right
+            if "Blueprint" in joker_names:
+                bp_idx = joker_names.index("Blueprint")
+                # Find the best joker (highest tier) that isn't Blueprint
+                best_joker = None
+                best_tier = 0
+                best_idx = -1
+                for i, j in enumerate(jokers):
+                    if j.get("name") != "Blueprint":
+                        tier = self.JOKER_POWER_TIERS.get(j.get("name", ""), 40)
+                        if tier > best_tier:
+                            best_tier = tier
+                            best_joker = j
+                            best_idx = i
+                # Move best joker to right of Blueprint
+                if best_joker and best_idx != bp_idx + 1:
+                    jokers = jokers.copy()
+                    jokers.pop(best_idx)
+                    # Insert after Blueprint
+                    insert_pos = bp_idx + 1 if best_idx > bp_idx else bp_idx
+                    jokers.insert(insert_pos, best_joker)
+
+        elif commitment == "position_leftmost_joker":
+            # Brainstorm copies the LEFTMOST joker
+            # We want the best non-Brainstorm joker in position 0
+            if "Brainstorm" in joker_names:
+                # Find the best joker that isn't Brainstorm
+                best_joker = None
+                best_tier = 0
+                best_idx = -1
+                for i, j in enumerate(jokers):
+                    if j.get("name") != "Brainstorm":
+                        tier = self.JOKER_POWER_TIERS.get(j.get("name", ""), 40)
+                        if tier > best_tier:
+                            best_tier = tier
+                            best_joker = j
+                            best_idx = i
+                # Move best joker to position 0
+                if best_joker and best_idx != 0:
+                    jokers = jokers.copy()
+                    jokers.pop(best_idx)
+                    jokers.insert(0, best_joker)
+
+        return jokers
+
+    # ========================================================================
+    # TAROT/CONSUMABLE EVALUATION - Based on commitment
+    # ========================================================================
+
+    def evaluate_tarot(self, tarot_name: str, game) -> float:
+        """
+        Score a tarot card for use/purchase based on current commitment.
+
+        Returns a score - higher = more valuable for current build.
+        """
+        commitment = self._get_current_commitment(game)
+        shop_prefs = self._apply_commitment_to_shop(game)
+
+        base_score = 20  # Default tarot value
+
+        # Suit-changing tarots
+        suit_changers = {
+            "The Lovers": "hearts",      # Changes suit to Hearts
+            "The Chariot": "spades",     # Changes suit to Spades
+            "The Hermit": None,          # Money (not suit-changing but valuable)
+            "Justice": "diamonds",       # Changes suit to Diamonds
+            "The Hanged Man": None,      # Destroys cards
+            "Death": None,               # Converts cards
+            "Temperance": None,          # Money based on jokers
+            "The Tower": None,           # Enhances to Stone
+            "The Star": "diamonds",      # Changes to Diamonds
+            "The Moon": "clubs",         # Changes to Clubs
+            "The Sun": "hearts",         # Changes to Hearts
+            "The World": "spades",       # Changes to Spades
+        }
+
+        # Enhancement tarots
+        enhancement_tarots = {
+            "The Magician": "lucky",
+            "The High Priestess": None,  # Creates planet cards
+            "The Empress": "mult",       # Enhances to Mult cards
+            "The Emperor": None,         # Creates tarot cards
+            "The Hierophant": "bonus",   # Enhances to Bonus cards
+            "Strength": None,            # Increases rank
+            "The Wheel of Fortune": "edition",  # Adds edition
+            "The Devil": "gold",         # Enhances to Gold cards
+            "Judgement": None,           # Creates joker
+        }
+
+        # Steel and Glass specific
+        steel_glass = {
+            "The Stars": "steel",        # Note: not a real tarot name, placeholder
+        }
+
+        # Check if this tarot matches our commitment needs
+        if shop_prefs.get("want_suit_changing_tarots"):
+            target = shop_prefs.get("target_suit")
+            if tarot_name in suit_changers:
+                tarot_suit = suit_changers[tarot_name]
+                if tarot_suit == target:
+                    base_score += 60  # Exactly what we need
+                elif tarot_suit is not None:
+                    base_score -= 20  # Wrong suit
+
+        if shop_prefs.get("want_steel_tarots"):
+            # In Balatro, there's no direct "make steel" tarot
+            # But some consumables can help - this is a placeholder
+            pass
+
+        if shop_prefs.get("want_glass_tarots"):
+            # Similar - placeholder for glass enhancement
+            pass
+
+        if shop_prefs.get("want_card_creating_tarots"):
+            # Tarots that add cards to deck
+            if tarot_name in ("The Fool", "The High Priestess", "The Emperor"):
+                base_score += 30
+
+        # General value adjustments based on commitment
+        if commitment == "avoid_face_cards":
+            # The Hanged Man can destroy face cards
+            if tarot_name == "The Hanged Man":
+                base_score += 40
+
+        if commitment in ("keep_even_cards", "keep_odd_cards"):
+            # Strength can change ranks
+            if tarot_name == "Strength":
+                base_score += 20
+
+        # The Hermit is always good for money
+        if tarot_name == "The Hermit":
+            phase = self._get_game_phase(game)
+            if phase == "early":
+                base_score += 30
+            else:
+                base_score += 15
+
+        return base_score
+
+    def evaluate_planet(self, planet_name: str, game) -> float:
+        """
+        Score a planet card based on current build direction.
+
+        Planets level up specific hand types - we want ones that match our build.
+        """
+        commitment = self._get_current_commitment(game)
+        archetype = self._get_lead_archetype(game)
+
+        base_score = 25  # Planets are generally useful
+
+        # Map planets to hand types
+        planet_hands = {
+            "Mercury": "PAIR",
+            "Venus": "THREE_OF_A_KIND",
+            "Earth": "FULL_HOUSE",
+            "Mars": "FOUR_OF_A_KIND",
+            "Jupiter": "FLUSH",
+            "Saturn": "STRAIGHT",
+            "Uranus": "TWO_PAIR",
+            "Neptune": "STRAIGHT_FLUSH",
+            "Pluto": "HIGH_CARD",
+            "Planet X": "FIVE_OF_A_KIND",
+            "Ceres": "FLUSH_HOUSE",
+            "Eris": "FLUSH_FIVE",
+        }
+
+        planet_hand = planet_hands.get(planet_name, "")
+
+        # Boost planets that match our commitment
+        if commitment == "always_play_pairs" and planet_hand in ("PAIR", "TWO_PAIR"):
+            base_score += 40
+        elif commitment == "always_play_three_of_kind" and planet_hand == "THREE_OF_A_KIND":
+            base_score += 50
+        elif commitment == "always_play_four_of_kind" and planet_hand == "FOUR_OF_A_KIND":
+            base_score += 50
+        elif commitment in ("play_straights", "play_four_card_flushes_straights"):
+            if planet_hand in ("STRAIGHT", "STRAIGHT_FLUSH"):
+                base_score += 40
+        elif commitment == "play_four_card_flushes_straights":
+            if planet_hand in ("FLUSH", "FLUSH_HOUSE", "FLUSH_FIVE"):
+                base_score += 40
+
+        # Archetype-based adjustments
+        if archetype == "pairs" and planet_hand in ("PAIR", "TWO_PAIR", "FULL_HOUSE"):
+            base_score += 30
+        elif archetype in ("three_of_kind", "four_of_kind"):
+            if planet_hand in ("THREE_OF_A_KIND", "FOUR_OF_A_KIND", "FULL_HOUSE"):
+                base_score += 30
+        elif archetype == "straights" and planet_hand in ("STRAIGHT", "STRAIGHT_FLUSH"):
+            base_score += 30
+
+        return base_score
+
+    def evaluate_pack(self, pack_type: str, game) -> float:
+        """
+        Score a pack type based on current commitment and game state.
+        """
+        commitment = self._get_current_commitment(game)
+        shop_prefs = self._apply_commitment_to_shop(game)
+        behavior = self._get_shop_behavior(game)
+
+        base_score = 15
+
+        pack_type_lower = pack_type.lower()
+
+        # Arcana packs (tarots)
+        if "arcana" in pack_type_lower:
+            if shop_prefs.get("want_suit_changing_tarots"):
+                base_score += 30  # Need tarots for suit conversion
+            if shop_prefs.get("want_steel_tarots") or shop_prefs.get("want_glass_tarots"):
+                base_score += 20
+            if commitment == "avoid_face_cards":
+                base_score += 15  # Hanged Man can help
+
+        # Celestial packs (planets)
+        elif "celestial" in pack_type_lower:
+            # Good for leveling hand types
+            if commitment in ("always_play_pairs", "always_play_three_of_kind",
+                            "always_play_four_of_kind", "play_straights"):
+                base_score += 35  # Want to level our key hand type
+            if behavior == "topping":
+                base_score += 25  # Late game planet scaling
+
+        # Buffoon packs (jokers)
+        elif "buffoon" in pack_type_lower:
+            if shop_prefs.get("avoid_jokers"):
+                base_score -= 50  # Stencil doesn't want more jokers
+            elif behavior == "scanning":
+                base_score += 20  # Looking for build leads
+            elif behavior == "topping":
+                base_score += 10  # Only if we have room
+
+        # Standard packs (playing cards)
+        elif "standard" in pack_type_lower:
+            if shop_prefs.get("want_card_creating_tarots"):
+                base_score += 25  # Hologram wants more cards
+            if behavior == "topping":
+                base_score += 20  # Can enhance deck
+
+        # Spectral packs
+        elif "spectral" in pack_type_lower:
+            if shop_prefs.get("want_steel_tarots") or shop_prefs.get("want_glass_tarots"):
+                base_score += 40  # Spectral can create steel/glass
+            base_score += 15  # Generally powerful
+
+        return base_score
 
     # ========================================================================
     # COACHING HELPERS - Supporting methods for coached logic

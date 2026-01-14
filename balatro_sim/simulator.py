@@ -382,7 +382,8 @@ class Simulator:
         )
 
     def run_batch(self, preset: Union[str, Preset] = "standard",
-                  runs: int = 100, verbose: bool = False) -> BatchResult:
+                  runs: int = 100, verbose: bool = False,
+                  strategy_override=None) -> BatchResult:
         """
         Run multiple simulations and aggregate results.
 
@@ -390,6 +391,7 @@ class Simulator:
             preset: Preset name or Preset object
             runs: Number of runs
             verbose: Print progress
+            strategy_override: StrategyType to override preset's default strategy
 
         Returns:
             BatchResult with aggregated stats
@@ -412,7 +414,7 @@ class Simulator:
             if verbose and (i + 1) % 10 == 0:
                 print(f"  Run {i + 1}/{runs}...")
 
-            summary = self.run(preset, verbose=False)
+            summary = self.run(preset, verbose=False, strategy_override=strategy_override)
 
             if summary.victory:
                 wins += 1
