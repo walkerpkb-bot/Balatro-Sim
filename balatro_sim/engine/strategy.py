@@ -562,6 +562,26 @@ class CoachStrategy(SmartStrategy):
     -----------------------------
     - Pareidolia + face card jokers (Smiley Face, Sock and Buskin)
     - Suit-specific jokers (Bloodstone/Hearts, Onyx Agate/Spades) = commit to suit
+    - When build is WORKING (healthy margins), SCALE IT UP - don't diversify
+    - When build is STRUGGLING, consider pivot opportunities
+    - Track performance via score margins: crushing > healthy > struggling > critical
+
+    JOKER ORDERING:
+    ---------------
+    - Jokers trigger LEFT to RIGHT - order matters for scoring
+    - Optimal order: Chips -> Mult -> Retriggers -> X-Mult -> Utility
+    - Math: (base + chip_jokers) * (mult + mult_jokers) * x_mult_jokers
+    - Retriggers before x_mult so retriggered cards benefit from multiplication
+    - Always check and optimize joker order
+
+    SELLING JOKERS:
+    ---------------
+    - Sell to make room for something better
+    - Sell to fund critical purchases
+    - Sell jokers that conflict with build lead
+    - Sell jokers whose conditions we're not meeting
+    - Never sell the build lead itself
+    - Stencil special: selling other jokers HELPS (it wants to be alone)
 
     STAYING ALIVE:
     --------------
@@ -661,6 +681,9 @@ class CoachStrategy(SmartStrategy):
         # Track current build lead
         self.current_lead = None
         self.lead_strength = 0
+        # Track build performance over time
+        self.recent_margins = []  # List of (score_achieved / score_required) ratios
+        self.blinds_played = 0
 
     def _detect_build_lead(self, game) -> tuple[Optional[str], int]:
         """
@@ -992,12 +1015,18 @@ class CoachStrategy(SmartStrategy):
         # === WE HAVE A BUILD LEAD ===
         elif current_lead:
             lead_info = self.BUILD_LEADS[current_lead]
+            performance = self._get_build_performance()
 
             # Is this joker a synergy with our lead?
             if joker_name in lead_info.get("synergies", []):
                 score += 70  # Strongly favor synergies
                 score += unconditional_value * 0.5
-                score += economy_value * 0.3  # Econ still has some value
+                score += economy_value * 0.3
+
+                # BUILD IS WORKING - SCALE IT UP
+                # If we're crushing/healthy, synergies are even MORE valuable
+                if performance in ("crushing", "healthy"):
+                    score += 30  # Double down on what's working
 
             # Does this joker conflict with our lead?
             elif "*" in lead_info.get("anti_synergies", []):
@@ -1008,14 +1037,19 @@ class CoachStrategy(SmartStrategy):
 
             # Is this a STRONGER lead that could pivot us?
             elif is_lead and lead_strength > current_strength:
-                score += lead_strength * 6  # Consider the pivot
-                score += unconditional_value * 0.3
-                score += economy_value * 0.3
+                # Only consider pivot if we're NOT performing well
+                if performance in ("struggling", "critical", "unknown"):
+                    score += lead_strength * 6  # Consider the pivot
+                    score += unconditional_value * 0.3
+                    score += economy_value * 0.3
+                else:
+                    # Build is working - don't pivot just because something shiny appeared
+                    score += lead_strength * 2  # Small consideration only
 
             # No special relationship - evaluate on merit
             else:
                 score += unconditional_value * 0.7
-                score += economy_value * 0.5  # Econ always has value
+                score += economy_value * 0.5
 
         # === MID/LATE WITHOUT LEAD (drifting - need direction) ===
         else:
@@ -1091,6 +1125,352 @@ class CoachStrategy(SmartStrategy):
 
         # Otherwise, buy if score is positive
         return joker_score > 0
+
+    # ========================================================================
+    # BUILD PERFORMANCE TRACKING
+    # ========================================================================
+
+    def record_blind_result(self, score_achieved: int, score_required: int):
+        """
+        Record the result of a blind for performance tracking.
+        Call this after each blind to track how the build is performing.
+        """
+        if score_required > 0:
+            margin = score_achieved / score_required
+            self.recent_margins.append(margin)
+            # Keep last 6 blinds (roughly 2 antes)
+            if len(self.recent_margins) > 6:
+                self.recent_margins.pop(0)
+        self.blinds_played += 1
+
+    def _get_build_performance(self) -> str:
+        """
+        Assess how well the current build is performing.
+
+        Returns: "crushing", "healthy", "struggling", "critical"
+
+        Coaching insight:
+        - If build is working well, SCALE IT UP (more of what's working)
+        - If struggling, consider pivot or emergency measures
+        """
+        if len(self.recent_margins) < 2:
+            return "unknown"
+
+        avg_margin = sum(self.recent_margins) / len(self.recent_margins)
+        recent_avg = sum(self.recent_margins[-3:]) / min(3, len(self.recent_margins))
+
+        # Crushing it - scores are way above requirements
+        if avg_margin >= 2.0 and recent_avg >= 1.8:
+            return "crushing"
+
+        # Healthy - comfortable margins, build is working
+        if avg_margin >= 1.4 and recent_avg >= 1.3:
+            return "healthy"
+
+        # Struggling - tight margins, might need to adjust
+        if avg_margin >= 1.1 or recent_avg >= 1.0:
+            return "struggling"
+
+        # Critical - barely surviving or failing
+        return "critical"
+
+    def _should_scale_build(self, game) -> bool:
+        """
+        Determine if we should focus on scaling the current build.
+
+        When build is performing well, double down on what's working
+        rather than diversifying or pivoting.
+        """
+        performance = self._get_build_performance()
+        return performance in ("crushing", "healthy")
+
+    # ========================================================================
+    # JOKER SELLING DECISIONS
+    # ========================================================================
+
+    def evaluate_joker_for_sale(self, joker: dict, game) -> tuple[bool, str, int]:
+        """
+        Evaluate if a joker should be sold.
+
+        Returns: (should_sell, reason, priority)
+        - should_sell: True if this joker is a sell candidate
+        - reason: Why we'd sell it
+        - priority: Higher = more eager to sell (for ranking)
+
+        Reasons to sell:
+        - Make room for something better
+        - Fund a critical purchase
+        - Doesn't fit the build anymore (pivot)
+        - Build lead changed, this conflicts
+        """
+        joker_name = joker.get("name", "")
+        sell_value = self._get_joker_sell_value(joker)
+        current_lead, lead_strength = self._detect_build_lead(game)
+
+        # Never sell our build lead
+        if joker_name == current_lead:
+            return False, "is_build_lead", 0
+
+        priority = 0
+        reasons = []
+
+        # Check if joker conflicts with current build lead
+        if current_lead and current_lead in self.BUILD_LEADS:
+            lead_info = self.BUILD_LEADS[current_lead]
+            if joker_name in lead_info.get("anti_synergies", []):
+                reasons.append("conflicts_with_lead")
+                priority += 50
+
+        # Check if joker is underperforming (has conditions we're not meeting)
+        effect = joker.get("effect", {})
+        conditions = effect.get("conditions", [])
+        if conditions:
+            # Joker has conditions - is our build meeting them?
+            archetype = self._get_lead_archetype(game)
+            fits_build = self._joker_fits_current_direction(joker, game)
+            if not fits_build:
+                reasons.append("conditions_not_met")
+                priority += 30
+
+        # Check if we're at joker cap and this is the weakest
+        joker_score = self.evaluate_joker(joker, game)
+        if joker_score < 10:
+            reasons.append("low_value")
+            priority += 20
+
+        # Stencil special case - if we have Stencil, selling others HELPS
+        if current_lead == "Stencil" and joker_name != "Stencil":
+            reasons.append("stencil_wants_fewer_jokers")
+            priority += 40
+
+        should_sell = priority >= 30  # Threshold for recommending sale
+        reason = reasons[0] if reasons else "none"
+
+        return should_sell, reason, priority
+
+    def get_jokers_to_sell(self, game, need_slots: int = 0, need_money: int = 0) -> list[dict]:
+        """
+        Get a list of jokers that should be sold, prioritized.
+
+        Args:
+            need_slots: How many joker slots we need to free up
+            need_money: How much money we need to raise
+
+        Returns list of jokers to sell, in priority order.
+        """
+        candidates = []
+
+        for joker in game.jokers:
+            should_sell, reason, priority = self.evaluate_joker_for_sale(joker, game)
+            if should_sell or need_slots > 0 or need_money > 0:
+                sell_value = self._get_joker_sell_value(joker)
+                candidates.append({
+                    "joker": joker,
+                    "reason": reason,
+                    "priority": priority,
+                    "sell_value": sell_value
+                })
+
+        # Sort by priority (highest first)
+        candidates.sort(key=lambda x: x["priority"], reverse=True)
+
+        # If we need specific slots or money, ensure we return enough
+        result = []
+        slots_freed = 0
+        money_raised = 0
+
+        for c in candidates:
+            if c["priority"] >= 30:  # Genuinely should sell
+                result.append(c["joker"])
+                slots_freed += 1
+                money_raised += c["sell_value"]
+            elif slots_freed < need_slots or money_raised < need_money:
+                # Reluctant sale to meet requirements
+                result.append(c["joker"])
+                slots_freed += 1
+                money_raised += c["sell_value"]
+
+        return result
+
+    def _get_joker_sell_value(self, joker: dict) -> int:
+        """Get the sell value of a joker."""
+        # Base sell value is roughly half the buy cost
+        rarity = joker.get("rarity", "Common")
+        base_values = {"Common": 2, "Uncommon": 3, "Rare": 4, "Legendary": 10}
+        value = base_values.get(rarity, 2)
+
+        # Editions add value
+        edition = joker.get("edition", "")
+        if edition == "Foil":
+            value += 2
+        elif edition == "Holographic":
+            value += 3
+        elif edition == "Polychrome":
+            value += 5
+
+        return value
+
+    def _joker_fits_current_direction(self, joker: dict, game) -> bool:
+        """Check if a joker fits the current build direction."""
+        current_lead, _ = self._detect_build_lead(game)
+        if not current_lead:
+            return True  # No direction = everything fits
+
+        joker_name = joker.get("name", "")
+
+        # Check if it's a synergy
+        if current_lead in self.BUILD_LEADS:
+            lead_info = self.BUILD_LEADS[current_lead]
+            if joker_name in lead_info.get("synergies", []):
+                return True
+            if joker_name in lead_info.get("anti_synergies", []):
+                return False
+
+        # Check if joker's conditions align with build archetype
+        archetype = self._get_lead_archetype(game)
+        effect = joker.get("effect", {})
+        conditions = effect.get("conditions", [])
+
+        for cond in conditions:
+            cond_type = cond.get("type", "")
+            if cond_type == "suit":
+                req_suit = cond.get("suit", "").lower()
+                # Does our archetype care about this suit?
+                if archetype == "hearts" and req_suit != "hearts":
+                    return False
+                if archetype == "spades" and req_suit != "spades":
+                    return False
+
+        return True
+
+    # ========================================================================
+    # JOKER ORDERING (Left to Right Optimization)
+    # ========================================================================
+
+    def get_optimal_joker_order(self, jokers: list) -> list:
+        """
+        Return jokers in optimal scoring order (left to right).
+
+        In Balatro, jokers trigger left to right. The optimal order is:
+        1. Chip-adding jokers (add to base)
+        2. Mult-adding jokers (add to mult)
+        3. X-mult jokers (multiply the total)
+        4. Retrigger jokers (position depends on what they retrigger)
+        5. Economy/utility jokers (order doesn't matter much)
+
+        Math example:
+        - Base: 10 chips, 5 mult
+        - Joker A: +30 chips, Joker B: +10 mult, Joker C: x2 mult
+        - Optimal (A, B, C): (10+30) * (5+10) * 2 = 40 * 15 * 2 = 1200
+        - Suboptimal (C, B, A): Still 1200 (x_mult is always last in calc)
+        - But with retriggers, order REALLY matters
+        """
+        if not jokers:
+            return jokers
+
+        # Categorize jokers by their primary effect
+        chip_jokers = []
+        mult_jokers = []
+        xmult_jokers = []
+        retrigger_jokers = []
+        utility_jokers = []
+
+        for joker in jokers:
+            category = self._categorize_joker_for_ordering(joker)
+            if category == "chips":
+                chip_jokers.append(joker)
+            elif category == "mult":
+                mult_jokers.append(joker)
+            elif category == "xmult":
+                xmult_jokers.append(joker)
+            elif category == "retrigger":
+                retrigger_jokers.append(joker)
+            else:
+                utility_jokers.append(joker)
+
+        # Optimal order: chips -> mult -> retriggers -> xmult -> utility
+        # Retriggers before xmult so retriggered cards get multiplied
+        optimal_order = chip_jokers + mult_jokers + retrigger_jokers + xmult_jokers + utility_jokers
+
+        return optimal_order
+
+    def _categorize_joker_for_ordering(self, joker: dict) -> str:
+        """
+        Categorize a joker for ordering purposes.
+
+        Returns: "chips", "mult", "xmult", "retrigger", "utility"
+        """
+        effect = joker.get("effect", {})
+        modifiers = effect.get("modifiers", [])
+        name = joker.get("name", "")
+
+        # Check for retrigger first (specific jokers)
+        retrigger_jokers = {
+            "Hanging Chad", "Dusk", "Sock and Buskin", "Hack",
+            "Seltzer", "Mime", "Baseball Card"
+        }
+        if name in retrigger_jokers:
+            return "retrigger"
+
+        # Check modifiers for primary effect type
+        has_xmult = False
+        has_mult = False
+        has_chips = False
+
+        for mod in modifiers:
+            mod_type = mod.get("type", "")
+            if mod_type == "x_mult":
+                has_xmult = True
+            elif mod_type == "add_mult":
+                has_mult = True
+            elif mod_type == "add_chips":
+                has_chips = True
+
+        # Priority: xmult > mult > chips > utility
+        if has_xmult:
+            return "xmult"
+        if has_mult:
+            return "mult"
+        if has_chips:
+            return "chips"
+
+        return "utility"
+
+    def should_reorder_jokers(self, game) -> bool:
+        """Check if current joker order is suboptimal."""
+        current_order = game.jokers
+        optimal_order = self.get_optimal_joker_order(current_order)
+
+        # Compare orders
+        for i, (current, optimal) in enumerate(zip(current_order, optimal_order)):
+            if current.get("name") != optimal.get("name"):
+                return True
+
+        return False
+
+    def get_joker_reorder_actions(self, game) -> list[tuple[int, int]]:
+        """
+        Get the swap actions needed to achieve optimal joker order.
+
+        Returns list of (from_idx, to_idx) swaps to perform.
+        """
+        current = [j.get("name") for j in game.jokers]
+        optimal = [j.get("name") for j in self.get_optimal_joker_order(game.jokers)]
+
+        swaps = []
+
+        # Simple bubble-sort style swaps to achieve optimal order
+        working = current.copy()
+        for i, target_name in enumerate(optimal):
+            if working[i] != target_name:
+                # Find where target currently is
+                for j in range(i + 1, len(working)):
+                    if working[j] == target_name:
+                        swaps.append((j, i))
+                        working[i], working[j] = working[j], working[i]
+                        break
+
+        return swaps
 
     # ========================================================================
     # SKIP DECISIONS
