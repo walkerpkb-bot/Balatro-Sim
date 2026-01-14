@@ -192,7 +192,8 @@ with st.sidebar:
         StrategyType.BASIC: "Basic - Simple highest score",
         StrategyType.SMART: "Smart - Joker synergies + hand levels",
         StrategyType.OPTIMIZED: "Optimized - Chases flushes/straights",
-        StrategyType.AGGRESSIVE: "Aggressive - High risk, high reward"
+        StrategyType.AGGRESSIVE: "Aggressive - High risk, high reward",
+        StrategyType.COACH: "Coached - Human-trained with tier list & builds"
     }
     selected_strategy = st.selectbox(
         "AI Strategy",
@@ -219,7 +220,8 @@ with st.sidebar:
             StrategyType.BASIC: "Plays highest scoring hand without considering synergies",
             StrategyType.SMART: "Considers joker synergies and hand levels for optimal plays",
             StrategyType.OPTIMIZED: "Aggressively chases flushes and straights when viable",
-            StrategyType.AGGRESSIVE: "Takes bigger risks for potentially higher scores"
+            StrategyType.AGGRESSIVE: "Takes bigger risks for potentially higher scores",
+            StrategyType.COACH: "Human-coached AI with joker tier list, build leads, commitment system, and shop behavior profiles"
         }
         st.caption(strategy_desc.get(selected_strategy, ""))
         if preset.starting_jokers:
