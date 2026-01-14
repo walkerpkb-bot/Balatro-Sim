@@ -108,6 +108,13 @@ PRESETS = {
         strategy=StrategyType.OPTIMIZED,
         config_overrides={"suits": ["Spades", "Hearts"]},
     ),
+
+    "coach": Preset(
+        name="Coached Strategy",
+        description="Human-coached AI with tier list, build leads, and commitment system",
+        deck_type=DeckType.STANDARD,
+        strategy=StrategyType.COACH,
+    ),
 }
 
 
