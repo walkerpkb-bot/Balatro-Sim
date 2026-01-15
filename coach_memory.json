@@ -1,0 +1,587 @@
+{
+  "total_runs": 250,
+  "total_wins": 9,
+  "joker_stats": {
+    "Square Joker": {
+      "wins": 0,
+      "appearances": 18
+    },
+    "Greedy Joker": {
+      "wins": 0,
+      "appearances": 11
+    },
+    "Banner": {
+      "wins": 1,
+      "appearances": 4
+    },
+    "Fortune Teller": {
+      "wins": 0,
+      "appearances": 4
+    },
+    "Jolly Joker": {
+      "wins": 0,
+      "appearances": 24
+    },
+    "Devious Joker": {
+      "wins": 1,
+      "appearances": 23
+    },
+    "Business Card": {
+      "wins": 2,
+      "appearances": 19
+    },
+    "Credit Card": {
+      "wins": 1,
+      "appearances": 20
+    },
+    "Popcorn": {
+      "wins": 1,
+      "appearances": 19
+    },
+    "Acrobat": {
+      "wins": 0,
+      "appearances": 3
+    },
+    "Superposition": {
+      "wins": 0,
+      "appearances": 6
+    },
+    "Ice Cream": {
+      "wins": 0,
+      "appearances": 21
+    },
+    "Delayed Gratification": {
+      "wins": 1,
+      "appearances": 19
+    },
+    "Smeared Joker": {
+      "wins": 0,
+      "appearances": 2
+    },
+    "Scholar": {
+      "wins": 1,
+      "appearances": 13
+    },
+    "Chaos the Clown": {
+      "wins": 0,
+      "appearances": 9
+    },
+    "Walkie Talkie": {
+      "wins": 0,
+      "appearances": 17
+    },
+    "Mail-In Rebate": {
+      "wins": 1,
+      "appearances": 29
+    },
+    "Joker": {
+      "wins": 1,
+      "appearances": 23
+    },
+    "Smiley Face": {
+      "wins": 0,
+      "appearances": 27
+    },
+    "Clever Joker": {
+      "wins": 2,
+      "appearances": 27
+    },
+    "Crafty Joker": {
+      "wins": 0,
+      "appearances": 30
+    },
+    "Gros Michel": {
+      "wins": 1,
+      "appearances": 13
+    },
+    "Splash": {
+      "wins": 0,
+      "appearances": 20
+    },
+    "Seltzer": {
+      "wins": 0,
+      "appearances": 3
+    },
+    "Blue Joker": {
+      "wins": 0,
+      "appearances": 6
+    },
+    "Four Fingers": {
+      "wins": 0,
+      "appearances": 2
+    },
+    "Mad Joker": {
+      "wins": 0,
+      "appearances": 21
+    },
+    "Hallucination": {
+      "wins": 0,
+      "appearances": 8
+    },
+    "Odd Todd": {
+      "wins": 0,
+      "appearances": 22
+    },
+    "Lusty Joker": {
+      "wins": 0,
+      "appearances": 7
+    },
+    "Hack": {
+      "wins": 1,
+      "appearances": 9
+    },
+    "Satellite": {
+      "wins": 0,
+      "appearances": 2
+    },
+    "To Do List": {
+      "wins": 1,
+      "appearances": 28
+    },
+    "Misprint": {
+      "wins": 0,
+      "appearances": 15
+    },
+    "Supernova": {
+      "wins": 0,
+      "appearances": 4
+    },
+    "Drunkard": {
+      "wins": 0,
+      "appearances": 7
+    },
+    "Scary Face": {
+      "wins": 0,
+      "appearances": 20
+    },
+    "Faceless Joker": {
+      "wins": 0,
+      "appearances": 21
+    },
+    "The Idol": {
+      "wins": 0,
+      "appearances": 8
+    },
+    "Swashbuckler": {
+      "wins": 2,
+      "appearances": 18
+    },
+    "Crazy Joker": {
+      "wins": 1,
+      "appearances": 26
+    },
+    "Runner": {
+      "wins": 0,
+      "appearances": 12
+    },
+    "Even Steven": {
+      "wins": 0,
+      "appearances": 18
+    },
+    "Wily Joker": {
+      "wins": 0,
+      "appearances": 14
+    },
+    "Juggler": {
+      "wins": 1,
+      "appearances": 8
+    },
+    "Egg": {
+      "wins": 0,
+      "appearances": 20
+    },
+    "Loyalty Card": {
+      "wins": 0,
+      "appearances": 6
+    },
+    "Cavendish": {
+      "wins": 5,
+      "appearances": 33
+    },
+    "Red Card": {
+      "wins": 0,
+      "appearances": 6
+    },
+    "Arrowhead": {
+      "wins": 0,
+      "appearances": 6
+    },
+    "Green Joker": {
+      "wins": 7,
+      "appearances": 18
+    },
+    "Card Sharp": {
+      "wins": 2,
+      "appearances": 4
+    },
+    "Sock and Buskin": {
+      "wins": 0,
+      "appearances": 5
+    },
+    "Zany Joker": {
+      "wins": 0,
+      "appearances": 17
+    },
+    "Abstract Joker": {
+      "wins": 2,
+      "appearances": 21
+    },
+    "Photograph": {
+      "wins": 1,
+      "appearances": 12
+    },
+    "Mystic Summit": {
+      "wins": 1,
+      "appearances": 12
+    },
+    "Droll Joker": {
+      "wins": 1,
+      "appearances": 17
+    },
+    "Showman": {
+      "wins": 0,
+      "appearances": 4
+    },
+    "Ramen": {
+      "wins": 0,
+      "appearances": 7
+    },
+    "Raised Fist": {
+      "wins": 0,
+      "appearances": 6
+    },
+    "Half Joker": {
+      "wins": 0,
+      "appearances": 11
+    },
+    "Vampire": {
+      "wins": 0,
+      "appearances": 3
+    },
+    "Wrathful Joker": {
+      "wins": 1,
+      "appearances": 13
+    },
+    "Madness": {
+      "wins": 0,
+      "appearances": 2
+    },
+    "Oops! All 6s": {
+      "wins": 0,
+      "appearances": 10
+    },
+    "Mr. Bones": {
+      "wins": 0,
+      "appearances": 4
+    },
+    "Sly Joker": {
+      "wins": 2,
+      "appearances": 29
+    },
+    "Gluttonous Joker": {
+      "wins": 0,
+      "appearances": 14
+    },
+    "Hanging Chad": {
+      "wins": 0,
+      "appearances": 17
+    },
+    "Space Joker": {
+      "wins": 0,
+      "appearances": 2
+    },
+    "Shoot the Moon": {
+      "wins": 1,
+      "appearances": 14
+    },
+    "Riff-Raff": {
+      "wins": 0,
+      "appearances": 2
+    },
+    "Lucky Cat": {
+      "wins": 0,
+      "appearances": 1
+    },
+    "Pareidolia": {
+      "wins": 0,
+      "appearances": 4
+    },
+    "Constellation": {
+      "wins": 0,
+      "appearances": 3
+    },
+    "Reserved Parking": {
+      "wins": 0,
+      "appearances": 3
+    },
+    "Seeing Double": {
+      "wins": 0,
+      "appearances": 6
+    },
+    "Mime": {
+      "wins": 1,
+      "appearances": 3
+    },
+    "S\u00e9ance": {
+      "wins": 0,
+      "appearances": 2
+    },
+    "Flash Card": {
+      "wins": 0,
+      "appearances": 4
+    },
+    "Diet Cola": {
+      "wins": 0,
+      "appearances": 1
+    },
+    "Rocket": {
+      "wins": 0,
+      "appearances": 5
+    },
+    "Throwback": {
+      "wins": 0,
+      "appearances": 5
+    },
+    "Hologram": {
+      "wins": 0,
+      "appearances": 2
+    },
+    "8 Ball": {
+      "wins": 1,
+      "appearances": 5
+    },
+    "Hiker": {
+      "wins": 0,
+      "appearances": 5
+    },
+    "Ride the Bus": {
+      "wins": 0,
+      "appearances": 6
+    },
+    "Driver's License": {
+      "wins": 0,
+      "appearances": 1
+    },
+    "Dusk": {
+      "wins": 0,
+      "appearances": 2
+    },
+    "Steel Joker": {
+      "wins": 0,
+      "appearances": 6
+    },
+    "Ceremonial Dagger": {
+      "wins": 0,
+      "appearances": 1
+    },
+    "Glass Joker": {
+      "wins": 1,
+      "appearances": 5
+    },
+    "Sixth Sense": {
+      "wins": 0,
+      "appearances": 1
+    },
+    "Blackboard": {
+      "wins": 0,
+      "appearances": 3
+    },
+    "Golden Joker": {
+      "wins": 0,
+      "appearances": 3
+    },
+    "Turtle Bean": {
+      "wins": 0,
+      "appearances": 1
+    },
+    "Flower Pot": {
+      "wins": 0,
+      "appearances": 2
+    },
+    "The Order": {
+      "wins": 0,
+      "appearances": 1
+    },
+    "Stone Joker": {
+      "wins": 0,
+      "appearances": 2
+    },
+    "Golden Ticket": {
+      "wins": 0,
+      "appearances": 2
+    },
+    "Spare Trousers": {
+      "wins": 0,
+      "appearances": 2
+    },
+    "Cloud 9": {
+      "wins": 0,
+      "appearances": 1
+    },
+    "Bull": {
+      "wins": 0,
+      "appearances": 1
+    },
+    "Luchador": {
+      "wins": 0,
+      "appearances": 1
+    },
+    "Obelisk": {
+      "wins": 0,
+      "appearances": 1
+    },
+    "Onyx Agate": {
+      "wins": 0,
+      "appearances": 1
+    },
+    "Bloodstone": {
+      "wins": 0,
+      "appearances": 2
+    },
+    "Certificate": {
+      "wins": 0,
+      "appearances": 1
+    }
+  },
+  "build_lead_stats": {
+    "Seltzer": {
+      "wins": 0,
+      "runs": 3,
+      "total_ante": 8
+    },
+    "Four Fingers": {
+      "wins": 0,
+      "runs": 2,
+      "total_ante": 6
+    },
+    "Odd Todd": {
+      "wins": 0,
+      "runs": 19,
+      "total_ante": 73
+    },
+    "Hack": {
+      "wins": 1,
+      "runs": 9,
+      "total_ante": 39
+    },
+    "Even Steven": {
+      "wins": 0,
+      "runs": 16,
+      "total_ante": 69
+    },
+    "Arrowhead": {
+      "wins": 0,
+      "runs": 6,
+      "total_ante": 23
+    },
+    "Pareidolia": {
+      "wins": 0,
+      "runs": 4,
+      "total_ante": 17
+    },
+    "Throwback": {
+      "wins": 0,
+      "runs": 5,
+      "total_ante": 12
+    },
+    "Hologram": {
+      "wins": 0,
+      "runs": 2,
+      "total_ante": 8
+    },
+    "Steel Joker": {
+      "wins": 0,
+      "runs": 6,
+      "total_ante": 9
+    },
+    "Glass Joker": {
+      "wins": 1,
+      "runs": 5,
+      "total_ante": 20
+    },
+    "Onyx Agate": {
+      "wins": 0,
+      "runs": 1,
+      "total_ante": 4
+    },
+    "Bloodstone": {
+      "wins": 0,
+      "runs": 2,
+      "total_ante": 3
+    }
+  },
+  "boss_deaths": {
+    "The Hook": {
+      "deaths": 11,
+      "total_ante": 22
+    },
+    "The Wall": {
+      "deaths": 20,
+      "total_ante": 73
+    },
+    "The House": {
+      "deaths": 11,
+      "total_ante": 29
+    },
+    "The Water": {
+      "deaths": 7,
+      "total_ante": 31
+    },
+    "The Mouth": {
+      "deaths": 2,
+      "total_ante": 14
+    },
+    "The Ox": {
+      "deaths": 7,
+      "total_ante": 19
+    },
+    "The Goad": {
+      "deaths": 4,
+      "total_ante": 16
+    },
+    "The Eye": {
+      "deaths": 5,
+      "total_ante": 27
+    },
+    "The Needle": {
+      "deaths": 2,
+      "total_ante": 15
+    },
+    "The Wheel": {
+      "deaths": 8,
+      "total_ante": 38
+    },
+    "The Window": {
+      "deaths": 5,
+      "total_ante": 21
+    },
+    "The Arm": {
+      "deaths": 6,
+      "total_ante": 24
+    },
+    "The Club": {
+      "deaths": 6,
+      "total_ante": 19
+    },
+    "The Fish": {
+      "deaths": 7,
+      "total_ante": 23
+    },
+    "The Pillar": {
+      "deaths": 2,
+      "total_ante": 13
+    },
+    "The Plant": {
+      "deaths": 1,
+      "total_ante": 7
+    },
+    "The Psychic": {
+      "deaths": 3,
+      "total_ante": 11
+    },
+    "The Manacle": {
+      "deaths": 1,
+      "total_ante": 5
+    }
+  }
+}

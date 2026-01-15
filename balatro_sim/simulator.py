@@ -320,6 +320,10 @@ class Simulator:
             hand_levels={ht.name: lv for ht, lv in game.hand_levels.items() if lv > 1}
         )
 
+        # Record outcome for experience-based learning (CoachStrategy only)
+        if hasattr(strategy, 'record_run_outcome'):
+            strategy.record_run_outcome(game, victory)
+
         # Save run history
         log_dir = Path(__file__).parent.parent / "run_logs"
         log_dir.mkdir(exist_ok=True)

@@ -499,6 +499,152 @@ class AggressiveStrategy(SmartStrategy):
         return super().select_cards_to_discard(hand, game)
 
 
+import json
+from pathlib import Path
+
+
+class CoachMemory:
+    """
+    Persistent memory for CoachStrategy.
+    Tracks what worked and what didn't across runs.
+
+    This is NOT machine learning - it's statistical bookkeeping:
+    - Track joker appearances in wins vs losses
+    - Track build lead success rates
+    - Track which bosses kill runs
+
+    Then use ratios to nudge future decisions.
+    """
+
+    DEFAULT_PATH = Path(__file__).parent.parent.parent / "coach_memory.json"
+
+    def __init__(self, path: Path = None):
+        self.path = path or self.DEFAULT_PATH
+        self.data = self._load()
+
+    def _load(self) -> dict:
+        """Load memory from disk, or create fresh."""
+        if self.path.exists():
+            try:
+                with open(self.path) as f:
+                    return json.load(f)
+            except (json.JSONDecodeError, IOError):
+                pass
+
+        return {
+            "total_runs": 0,
+            "total_wins": 0,
+            "joker_stats": {},      # name -> {"wins": n, "appearances": n}
+            "build_lead_stats": {}, # name -> {"wins": n, "runs": n, "total_ante": n}
+            "boss_deaths": {},      # name -> {"deaths": n, "total_ante": n}
+        }
+
+    def save(self):
+        """Persist memory to disk."""
+        with open(self.path, 'w') as f:
+            json.dump(self.data, f, indent=2)
+
+    def record_run(self, victory: bool, jokers: list[str], build_lead: str,
+                   ante_reached: int, killer_boss: str = None):
+        """
+        Record outcome of a run.
+
+        Args:
+            victory: Did we win?
+            jokers: List of joker names collected during run
+            build_lead: Detected build lead (or None)
+            ante_reached: Final ante
+            killer_boss: Boss that killed us (if loss)
+        """
+        self.data["total_runs"] += 1
+        if victory:
+            self.data["total_wins"] += 1
+
+        # Track joker appearances
+        for joker in jokers:
+            if joker not in self.data["joker_stats"]:
+                self.data["joker_stats"][joker] = {"wins": 0, "appearances": 0}
+            self.data["joker_stats"][joker]["appearances"] += 1
+            if victory:
+                self.data["joker_stats"][joker]["wins"] += 1
+
+        # Track build lead success
+        if build_lead:
+            if build_lead not in self.data["build_lead_stats"]:
+                self.data["build_lead_stats"][build_lead] = {"wins": 0, "runs": 0, "total_ante": 0}
+            self.data["build_lead_stats"][build_lead]["runs"] += 1
+            self.data["build_lead_stats"][build_lead]["total_ante"] += ante_reached
+            if victory:
+                self.data["build_lead_stats"][build_lead]["wins"] += 1
+
+        # Track boss deaths
+        if killer_boss and not victory:
+            if killer_boss not in self.data["boss_deaths"]:
+                self.data["boss_deaths"][killer_boss] = {"deaths": 0, "total_ante": 0}
+            self.data["boss_deaths"][killer_boss]["deaths"] += 1
+            self.data["boss_deaths"][killer_boss]["total_ante"] += ante_reached
+
+        self.save()
+
+    def get_joker_win_rate(self, joker_name: str) -> tuple[float, int]:
+        """
+        Get historical win rate for a joker.
+
+        Returns: (win_rate, sample_size)
+        - win_rate: 0.0 to 1.0, or -1 if no data
+        - sample_size: number of runs with this joker
+        """
+        stats = self.data["joker_stats"].get(joker_name)
+        if not stats or stats["appearances"] == 0:
+            return -1, 0
+        return stats["wins"] / stats["appearances"], stats["appearances"]
+
+    def get_build_success_rate(self, build_lead: str) -> tuple[float, float, int]:
+        """
+        Get historical success metrics for a build lead.
+
+        Returns: (win_rate, avg_ante, sample_size)
+        """
+        stats = self.data["build_lead_stats"].get(build_lead)
+        if not stats or stats["runs"] == 0:
+            return -1, -1, 0
+        win_rate = stats["wins"] / stats["runs"]
+        avg_ante = stats["total_ante"] / stats["runs"]
+        return win_rate, avg_ante, stats["runs"]
+
+    def get_boss_threat_level(self, boss_name: str) -> tuple[float, int]:
+        """
+        Get how dangerous a boss is based on death frequency.
+
+        Returns: (death_rate, deaths)
+        - death_rate: deaths / total_losses
+        """
+        stats = self.data["boss_deaths"].get(boss_name)
+        total_losses = self.data["total_runs"] - self.data["total_wins"]
+        if not stats or total_losses == 0:
+            return 0, 0
+        return stats["deaths"] / total_losses, stats["deaths"]
+
+    def get_baseline_win_rate(self) -> float:
+        """Get overall win rate across all runs."""
+        if self.data["total_runs"] == 0:
+            return 0
+        return self.data["total_wins"] / self.data["total_runs"]
+
+    def get_top_jokers(self, min_appearances: int = 5) -> list[tuple[str, float, int]]:
+        """
+        Get jokers sorted by win rate (with minimum sample size).
+
+        Returns: List of (name, win_rate, appearances)
+        """
+        results = []
+        for name, stats in self.data["joker_stats"].items():
+            if stats["appearances"] >= min_appearances:
+                win_rate = stats["wins"] / stats["appearances"]
+                results.append((name, win_rate, stats["appearances"]))
+        return sorted(results, key=lambda x: x[1], reverse=True)
+
+
 class CoachStrategy(SmartStrategy):
     """
     Human-coached strategy developed through iterative natural language feedback.
@@ -911,9 +1057,11 @@ class CoachStrategy(SmartStrategy):
         "Four Fingers": 30, "Séance": 30,
     }
 
-    def __init__(self):
+    def __init__(self, memory: CoachMemory = None):
         super().__init__()
         self.build_detector = BuildDetector()
+        # Experience memory - persists across runs
+        self.memory = memory or CoachMemory()
         # Track current build lead
         self.current_lead = None
         self.lead_strength = 0
@@ -1349,6 +1497,10 @@ class CoachStrategy(SmartStrategy):
         # === PRIMARY: Start with human-ranked tier score ===
         tier_score = self.JOKER_POWER_TIERS.get(joker_name, 40)
         score = tier_score
+
+        # === EXPERIENCE BONUS: Adjust based on historical win rate ===
+        experience_bonus = self._get_joker_experience_bonus(joker_name)
+        score += experience_bonus
 
         # Get current shop behavior profile
         behavior = self._get_shop_behavior(game)
@@ -2513,6 +2665,96 @@ class CoachStrategy(SmartStrategy):
             base_score += 15  # Generally powerful
 
         return base_score
+
+    # ========================================================================
+    # EXPERIENCE-BASED LEARNING
+    # ========================================================================
+
+    def _get_joker_experience_bonus(self, joker_name: str) -> float:
+        """
+        Get bonus/penalty based on historical win rate for this joker.
+
+        If joker appears more in wins than baseline, boost it.
+        If it appears more in losses, penalize it.
+
+        Returns: -15 to +15 adjustment
+        """
+        win_rate, sample_size = self.memory.get_joker_win_rate(joker_name)
+
+        # Need minimum sample size for confidence
+        if sample_size < 5:
+            return 0
+
+        baseline = self.memory.get_baseline_win_rate()
+        if baseline == 0:
+            return 0
+
+        # Compare joker's win rate to baseline
+        # If joker appears in wins 2x more than baseline, that's significant
+        ratio = win_rate / baseline if baseline > 0 else 1
+
+        # Cap the adjustment to avoid runaway effects
+        if ratio > 1.5:
+            return min(15, (ratio - 1) * 20)  # Up to +15
+        elif ratio < 0.5:
+            return max(-15, (ratio - 1) * 20)  # Down to -15
+        else:
+            return (ratio - 1) * 10  # Modest adjustment
+
+    def _get_build_experience_bonus(self, build_lead: str) -> float:
+        """
+        Get bonus/penalty based on historical success of this build lead.
+
+        Returns: -10 to +10 adjustment to lead strength
+        """
+        win_rate, avg_ante, sample_size = self.memory.get_build_success_rate(build_lead)
+
+        if sample_size < 3:
+            return 0
+
+        baseline = self.memory.get_baseline_win_rate()
+        if baseline == 0:
+            return 0
+
+        ratio = win_rate / baseline if baseline > 0 else 1
+
+        if ratio > 1.5:
+            return min(10, (ratio - 1) * 15)
+        elif ratio < 0.5:
+            return max(-10, (ratio - 1) * 15)
+        else:
+            return (ratio - 1) * 8
+
+    def record_run_outcome(self, game, victory: bool):
+        """
+        Record the outcome of a run for future learning.
+
+        Call this after each run completes.
+        """
+        # Get jokers collected
+        jokers = [j.get("name", "") for j in game.jokers if j.get("name")]
+
+        # Get detected build lead
+        build_lead, _ = self._detect_build_lead(game)
+
+        # Get killer boss if we lost
+        killer_boss = None
+        if not victory and game.history and game.history.events:
+            # Find the last blind_result that was a loss
+            for event in reversed(game.history.events):
+                if event.event_type == "blind_result":
+                    if not event.data.get("success") and event.data.get("boss_name"):
+                        killer_boss = event.data["boss_name"]
+                        break
+
+        # Record to memory
+        self.memory.record_run(
+            victory=victory,
+            jokers=jokers,
+            build_lead=build_lead,
+            ante_reached=game.ante,
+            killer_boss=killer_boss
+        )
 
     # ========================================================================
     # COACHING HELPERS - Supporting methods for coached logic
